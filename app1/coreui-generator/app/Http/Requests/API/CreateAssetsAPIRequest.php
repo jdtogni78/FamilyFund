@@ -4,6 +4,8 @@ namespace App\Http\Requests\API;
 
 use App\Models\Assets;
 use InfyOm\Generator\Request\APIRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CreateAssetsAPIRequest extends APIRequest
 {
@@ -25,5 +27,24 @@ class CreateAssetsAPIRequest extends APIRequest
     public function rules()
     {
         return Assets::$rules;
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success'   => false,
+            'message'   => 'Validation errors',
+            'data'      => $validator->errors()
+        ]));
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required'         => 'Name field is required',
+            'type.required'         => 'Type field is required',
+            'feed_id.required'      => 'Feed Id field is required',
+            'source_feed.required'  => 'Source field is required'
+        ];
     }
 }

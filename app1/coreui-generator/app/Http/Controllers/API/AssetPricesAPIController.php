@@ -4,10 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreateAssetPricesAPIRequest;
 use App\Http\Requests\API\UpdateAssetPricesAPIRequest;
-use App\Models\AssetPrices;
 use App\Repositories\AssetPricesRepository;
-use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
+use App\Models\AssetPrices;
+use App\Models\Assets;
 use App\Http\Resources\AssetPricesResource;
 use Response;
 
@@ -31,7 +32,7 @@ class AssetPricesAPIController extends AppBaseController
      * GET|HEAD /assetPrices
      *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -50,14 +51,24 @@ class AssetPricesAPIController extends AppBaseController
      *
      * @param CreateAssetPricesAPIRequest $request
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function store(CreateAssetPricesAPIRequest $request)
     {
         $input = $request->all();
+        $validated = $request->validated();
+        if (!$validated && $validated->failedValidation()) {
+            return parent::sendError('Validation Error.', $validated->messages(), 400);
+        }
 
         $assetPrices = $this->assetPricesRepository->create($input);
 
+        $updateAssetRecord = Asset::where('feed_id', $request->feed_id)->first();
+
+        $updateAssetRecord->update([
+            'last_price'        => $request->price,
+            'last_price_update' => $assetResult->created_at
+        ]);
         return $this->sendResponse(new AssetPricesResource($assetPrices), 'Asset Prices saved successfully');
     }
 
@@ -67,7 +78,7 @@ class AssetPricesAPIController extends AppBaseController
      *
      * @param int $id
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -88,7 +99,7 @@ class AssetPricesAPIController extends AppBaseController
      * @param int $id
      * @param UpdateAssetPricesAPIRequest $request
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function update($id, UpdateAssetPricesAPIRequest $request)
     {

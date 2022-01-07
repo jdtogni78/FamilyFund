@@ -18,27 +18,26 @@
 --
 -- Table structure for table `account_balances`
 --
-
 DROP TABLE IF EXISTS `account_balances`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account_balances` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` varchar(3) DEFAULT NULL,
-  `shares` decimal(19,4) DEFAULT NULL,
-  `account_id` int(11) NOT NULL,
-  `tran_id` int(11) DEFAULT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shares` decimal(19,4) NOT NULL,
+  `account_id` bigint(20) unsigned DEFAULT NULL,
+  `tran_id` bigint(20) unsigned NOT NULL,
   `start_dt` date NOT NULL DEFAULT curdate(),
   `end_dt` date NOT NULL DEFAULT '9999-12-31',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `account_balances_accounts_id_fk` (`account_id`),
   KEY `account_balances_transactions_id_fk` (`tran_id`),
   CONSTRAINT `account_balances_accounts_id_fk` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
   CONSTRAINT `account_balances_transactions_id_fk` FOREIGN KEY (`tran_id`) REFERENCES `transactions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,17 +56,18 @@ DROP TABLE IF EXISTS `account_matching_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account_matching_rules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) NOT NULL,
-  `matching_id` int(11) NOT NULL,
-  `created` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated` datetime DEFAULT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `account_id` bigint(20) unsigned NOT NULL,
+  `matching_id` bigint(20) unsigned NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `account_matching_rules_account_id_fk` (`account_id`),
   KEY `account_matching_rules_matching_rules_id_fk` (`matching_id`),
   CONSTRAINT `account_matching_rules_account_id_fk` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
   CONSTRAINT `account_matching_rules_matching_rules_id_fk` FOREIGN KEY (`matching_id`) REFERENCES `matching_rules` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,7 +75,7 @@ CREATE TABLE `account_matching_rules` (
 --
 
 /*!40000 ALTER TABLE `account_matching_rules` DISABLE KEYS */;
-INSERT INTO `account_matching_rules` VALUES (1,1,1,'2021-12-29 03:18:34',NULL),(2,2,1,'2021-12-29 03:18:42',NULL),(3,3,1,'2021-12-29 03:19:08',NULL),(4,4,1,'2021-12-29 03:19:08',NULL),(5,5,2,'2021-12-29 03:19:08',NULL);
+INSERT INTO `account_matching_rules` VALUES (1,1,1,'2021-12-29 03:18:34',NULL,NULL),(2,2,1,'2021-12-29 03:18:42',NULL,NULL),(3,3,1,'2021-12-29 03:19:08',NULL,NULL),(4,4,1,'2021-12-29 03:19:08',NULL,NULL),(5,5,2,'2021-12-29 03:19:08',NULL,NULL);
 /*!40000 ALTER TABLE `account_matching_rules` ENABLE KEYS */;
 
 --
@@ -86,18 +86,18 @@ DROP TABLE IF EXISTS `account_trading_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account_trading_rules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) NOT NULL,
-  `trading_rule_id` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `account_id` bigint(20) unsigned NOT NULL,
+  `trading_rule_id` bigint(20) unsigned NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `account_trading_rules_accounts_id_fk` (`account_id`),
   KEY `account_trading_rules_trading_rules_id_fk` (`trading_rule_id`),
   CONSTRAINT `account_trading_rules_accounts_id_fk` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
   CONSTRAINT `account_trading_rules_trading_rules_id_fk` FOREIGN KEY (`trading_rule_id`) REFERENCES `trading_rules` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,21 +116,21 @@ DROP TABLE IF EXISTS `accounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `accounts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `code` varchar(15) NOT NULL,
-  `nickname` varchar(15) DEFAULT NULL,
-  `email_cc` varchar(1024) DEFAULT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nickname` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email_cc` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_id` bigint(20) unsigned NOT NULL,
-  `fund_id` int(11) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `fund_id` bigint(20) unsigned NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `accounts_users_id_fk` (`user_id`),
   KEY `accounts_fund_id_fk` (`fund_id`),
   CONSTRAINT `accounts_fund_id_fk` FOREIGN KEY (`fund_id`) REFERENCES `funds` (`id`),
   CONSTRAINT `accounts_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,6 +142,33 @@ INSERT INTO `accounts` VALUES (1,'','A',NULL,1,1,'2021-12-29 02:58:09',NULL,NULL
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 
 --
+-- Table structure for table `asset_change_logs`
+--
+
+DROP TABLE IF EXISTS `asset_change_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `asset_change_logs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `action` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `asset_id` int(10) unsigned NOT NULL,
+  `field` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `datetime` timestamp NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `asset_change_logs`
+--
+
+/*!40000 ALTER TABLE `asset_change_logs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asset_change_logs` ENABLE KEYS */;
+
+--
 -- Table structure for table `asset_prices`
 --
 
@@ -150,17 +177,17 @@ DROP TABLE IF EXISTS `asset_prices`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `asset_prices` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `asset_id` bigint(20) unsigned DEFAULT NULL,
+  `asset_id` bigint(20) unsigned NOT NULL,
   `price` decimal(13,2) NOT NULL,
   `start_dt` date NOT NULL DEFAULT curdate(),
   `end_dt` date NOT NULL DEFAULT '9999-12-31',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `asset_prices_assets_id_fk` (`asset_id`),
   CONSTRAINT `asset_prices_assets_id_fk` FOREIGN KEY (`asset_id`) REFERENCES `assets` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,18 +207,15 @@ DROP TABLE IF EXISTS `assets`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assets` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) NOT NULL,
-  `type` varchar(3) NOT NULL,
-  `source_feed` varchar(50) NOT NULL,
-  `feed_id` varchar(128) NOT NULL,
-  `last_price` decimal(19,2) NOT NULL,
-  `last_price_date` date NOT NULL,
-  `deactivated` datetime DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `source_feed` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `feed_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,7 +223,20 @@ CREATE TABLE `assets` (
 --
 
 /*!40000 ALTER TABLE `assets` DISABLE KEYS */;
-INSERT INTO `assets` VALUES (1,'SPXL','STO','tws','SPXL',144.57,'2021-12-31',NULL,'2021-12-31 11:55:54','2021-12-31 10:05:12',NULL),(2,'TECL','STO','tws','TECL',87.55,'2021-12-31',NULL,'2021-12-31 11:55:54','2021-12-31 10:05:12',NULL),(3,'SOXL','STO','tws','SOXL',68.36,'2021-12-31',NULL,'2021-12-31 11:55:54','2021-12-31 10:05:12',NULL),(4,'IAU','STO','tws','IAU',34.57,'2021-12-31',NULL,'2021-12-31 11:55:54','2021-12-31 10:05:12',NULL),(5,'FTBFX','FND','tws','FTBFX',11.06,'2021-12-31',NULL,'2021-12-31 11:55:54','2021-12-31 10:05:12',NULL),(6,'FIPDX','FND','tws','FIPDX',11.16,'2021-12-31',NULL,'2021-12-31 11:55:54','2021-12-31 10:05:12',NULL),(7,'ETH','DC','tws','ETH',3792.43,'2021-12-31',NULL,'2021-12-31 11:55:54','2021-12-31 10:05:12',NULL),(8,'BTC','DC','tws','BTC',48064.96,'2021-12-31',NULL,'2021-12-31 11:55:54','2021-12-31 10:05:12',NULL),(9,'LTC','DC','tws','LTC',147.97,'2021-12-31',NULL,'2021-12-31 11:55:54','2021-12-31 10:05:12',NULL),(10,'CASH','CSH','tws','CASH',1.00,'2021-12-31',NULL,'2021-12-31 18:37:03',NULL,NULL),(11,'XRP','DC','CoinBase','XRP',0.81,'2021-12-31',NULL,'2021-12-31 22:29:53',NULL,NULL),(12,'XLM','DC','CoinBase','XLM',0.27,'2021-12-31',NULL,'2021-12-31 22:29:53',NULL,NULL),(13,'BCH','DC','CoinBase','BCH',428.51,'2021-12-31',NULL,'2021-12-31 22:29:53',NULL,NULL);
+INSERT INTO `assets` VALUES
+                            (1,'SPXL','STO','tws','SPXL','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
+                            (2,'TECL','STO','tws','TECL','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
+                            (3,'SOXL','STO','tws','SOXL','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
+                            (4,'IAU','STO','tws','IAU','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
+                            (5,'FTBFX','FND','tws','FTBFX','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
+                            (6,'FIPDX','FND','tws','FIPDX','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
+                            (7,'ETH','DC','tws','ETH','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
+                            (8,'BTC','DC','tws','BTC','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
+                            (9,'LTC','DC','tws','LTC','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
+                            (10,'CASH','CSH','tws','CASH',NULL,'2021-12-31 18:37:03',NULL),
+                            (11,'XRP','DC','CoinBase','XRP',NULL,'2021-12-31 22:29:53',NULL),
+                            (12,'XLM','DC','CoinBase','XLM',NULL,'2021-12-31 22:29:53',NULL),
+                            (13,'BCH','DC','CoinBase','BCH',NULL,'2021-12-31 22:29:53',NULL);
 /*!40000 ALTER TABLE `assets` ENABLE KEYS */;
 
 --
@@ -237,15 +274,15 @@ DROP TABLE IF EXISTS `funds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `funds` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) NOT NULL,
-  `goal` varchar(1024) DEFAULT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `goal` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `total_shares` decimal(20,4) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,18 +301,18 @@ DROP TABLE IF EXISTS `matching_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `matching_rules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dollar_range_start` decimal(13,2) DEFAULT 0.00,
   `dollar_range_end` decimal(13,2) DEFAULT NULL,
   `date_start` date NOT NULL,
   `date_end` date NOT NULL,
   `match_percent` decimal(5,2) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,7 +335,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,7 +343,7 @@ CREATE TABLE `migrations` (
 --
 
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2021_12_22_154221_create_asset_change_logs_table',1),(6,'2022_01_07_130430_create_account_balances_table',1),(7,'2022_01_07_130434_create_account_matching_rules_table',1),(8,'2022_01_07_130437_create_account_trading_rules_table',1),(9,'2022_01_07_130439_create_accounts_table',1),(10,'2022_01_07_130441_create_asset_prices_table',1),(11,'2022_01_07_130443_create_assets_table',1),(12,'2022_01_07_130445_create_funds_table',1),(13,'2022_01_07_130447_create_matching_rules_table',1),(14,'2022_01_07_130449_create_portfolio_assets_table',1),(15,'2022_01_07_130451_create_portfolios_table',1),(16,'2022_01_07_130452_create_trading_rules_table',1),(17,'2022_01_07_130454_create_transactions_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 --
@@ -346,8 +383,8 @@ CREATE TABLE `personal_access_tokens` (
   `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
   `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
@@ -375,15 +412,15 @@ CREATE TABLE `portfolio_assets` (
   `shares` decimal(21,8) NOT NULL,
   `start_dt` date NOT NULL DEFAULT curdate(),
   `end_dt` date NOT NULL DEFAULT '9999-12-31',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `portfolio_assets_assets_id_fk` (`asset_id`),
   KEY `portfolio_assets_portfolios_id_fk` (`portfolio_id`),
   CONSTRAINT `portfolio_assets_assets_id_fk` FOREIGN KEY (`asset_id`) REFERENCES `assets` (`id`),
   CONSTRAINT `portfolio_assets_portfolios_id_fk` FOREIGN KEY (`portfolio_id`) REFERENCES `portfolios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -403,16 +440,16 @@ DROP TABLE IF EXISTS `portfolios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `portfolios` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `fund_id` int(11) NOT NULL,
+  `fund_id` bigint(20) unsigned NOT NULL,
   `last_total` decimal(13,2) NOT NULL,
   `last_total_date` datetime NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `portfolios_fund_id_fk` (`fund_id`),
   CONSTRAINT `portfolios_fund_id_fk` FOREIGN KEY (`fund_id`) REFERENCES `funds` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -431,15 +468,15 @@ DROP TABLE IF EXISTS `trading_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `trading_rules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `max_sale_increase_pcnt` decimal(5,2) DEFAULT NULL,
   `min_fund_performance_pcnt` decimal(5,2) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -458,21 +495,21 @@ DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transactions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `source` varchar(3) DEFAULT NULL,
-  `type` varchar(3) DEFAULT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `source` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `shares` decimal(19,4) DEFAULT NULL,
-  `account_id` int(11) NOT NULL,
-  `matching_id` int(11) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `account_id` bigint(20) unsigned NOT NULL,
+  `matching_id` bigint(20) unsigned DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `transactions_account_id_fk` (`account_id`),
   KEY `transactions_matching_id_fk` (`matching_id`),
   CONSTRAINT `transactions_account_id_fk` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
   CONSTRAINT `transactions_matching_id_fk` FOREIGN KEY (`matching_id`) REFERENCES `matching_rules` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -497,12 +534,11 @@ CREATE TABLE `users` (
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -510,7 +546,7 @@ CREATE TABLE `users` (
 --
 
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'NieceA1','niecea1@familyfund.com',NULL,'$2y$10$0Izqs4fkkhLTlqpH0J8Kg.tYqAPCT0MsGLbfElHnvWEv9ZwNwFM5u',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15',NULL),(2,'NieceA2','niecea2@familyfund.com',NULL,'$2y$10$I8XWYlnpDsJSXvZcXCD0/uGtuwaiCBpc32a8r91Gxm/HQQhSso9Zu',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15',NULL),(3,'NieceB1','nieceb1@familyfund.com',NULL,'$2y$10$TqTqP9KS37cu/4eLwyDkieQc3qhpACBHAjx/kP0UbreS0D7redAbS',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15',NULL),(4,'NieceB2','nieceb2@familyfund.com',NULL,'$2y$10$6/YMhjhMLaXTdgIatYY2eOfMi5tGlHM1W3bVEpZR.olZb6ioSWaMy',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16',NULL),(5,'NephewC1','nephewc1@familyfund.com',NULL,'$2y$10$X.dHjYYldFId4Nj0j3Uf0OTbvyprEiOKjVd2KRFc2KfUEMwqkuuaW',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16',NULL),(6,'Admin1','admin1@familyfund.com',NULL,'$2y$10$2bHnNO3bCShADCbwiezrTezCcCf1R0KWrpYhtcBbFiaE3xhq1Ki66',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16',NULL),(7,'Org1','org1@familyfund.com',NULL,'$2y$10$TumucOzMRLEJXfpHHA8eeuzvwJUrQONEzyPgZidLVuvoCOmGIKaJq',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16',NULL);
+INSERT INTO `users` VALUES (1,'NieceA1','niecea1@familyfund.com',NULL,'$2y$10$0Izqs4fkkhLTlqpH0J8Kg.tYqAPCT0MsGLbfElHnvWEv9ZwNwFM5u',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15'),(2,'NieceA2','niecea2@familyfund.com',NULL,'$2y$10$I8XWYlnpDsJSXvZcXCD0/uGtuwaiCBpc32a8r91Gxm/HQQhSso9Zu',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15'),(3,'NieceB1','nieceb1@familyfund.com',NULL,'$2y$10$TqTqP9KS37cu/4eLwyDkieQc3qhpACBHAjx/kP0UbreS0D7redAbS',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15'),(4,'NieceB2','nieceb2@familyfund.com',NULL,'$2y$10$6/YMhjhMLaXTdgIatYY2eOfMi5tGlHM1W3bVEpZR.olZb6ioSWaMy',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16'),(5,'NephewC1','nephewc1@familyfund.com',NULL,'$2y$10$X.dHjYYldFId4Nj0j3Uf0OTbvyprEiOKjVd2KRFc2KfUEMwqkuuaW',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16'),(6,'Admin1','admin1@familyfund.com',NULL,'$2y$10$2bHnNO3bCShADCbwiezrTezCcCf1R0KWrpYhtcBbFiaE3xhq1Ki66',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16'),(7,'Org1','org1@familyfund.com',NULL,'$2y$10$TumucOzMRLEJXfpHHA8eeuzvwJUrQONEzyPgZidLVuvoCOmGIKaJq',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -522,4 +558,4 @@ INSERT INTO `users` VALUES (1,'NieceA1','niecea1@familyfund.com',NULL,'$2y$10$0I
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-06  1:03:48
+-- Dump completed on 2022-01-07 14:41:23

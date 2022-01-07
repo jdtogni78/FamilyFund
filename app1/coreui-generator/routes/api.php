@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AssetController;
+use App\Http\Controllers\Api\AssetPriceHistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,16 +21,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::resource('funds', fundsAPIController::class);
-Route::resource('account_balances', AccountBalancesAPIController::class);
-Route::resource('account_matching_rules', AccountMatchingRulesAPIController::class);
-Route::resource('account_trading_rules', AccountTradingRulesAPIController::class);
-Route::resource('accounts', AccountsAPIController::class);
-Route::resource('asset_prices', AssetPricesAPIController::class);
-Route::resource('assets', AssetsAPIController::class);
-Route::resource('matching_rules', MatchingRulesAPIController::class);
-Route::resource('portfolio_assets', PortfolioAssetsAPIController::class);
-Route::resource('portfolios', PortfoliosAPIController::class);
-Route::resource('trading_rules', TradingRulesAPIController::class);
-Route::resource('transactions', TransactionsAPIController::class);
-Route::resource('users', UsersAPIController::class);
+Route::resource('funds', App\Http\Controllers\API\fundsAPIController::class);
+Route::resource('account_balances', App\Http\Controllers\API\AccountBalancesAPIController::class);
+Route::resource('account_matching_rules', App\Http\Controllers\API\AccountMatchingRulesAPIController::class);
+Route::resource('account_trading_rules', App\Http\Controllers\API\AccountTradingRulesAPIController::class);
+Route::resource('accounts', App\Http\Controllers\API\AccountsAPIController::class);
+Route::resource('asset_prices', App\Http\Controllers\API\AssetPricesAPIController::class);
+Route::resource('assets', App\Http\Controllers\API\AssetsAPIController::class);
+Route::resource('matching_rules', App\Http\Controllers\API\MatchingRulesAPIController::class);
+Route::resource('portfolio_assets', App\Http\Controllers\API\PortfolioAssetsAPIController::class);
+Route::resource('portfolios', App\Http\Controllers\API\PortfoliosAPIController::class);
+Route::resource('trading_rules', App\Http\Controllers\API\TradingRulesAPIController::class);
+Route::resource('transactions', App\Http\Controllers\API\TransactionsAPIController::class);
+Route::resource('users', App\Http\Controllers\API\UsersAPIController::class);

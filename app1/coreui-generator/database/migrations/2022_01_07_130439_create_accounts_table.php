@@ -15,8 +15,14 @@ class CreateAccountsTable extends Migration
     public function up()
     {
         Schema::create('accounts', function (Blueprint $table) {
-            $table->id('id');
-            $table->timestamps();
+            $table->integer('id', true);
+            $table->string('code', 15);
+            $table->string('nickname', 15)->nullable();
+            $table->string('email_cc', 1024)->nullable();
+            $table->foreignId('user_id')->index();
+            $table->foreignId('fund_id')->index();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();
         });
     }
@@ -28,6 +34,6 @@ class CreateAccountsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('accounts');
+        Schema::dropIfExists('accounts');
     }
 }

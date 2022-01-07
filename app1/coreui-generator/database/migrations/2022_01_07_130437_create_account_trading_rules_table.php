@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccountsTable extends Migration
+class CreateAccountTradingRulesTable extends Migration
 {
 
     /**
@@ -14,14 +14,12 @@ class CreateAccountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('account_trading_rules', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->string('code', 15);
-            $table->string('nickname', 15)->nullable();
-            $table->string('email_cc', 1024)->nullable();
-            $table->bigInteger('user_id', false, true);
-            $table->datetime('deleted_at')->nullable();
-            $table->timestamps();
+            $table->foreignId('account_id')->index();
+            $table->foreignId('trading_rule_id')->index();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();
         });
     }
@@ -33,6 +31,6 @@ class CreateAccountsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('accounts');
+        Schema::dropIfExists('account_trading_rules');
     }
 }

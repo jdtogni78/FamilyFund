@@ -8,10 +8,11 @@ use App\Models\Portfolios;
 use App\Models\PortfolioAssets;
 use App\Repositories\PortfoliosRepository;
 use App\Repositories\PortfolioAssetsRepository;
+use App\Repositories\AssetPricesRepository;
+use App\Repositories\AssetsRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\PortfoliosResource;
-use App\Http\Resources\PortfolioAssetsResource;
 use Response;
 
 /**
@@ -81,16 +82,56 @@ class PortfoliosAPIController extends AppBaseController
             return $this->sendError('Portfolios not found');
         }
 
+        $now = date('Y-m-d');
+
         $portfolioAssetsRepo = \App::make(PortfolioAssetsRepository::class);
-        $portfolioAssets = $portfolioAssetsRepo->all(['portfolio_id' => $id]);
+        $query = $portfolioAssetsRepo->makeModel()->newQuery();
+        $query->where('portfolio_id', $id);
+        $query->whereDate('start_dt', '<=', $now);
+        $query->whereDate('end_dt', '>=', $now);
+        $portfolioAssets = $query->get(['*']);
 
         $rss = new PortfoliosResource($portfolios);
         $arr = $rss->toArray(NULL);
         // var_dump($arr);
-        PortfolioAssetsResource::collection($portfolioAssets);
-        $arr['assets'] = PortfolioAssetsResource::collection($portfolioAssets);
+        // PortfolioAssetsResource::collection($portfolioAssets);
+        // $arr['assets'] = PortfolioAssetsResource::collection($portfolioAssets);
         // $pa = new PortfolioAssetsResource($portfolioAssets);
         // $arr['assets'] = $pa->toArray(NULL);
+
+        $totalValue = 0;
+        $arr['assets'] = array();
+        foreach ($portfolioAssets as $pa) {
+            $asset = array();
+            $asset_id = $pa['asset_id'];
+            $shares = $pa['shares'];
+            $asset['asset_id'] = $asset_id;
+            $asset['shares'] = $shares;
+
+            $assetPricesRepo = \App::make(AssetPricesRepository::class);
+            $assetsRepo = \App::make(AssetsRepository::class);
+
+            $assets = $assetsRepo->find($asset_id);
+            $asset['name'] = $assets['name'];
+
+            $query = $assetPricesRepo->makeModel()->newQuery();
+            $query->where('asset_id', $asset_id);
+            $query->whereDate('start_dt', '<=', $now);
+            $query->whereDate('end_dt', '>=', $now);
+            $assetPrices = $query->get(['*']);
+            
+            if (count($assetPrices) == 1) {
+                $price = $assetPrices[0]['price'];
+                $value = $shares * $price;
+                $totalValue += $value;
+                $asset['price'] = $price;
+                $asset['value'] = $value;
+            } else {
+                # TODO printf("No price for $asset_id\n");
+            }
+            array_push($arr['assets'], $asset);
+        }
+        $arr['total_value'] = $totalValue;
         
         return $this->sendResponse($arr, 'Portfolios retrieved successfully');
     }

@@ -24,7 +24,7 @@ class AssetPrices extends Model
     use HasFactory;
 
     public $table = 'asset_prices';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -38,6 +38,11 @@ class AssetPrices extends Model
         'price',
         'start_dt',
         'end_dt'
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 
     /**

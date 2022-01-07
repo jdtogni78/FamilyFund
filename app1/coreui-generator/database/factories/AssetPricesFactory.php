@@ -23,12 +23,12 @@ class AssetPricesFactory extends Factory
     {
         return [
             'asset_id' => $this->faker->word,
-        'price' => $this->faker->word,
-        'start_dt' => $this->faker->word,
-        'end_dt' => $this->faker->word,
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+            'price' => $this->faker->word,
+            'start_dt' => $this->faker->date('Y-m-d'),
+            'end_dt' => $this->faker->date('Y-m-d'),
+            'created_at' => $this->faker->date('Y-m-d H:i:s'),
+            'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+            'deleted_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

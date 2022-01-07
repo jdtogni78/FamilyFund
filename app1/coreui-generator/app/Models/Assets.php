@@ -28,7 +28,7 @@ class Assets extends Model
     use HasFactory;
 
     public $table = 'assets';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -40,11 +40,15 @@ class Assets extends Model
     public $fillable = [
         'name',
         'type',
-        'source_feed',
         'feed_id',
-        'last_price',
+        'source_feed',
         'last_price_date',
-        'deactivated'
+        'last_price',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -73,10 +77,7 @@ class Assets extends Model
         'type' => 'required|string|max:3',
         'source_feed' => 'required|string|max:50',
         'feed_id' => 'required|string|max:128',
-        'last_price' => 'required|numeric',
-        'last_price_date' => 'required',
-        'deactivated' => 'nullable',
-        'created_at' => 'required',
+        'created_at' => 'nullable',
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];

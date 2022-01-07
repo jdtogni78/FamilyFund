@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFundsTable extends Migration
+class CreatePortfoliosTable extends Migration
 {
 
     /**
@@ -14,9 +14,11 @@ class CreateFundsTable extends Migration
      */
     public function up()
     {
-        Schema::create('funds', function (Blueprint $table) {
-            $table->id('id');
-            $table->timestamps();
+        Schema::create('portfolios', function (Blueprint $table) {
+            $table->bigInteger('id', true, true);
+            $table->foreignId('fund_id')->index();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();
         });
     }
@@ -28,6 +30,6 @@ class CreateFundsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('funds');
+        Schema::dropIfExists('portfolios');
     }
 }
