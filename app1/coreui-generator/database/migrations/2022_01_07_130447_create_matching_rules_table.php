@@ -24,7 +24,7 @@ class CreateMatchingRulesTable extends Migration
             $table->decimal('match_percent', 5, 2);
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
-            $table->softDeletes();
+            // $table->softDeletes();
         });
     }
 

@@ -22,7 +22,7 @@ class CreateAssetPricesTable extends Migration
             $table->date('end_dt')->default('9999-12-31');
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
-            $table->softDeletes();
+            // $table->softDeletes();
         });
     }
 

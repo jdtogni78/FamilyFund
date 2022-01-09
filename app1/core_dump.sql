@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `account_balances`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account_balances` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `type` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `shares` decimal(19,4) NOT NULL,
   `account_id` bigint(20) unsigned DEFAULT NULL,
@@ -34,9 +34,11 @@ CREATE TABLE `account_balances` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `account_balances_account_id_index` (`account_id`),
-  KEY `account_balances_tran_id_index` (`tran_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `account_balances_accounts_id_fk` (`account_id`),
+  KEY `account_balances_transactions_id_fk` (`tran_id`),
+  CONSTRAINT `account_balances_accounts_id_fk` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
+  CONSTRAINT `account_balances_transactions_id_fk` FOREIGN KEY (`tran_id`) REFERENCES `transactions` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,6 +46,7 @@ CREATE TABLE `account_balances` (
 --
 
 /*!40000 ALTER TABLE `account_balances` DISABLE KEYS */;
+INSERT INTO `account_balances` VALUES (1,'OWN',2000.0000,1,2,'2020-12-31','2021-04-01','2020-12-30 00:00:00','2021-03-31 00:00:00',NULL),(2,'OWN',2000.0000,2,3,'2020-12-31','2021-04-01','2020-12-30 00:00:00','2021-03-31 00:00:00',NULL),(3,'OWN',2000.0000,3,4,'2020-12-31','2021-06-01','2020-12-30 00:00:00','2021-05-31 00:00:00',NULL),(4,'OWN',2000.0000,4,5,'2020-12-31','2021-07-01','2020-12-30 00:00:00','2021-06-30 00:00:00',NULL),(5,'OWN',5000.0000,5,6,'2020-12-31','9999-12-31','2020-12-30 00:00:00','2022-01-07 21:44:19',NULL),(6,'OWN',2132.3050,1,7,'2021-04-01','2021-04-01','2021-03-31 00:00:00','2021-03-31 00:00:00',NULL),(7,'OWN',2132.3050,2,8,'2021-04-01','2021-04-01','2021-03-31 00:00:00','2021-03-31 00:00:00',NULL),(8,'OWN',2264.6100,1,9,'2021-04-01','9999-12-31','2021-03-31 00:00:00','2022-01-07 21:44:19',NULL),(9,'OWN',2264.6100,2,10,'2021-04-01','9999-12-31','2021-03-31 00:00:00','2022-01-07 21:44:19',NULL),(10,'BOR',100.0000,3,11,'2021-06-01','2021-12-29','2021-05-31 00:00:00','2021-12-28 00:00:00',NULL),(11,'OWN',1900.0000,3,11,'2021-06-01','9999-12-31','2021-05-31 00:00:00','2022-01-07 21:44:19',NULL),(12,'OWN',1900.0000,4,12,'2021-07-01','9999-12-31','2021-06-30 00:00:00','2022-01-07 21:44:19',NULL),(13,'OWN',71.0000,6,13,'2021-12-29','9999-12-31','2021-12-28 00:00:00','2022-01-07 21:44:19',NULL),(14,'BOR',50.0000,3,14,'2021-12-29','2021-12-29','2021-12-28 00:00:00','2021-12-28 00:00:00',NULL),(15,'OWN',1950.0000,3,14,'2021-12-29','9999-12-31','2021-12-28 00:00:00','2022-01-07 21:44:19',NULL),(16,'OWN',2000.0000,7,2,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:18:39',NULL),(17,'OWN',2000.0000,8,3,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:18:39',NULL),(18,'OWN',2000.0000,9,4,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:18:39',NULL),(19,'OWN',2000.0000,10,5,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:18:39',NULL),(20,'OWN',5000.0000,11,6,'2022-01-09','9999-12-31','2022-01-09 02:20:58','2022-01-09 02:18:39',NULL),(21,'OWN',2132.3050,7,7,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:19:20',NULL),(22,'OWN',2132.3050,8,8,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:19:20',NULL),(23,'OWN',2264.6100,7,9,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:19:20',NULL),(24,'OWN',2264.6100,8,10,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:19:20',NULL),(25,'OWN',2000.0000,12,15,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:27:07',NULL),(26,'OWN',2148.1986,12,16,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(27,'OWN',2296.3972,12,17,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(28,'OWN',3407.8865,12,18,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(29,'OWN',3556.0851,12,19,'2022-01-09','9999-12-31',NULL,'2022-01-09 02:45:19',NULL),(30,'OWN',2301.6596,7,20,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(31,'OWN',2338.7093,7,21,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(32,'OWN',2449.8582,7,22,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(33,'OWN',2561.0072,7,23,'2022-01-09','9999-12-31',NULL,'2022-01-09 02:45:19',NULL),(34,'OWN',2301.6596,8,24,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(35,'OWN',2338.7093,8,25,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(36,'OWN',2449.8582,8,26,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(37,'OWN',2561.0072,8,27,'2022-01-09','9999-12-31',NULL,'2022-01-09 02:45:19',NULL),(38,'OWN',2148.1986,10,28,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(39,'OWN',2296.3972,10,29,'2022-01-09','9999-12-31',NULL,'2022-01-09 02:45:19',NULL),(40,'OWN',2148.1986,9,30,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(41,'OWN',2296.3972,9,31,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(42,'OWN',2370.4965,9,32,'2022-01-09','2022-01-09','2022-01-09 02:46:41','2022-01-09 02:45:19',NULL),(43,'OWN',2444.5957,9,33,'2022-01-09','9999-12-31',NULL,'2022-01-09 02:45:19',NULL);
 /*!40000 ALTER TABLE `account_balances` ENABLE KEYS */;
 
 --
@@ -54,16 +57,18 @@ DROP TABLE IF EXISTS `account_matching_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account_matching_rules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `account_id` bigint(20) unsigned NOT NULL,
   `matching_id` bigint(20) unsigned NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `account_matching_rules_account_id_index` (`account_id`),
-  KEY `account_matching_rules_matching_id_index` (`matching_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `account_matching_rules_account_id_fk` (`account_id`),
+  KEY `account_matching_rules_matching_rules_id_fk` (`matching_id`),
+  CONSTRAINT `account_matching_rules_account_id_fk` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
+  CONSTRAINT `account_matching_rules_matching_rules_id_fk` FOREIGN KEY (`matching_id`) REFERENCES `matching_rules` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,6 +76,7 @@ CREATE TABLE `account_matching_rules` (
 --
 
 /*!40000 ALTER TABLE `account_matching_rules` DISABLE KEYS */;
+INSERT INTO `account_matching_rules` VALUES (1,1,1,'2021-12-29 03:18:34','2022-01-07 21:44:19',NULL),(2,2,1,'2021-12-29 03:18:42','2022-01-07 21:44:19',NULL),(3,3,1,'2021-12-29 03:19:08','2022-01-07 21:44:19',NULL),(4,4,1,'2021-12-29 03:19:08','2022-01-07 21:44:19',NULL),(5,5,2,'2021-12-29 03:19:08','2022-01-07 21:44:19',NULL);
 /*!40000 ALTER TABLE `account_matching_rules` ENABLE KEYS */;
 
 --
@@ -81,16 +87,18 @@ DROP TABLE IF EXISTS `account_trading_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `account_trading_rules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `account_id` bigint(20) unsigned NOT NULL,
   `trading_rule_id` bigint(20) unsigned NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `account_trading_rules_account_id_index` (`account_id`),
-  KEY `account_trading_rules_trading_rule_id_index` (`trading_rule_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `account_trading_rules_accounts_id_fk` (`account_id`),
+  KEY `account_trading_rules_trading_rules_id_fk` (`trading_rule_id`),
+  CONSTRAINT `account_trading_rules_accounts_id_fk` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
+  CONSTRAINT `account_trading_rules_trading_rules_id_fk` FOREIGN KEY (`trading_rule_id`) REFERENCES `trading_rules` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,6 +106,7 @@ CREATE TABLE `account_trading_rules` (
 --
 
 /*!40000 ALTER TABLE `account_trading_rules` DISABLE KEYS */;
+INSERT INTO `account_trading_rules` VALUES (1,1,1,'2021-12-29 03:19:28','2022-01-07 21:44:19',NULL),(2,2,1,'2021-12-29 03:19:28','2022-01-07 21:44:19',NULL),(3,3,1,'2021-12-29 03:19:28','2022-01-07 21:44:19',NULL),(4,4,1,'2021-12-29 03:19:28','2022-01-07 21:44:19',NULL),(5,5,1,'2021-12-29 03:19:28','2022-01-07 21:44:19',NULL);
 /*!40000 ALTER TABLE `account_trading_rules` ENABLE KEYS */;
 
 --
@@ -108,7 +117,7 @@ DROP TABLE IF EXISTS `accounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `accounts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nickname` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_cc` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -118,9 +127,11 @@ CREATE TABLE `accounts` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `accounts_user_id_index` (`user_id`),
-  KEY `accounts_fund_id_index` (`fund_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `accounts_users_id_fk` (`user_id`),
+  KEY `accounts_fund_id_fk` (`fund_id`),
+  CONSTRAINT `accounts_fund_id_fk` FOREIGN KEY (`fund_id`) REFERENCES `funds` (`id`),
+  CONSTRAINT `accounts_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,6 +139,7 @@ CREATE TABLE `accounts` (
 --
 
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
+INSERT INTO `accounts` VALUES (1,'','A',NULL,1,1,'2021-12-29 02:58:09','2022-01-07 21:44:19',NULL),(2,'','A',NULL,2,1,'2021-12-29 02:58:18','2022-01-07 21:44:19',NULL),(3,'',NULL,'X',3,1,'2021-12-29 03:00:11','2022-01-07 21:44:19',NULL),(4,'',NULL,'X',4,1,'2021-12-29 03:00:20','2022-01-07 21:44:19',NULL),(5,'',NULL,NULL,5,1,'2021-12-29 03:00:30','2022-01-07 21:44:19',NULL),(6,'H',NULL,NULL,7,1,'2021-12-29 14:24:20','2022-01-07 21:44:19',NULL),(7,'A1','LT',NULL,1,2,'2022-01-09 02:37:23','2022-01-09 02:17:28',NULL),(8,'A2','GT',NULL,2,2,'2022-01-09 02:37:23','2022-01-09 02:17:28',NULL),(9,'B1','GG',NULL,3,2,'2022-01-09 02:37:23','2022-01-09 02:17:28',NULL),(10,'B2','PG',NULL,4,2,'2022-01-09 02:37:23','2022-01-09 02:17:28',NULL),(11,'C1','NB',NULL,5,2,'2022-01-09 02:37:23','2022-01-09 02:17:28',NULL),(12,'S1','VT',NULL,8,2,'2022-01-09 02:37:23','2022-01-09 02:24:10',NULL);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 
 --
@@ -174,8 +186,9 @@ CREATE TABLE `asset_prices` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `asset_prices_asset_id_index` (`asset_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `asset_prices_assets_id_fk` (`asset_id`),
+  CONSTRAINT `asset_prices_assets_id_fk` FOREIGN KEY (`asset_id`) REFERENCES `assets` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,6 +196,7 @@ CREATE TABLE `asset_prices` (
 --
 
 /*!40000 ALTER TABLE `asset_prices` DISABLE KEYS */;
+INSERT INTO `asset_prices` VALUES (1,1,144.57,'2021-12-31','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(2,2,87.55,'2021-12-31','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(3,3,68.36,'2021-12-31','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(4,4,34.57,'2021-12-31','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(5,5,11.06,'2021-12-31','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(6,6,11.16,'2021-12-31','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(7,7,3792.43,'2021-12-31','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(8,8,48064.96,'2021-12-31','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(9,9,147.97,'2021-12-31','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(10,1,72.25,'2021-01-01','2021-12-31','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(11,2,40.65,'2021-01-01','2021-12-31','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(12,3,31.10,'2021-01-01','2021-12-31','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(13,4,36.26,'2021-01-01','2021-12-31','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(14,5,11.32,'2021-01-01','2021-12-31','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(15,6,11.04,'2021-01-01','2021-12-31','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(16,7,737.89,'2021-01-01','2021-12-31','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(17,8,28990.08,'2021-01-01','2021-12-31','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(18,9,124.42,'2021-01-01','2021-12-31','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(19,11,0.81,'2021-12-31','2022-01-09','2022-01-09 01:50:23','2022-01-07 21:44:19',NULL),(20,12,0.27,'2021-12-31','2022-01-09','2022-01-09 01:50:23','2022-01-07 21:44:19',NULL),(21,13,428.51,'2021-12-31','2022-01-09','2022-01-09 01:50:23','2022-01-07 21:44:19',NULL),(22,11,0.32,'2021-01-01','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(23,12,0.13,'2021-01-01','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(24,13,430.20,'2021-01-09','2022-01-09','2022-01-09 01:37:41','2022-01-07 21:44:19',NULL),(25,10,1.00,'1970-01-01','9999-12-31',NULL,'2022-01-07 21:44:19',NULL),(26,1,135.37,'2022-01-09','9999-12-31','2022-01-09 01:56:20','2022-01-09 01:34:07',NULL),(27,3,59.74,'2022-01-09','9999-12-31','2022-01-09 01:56:20','2022-01-09 01:34:07',NULL),(28,2,74.49,'2022-01-09','9999-12-31','2022-01-09 01:56:20','2022-01-09 01:34:07',NULL),(29,4,34.15,'2022-01-09','9999-12-31','2022-01-09 01:56:20','2022-01-09 01:34:07',NULL),(30,5,10.94,'2022-01-09','9999-12-31',NULL,'2022-01-09 01:34:07',NULL),(31,6,10.91,'2022-01-09','9999-12-31','2022-01-09 01:56:20','2022-01-09 01:34:07',NULL),(32,7,3202.70,'2022-01-09','2022-01-09','2022-01-09 01:50:23','2022-01-09 01:34:07',NULL),(33,8,41818.15,'2022-01-09','2022-01-09','2022-01-09 01:50:23','2022-01-09 01:34:07',NULL),(34,9,132.81,'2022-01-09','2022-01-09','2022-01-09 01:50:23','2022-01-09 01:34:07',NULL),(35,7,3103.49,'2022-01-09','9999-12-31',NULL,'2022-01-09 01:53:24',NULL),(36,8,41685.39,'2022-01-09','9999-12-31',NULL,'2022-01-09 01:53:25',NULL),(37,9,129.65,'2022-01-09','9999-12-31',NULL,'2022-01-09 01:53:25',NULL),(38,11,0.75,'2022-01-09','9999-12-31',NULL,'2022-01-09 01:53:25',NULL),(39,12,0.26,'2022-01-09','9999-12-31',NULL,'2022-01-09 01:53:25',NULL),(40,13,375.38,'2022-01-09','9999-12-31',NULL,'2022-01-09 01:53:25',NULL);
 /*!40000 ALTER TABLE `asset_prices` ENABLE KEYS */;
 
 --
@@ -202,7 +216,7 @@ CREATE TABLE `assets` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,6 +224,7 @@ CREATE TABLE `assets` (
 --
 
 /*!40000 ALTER TABLE `assets` DISABLE KEYS */;
+INSERT INTO `assets` VALUES (1,'SPXL','STO','tws','SPXL','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),(2,'TECL','STO','tws','TECL','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),(3,'SOXL','STO','tws','SOXL','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),(4,'IAU','STO','tws','IAU','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),(5,'FTBFX','FND','tws','FTBFX','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),(6,'FIPDX','FND','tws','FIPDX','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),(7,'ETH','DC','tws','ETH','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),(8,'BTC','DC','tws','BTC','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),(9,'LTC','DC','tws','LTC','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),(10,'CASH','CSH','tws','CASH',NULL,'2021-12-31 18:37:03',NULL),(11,'XRP','DC','CoinBase','XRP',NULL,'2021-12-31 22:29:53',NULL),(12,'XLM','DC','CoinBase','XLM',NULL,'2021-12-31 22:29:53',NULL),(13,'BCH','DC','CoinBase','BCH',NULL,'2021-12-31 22:29:53',NULL);
 /*!40000 ALTER TABLE `assets` ENABLE KEYS */;
 
 --
@@ -247,7 +262,7 @@ DROP TABLE IF EXISTS `funds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `funds` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `goal` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `total_shares` decimal(20,4) NOT NULL,
@@ -255,7 +270,7 @@ CREATE TABLE `funds` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,6 +278,7 @@ CREATE TABLE `funds` (
 --
 
 /*!40000 ALTER TABLE `funds` DISABLE KEYS */;
+INSERT INTO `funds` VALUES (1,'IB Fund','To create generational wealth',25529.2200,'2021-12-28 23:38:52','2022-01-07 21:44:19',NULL),(2,'Fidelity Fund','Something',25529.2200,'2022-01-09 02:14:45','2022-01-07 21:44:19',NULL);
 /*!40000 ALTER TABLE `funds` ENABLE KEYS */;
 
 --
@@ -273,9 +289,9 @@ DROP TABLE IF EXISTS `matching_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `matching_rules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dollar_range_start` decimal(13,2) NOT NULL DEFAULT 0.00,
+  `dollar_range_start` decimal(13,2) DEFAULT 0.00,
   `dollar_range_end` decimal(13,2) DEFAULT NULL,
   `date_start` date NOT NULL,
   `date_end` date NOT NULL,
@@ -284,7 +300,7 @@ CREATE TABLE `matching_rules` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,6 +308,7 @@ CREATE TABLE `matching_rules` (
 --
 
 /*!40000 ALTER TABLE `matching_rules` DISABLE KEYS */;
+INSERT INTO `matching_rules` VALUES (1,'100% up to $200',0.00,200.00,'2021-01-01','2022-01-01',100.00,'2020-01-01 00:12:00','2022-01-07 21:44:19',NULL),(2,'100% up to $500',0.00,500.00,'2021-01-01','2022-01-01',100.00,'2020-01-01 00:00:00','2022-01-07 21:44:19',NULL),(3,'100% up to $500',0.00,500.00,'2022-01-01','2023-01-01',100.00,'2020-01-01 00:00:00','2022-01-07 21:44:19',NULL),(4,'100% up to $200',0.00,200.00,'2022-01-01','2023-01-01',100.00,'2022-01-01 00:00:00','2022-01-07 21:44:19',NULL);
 /*!40000 ALTER TABLE `matching_rules` ENABLE KEYS */;
 
 --
@@ -387,9 +404,11 @@ CREATE TABLE `portfolio_assets` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `portfolio_assets_portfolio_id_index` (`portfolio_id`),
-  KEY `portfolio_assets_asset_id_index` (`asset_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `portfolio_assets_assets_id_fk` (`asset_id`),
+  KEY `portfolio_assets_portfolios_id_fk` (`portfolio_id`),
+  CONSTRAINT `portfolio_assets_assets_id_fk` FOREIGN KEY (`asset_id`) REFERENCES `assets` (`id`),
+  CONSTRAINT `portfolio_assets_portfolios_id_fk` FOREIGN KEY (`portfolio_id`) REFERENCES `portfolios` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -397,6 +416,7 @@ CREATE TABLE `portfolio_assets` (
 --
 
 /*!40000 ALTER TABLE `portfolio_assets` DISABLE KEYS */;
+INSERT INTO `portfolio_assets` VALUES (1,1,1,32.00000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(2,1,2,53.00000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(3,1,3,65.00000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(4,1,4,91.00000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(5,1,5,138.71400000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(6,1,6,532.59600000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(7,1,7,0.36046314,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(8,1,8,0.01836910,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(9,1,9,3.74535299,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(10,1,10,3948.00000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(11,2,1,67.62800000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(12,2,2,40.42000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(13,2,3,54.58000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(14,2,4,94.00000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(15,2,5,0.00000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(16,2,6,598.55600000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(17,2,7,0.40050685,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(18,2,8,0.01752356,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(19,2,9,1.76610087,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(20,2,10,6182.78000000,'2021-01-01','9999-12-31','2022-01-09 01:44:18','2022-01-07 21:44:19',NULL),(21,2,11,885.16959200,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(22,2,12,911.52779760,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19',NULL),(23,2,13,0.00000000,'2021-01-01','9999-12-31','2022-01-09 01:45:38','2022-01-07 21:44:19',NULL);
 /*!40000 ALTER TABLE `portfolio_assets` ENABLE KEYS */;
 
 --
@@ -409,12 +429,15 @@ DROP TABLE IF EXISTS `portfolios`;
 CREATE TABLE `portfolios` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `fund_id` bigint(20) unsigned NOT NULL,
+  `last_total` decimal(13,2) NOT NULL,
+  `last_total_date` datetime NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `portfolios_fund_id_index` (`fund_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `portfolios_fund_id_fk` (`fund_id`),
+  CONSTRAINT `portfolios_fund_id_fk` FOREIGN KEY (`fund_id`) REFERENCES `funds` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -422,6 +445,7 @@ CREATE TABLE `portfolios` (
 --
 
 /*!40000 ALTER TABLE `portfolios` DISABLE KEYS */;
+INSERT INTO `portfolios` VALUES (1,1,31085.75,'2021-12-31 08:51:32','2021-12-31 11:51:37','2022-01-07 21:44:19',NULL),(2,2,36792.28,'2021-12-31 19:54:41','2021-12-31 22:54:44','2022-01-07 21:44:19',NULL);
 /*!40000 ALTER TABLE `portfolios` ENABLE KEYS */;
 
 --
@@ -432,7 +456,7 @@ DROP TABLE IF EXISTS `trading_rules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `trading_rules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `max_sale_increase_pcnt` decimal(5,2) DEFAULT NULL,
   `min_fund_performance_pcnt` decimal(5,2) DEFAULT NULL,
@@ -440,7 +464,7 @@ CREATE TABLE `trading_rules` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -448,6 +472,7 @@ CREATE TABLE `trading_rules` (
 --
 
 /*!40000 ALTER TABLE `trading_rules` DISABLE KEYS */;
+INSERT INTO `trading_rules` VALUES (1,'3%',3.00,NULL,'2021-12-29 03:18:09','2022-01-07 21:44:19',NULL);
 /*!40000 ALTER TABLE `trading_rules` ENABLE KEYS */;
 
 --
@@ -458,7 +483,7 @@ DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transactions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `source` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `shares` decimal(19,4) DEFAULT NULL,
@@ -468,9 +493,11 @@ CREATE TABLE `transactions` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `transactions_account_id_index` (`account_id`),
-  KEY `transactions_matching_id_index` (`matching_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `transactions_account_id_fk` (`account_id`),
+  KEY `transactions_matching_id_fk` (`matching_id`),
+  CONSTRAINT `transactions_account_id_fk` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
+  CONSTRAINT `transactions_matching_id_fk` FOREIGN KEY (`matching_id`) REFERENCES `matching_rules` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -478,6 +505,7 @@ CREATE TABLE `transactions` (
 --
 
 /*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
+INSERT INTO `transactions` VALUES (2,'SPO','PUR',2000.0000,1,NULL,'2020-12-29 03:06:38','2022-01-07 21:44:19',NULL),(3,'SPO','PUR',2000.0000,2,NULL,'2020-12-29 03:06:55','2022-01-07 21:44:19',NULL),(4,'SPO','PUR',2000.0000,3,NULL,'2020-12-29 03:07:05','2022-01-07 21:44:19',NULL),(5,'SPO','PUR',2000.0000,4,NULL,'2020-12-29 03:07:14','2022-01-07 21:44:19',NULL),(6,'SPO','PUR',5000.0000,5,NULL,'2020-12-29 03:07:26','2022-01-07 21:44:19',NULL),(7,'DIR','PUR',132.3050,1,NULL,'2021-04-01 00:00:00','2022-01-07 21:44:19',NULL),(8,'DIR','PUR',132.3050,2,NULL,'2021-04-01 00:00:00','2022-01-07 21:44:19',NULL),(9,'MAT','PUR',132.3050,1,1,'2021-04-01 00:00:00','2022-01-07 21:44:19',NULL),(10,'MAT','PUR',132.3050,2,1,'2021-04-01 00:00:00','2022-01-07 21:44:19',NULL),(11,'DIR','BOR',100.0000,3,NULL,'2021-05-01 00:00:00','2022-01-07 21:44:19',NULL),(12,'DIR','SAL',100.0000,4,NULL,'2021-06-01 00:00:00','2022-01-07 21:44:19',NULL),(13,'SPO','PUR',71.0000,6,NULL,'2021-12-29 14:27:55','2022-01-07 21:44:19',NULL),(14,'DIR','REP',50.0000,3,NULL,'2021-12-29 14:30:01','2022-01-07 21:44:19',NULL),(15,'SPO','PUR',2000.0000,12,NULL,NULL,'2022-01-09 02:25:11',NULL),(16,'DIR','PUR',148.1986,12,NULL,NULL,'2022-01-09 02:35:00',NULL),(17,'MAT','PUR',148.1986,12,1,NULL,'2022-01-09 02:35:00',NULL),(18,'DIR','PUR',1111.4894,12,NULL,NULL,'2022-01-09 02:35:00',NULL),(19,'MAT','PUR',148.1986,12,4,NULL,'2022-01-09 02:35:00',NULL),(20,'DIR','PUR',37.0496,7,NULL,NULL,'2022-01-09 02:35:00',NULL),(21,'MAT','PUR',37.0496,7,1,NULL,'2022-01-09 02:35:00',NULL),(22,'DIR','PUR',111.1489,7,NULL,NULL,'2022-01-09 02:35:00',NULL),(23,'MAT','PUR',111.1489,7,4,NULL,'2022-01-09 02:35:00',NULL),(24,'DIR','PUR',37.0496,8,NULL,NULL,'2022-01-09 02:35:00',NULL),(25,'MAT','PUR',37.0496,8,1,NULL,'2022-01-09 02:35:00',NULL),(26,'DIR','PUR',111.1489,8,NULL,NULL,'2022-01-09 02:35:00',NULL),(27,'MAT','PUR',111.1489,8,4,NULL,'2022-01-09 02:35:00',NULL),(28,'DIR','PUR',148.1986,10,NULL,NULL,'2022-01-09 02:37:45',NULL),(29,'MAT','PUR',148.1986,10,1,NULL,'2022-01-09 02:37:45',NULL),(30,'DIR','PUR',148.1986,9,NULL,NULL,'2022-01-09 02:37:45',NULL),(31,'MAT','PUR',148.1986,9,1,NULL,'2022-01-09 02:37:45',NULL),(32,'DIR','PUR',74.0993,9,NULL,NULL,'2022-01-09 02:37:45',NULL),(33,'MAT','PUR',74.0993,9,4,'2022-01-09 02:37:50','2022-01-09 02:37:45',NULL);
 /*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 
 --
@@ -498,7 +526,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -506,6 +534,7 @@ CREATE TABLE `users` (
 --
 
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'NieceA1','niecea1@familyfund.com',NULL,'$2y$10$0Izqs4fkkhLTlqpH0J8Kg.tYqAPCT0MsGLbfElHnvWEv9ZwNwFM5u',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15'),(2,'NieceA2','niecea2@familyfund.com',NULL,'$2y$10$I8XWYlnpDsJSXvZcXCD0/uGtuwaiCBpc32a8r91Gxm/HQQhSso9Zu',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15'),(3,'NieceB1','nieceb1@familyfund.com',NULL,'$2y$10$TqTqP9KS37cu/4eLwyDkieQc3qhpACBHAjx/kP0UbreS0D7redAbS',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15'),(4,'NieceB2','nieceb2@familyfund.com',NULL,'$2y$10$6/YMhjhMLaXTdgIatYY2eOfMi5tGlHM1W3bVEpZR.olZb6ioSWaMy',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16'),(5,'NephewC1','nephewc1@familyfund.com',NULL,'$2y$10$X.dHjYYldFId4Nj0j3Uf0OTbvyprEiOKjVd2KRFc2KfUEMwqkuuaW',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16'),(6,'Admin1','admin1@familyfund.com',NULL,'$2y$10$2bHnNO3bCShADCbwiezrTezCcCf1R0KWrpYhtcBbFiaE3xhq1Ki66',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16'),(7,'Org1','org1@familyfund.com',NULL,'$2y$10$TumucOzMRLEJXfpHHA8eeuzvwJUrQONEzyPgZidLVuvoCOmGIKaJq',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16'),(8,'Sister2','sister2@familyfund.com',NULL,'$2y$10$TumucOzMRLEJXfpHHA8eeuzvwJUrQONEzyPgZidLVuvoCOmGIKaJq',NULL,NULL,'2022-01-09 02:23:37');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -517,4 +546,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-07 15:40:21
+-- Dump completed on 2022-01-09  1:58:37
