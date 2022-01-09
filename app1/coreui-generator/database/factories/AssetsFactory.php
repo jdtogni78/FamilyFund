@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Assets;
+use App\Models\AssetsExt;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AssetsFactory extends Factory
@@ -12,7 +12,7 @@ class AssetsFactory extends Factory
      *
      * @var string
      */
-    protected $model = Assets::class;
+    protected $model = AssetsExt::class;
 
     /**
      * Define the model's default state.
@@ -23,15 +23,12 @@ class AssetsFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-        'type' => $this->faker->word,
-        'source_feed' => $this->faker->word,
-        'feed_id' => $this->faker->word,
-        'last_price' => $this->faker->word,
-        'last_price_date' => $this->faker->word,
-        'deactivated' => $this->faker->date('Y-m-d H:i:s'),
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+            'type' => $this->faker->word,
+            'source_feed' => $this->faker->word,
+            'feed_id' => $this->faker->word,
+            'created_at' => $this->faker->date('Y-m-d H:i:s'),
+            'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+            'deleted_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

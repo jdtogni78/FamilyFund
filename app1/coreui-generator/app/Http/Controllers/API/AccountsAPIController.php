@@ -19,7 +19,7 @@ use Response;
 class AccountsAPIController extends AppBaseController
 {
     /** @var  AccountsRepository */
-    private $accountsRepository;
+    protected $accountsRepository;
 
     public function __construct(AccountsRepository $accountsRepo)
     {

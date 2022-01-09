@@ -71,6 +71,7 @@ class AssetsAPIController extends AppBaseController
      */
     public function show($id)
     {
+        // var_dump(Assets::factory()->make()->toArray());
         /** @var Assets $assets */
         $assets = $this->assetsRepository->find($id);
 

@@ -68,7 +68,7 @@ class PortfolioAssets extends Model
         'shares' => 'required|numeric',
         'start_dt' => 'required',
         'end_dt' => 'required',
-        'created_at' => 'required',
+        'created_at' => 'nullable',
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];

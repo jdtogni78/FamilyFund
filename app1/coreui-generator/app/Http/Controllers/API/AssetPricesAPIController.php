@@ -56,20 +56,10 @@ class AssetPricesAPIController extends AppBaseController
     public function store(CreateAssetPricesAPIRequest $request)
     {
         $input = $request->all();
-        $validated = $request->validated();
-        if (!$validated && $validated->failedValidation()) {
-            return parent::sendError('Validation Error.', $validated->messages(), 400);
-        }
 
         $assetPrices = $this->assetPricesRepository->create($input);
 
-        $updateAssetRecord = Asset::where('feed_id', $request->feed_id)->first();
-
-        $updateAssetRecord->update([
-            'last_price'        => $request->price,
-            'last_price_update' => $assetResult->created_at
-        ]);
-        return $this->sendResponse(new AssetPricesResource($assetPrices), 'Asset Prices saved successfully');
+        return $this->sendResponse(new AssetPricesResource($assetPrices), 'Asset Price saved successfully');
     }
 
     /**

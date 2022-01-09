@@ -66,9 +66,9 @@ class AssetPrices extends Model
     public static $rules = [
         'asset_id' => 'nullable',
         'price' => 'required|numeric',
-        'start_dt' => 'required',
-        'end_dt' => 'required',
-        'created_at' => 'required',
+        'start_dt' => 'nullable', # has default
+        'end_dt' => 'nullable', # has default
+        'created_at' => 'nullable', # has default
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];

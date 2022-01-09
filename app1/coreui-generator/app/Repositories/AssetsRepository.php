@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Assets;
+use App\Models\AssetsExt;
 use App\Repositories\BaseRepository;
 
 /**
@@ -41,6 +41,6 @@ class AssetsRepository extends BaseRepository
      **/
     public function model()
     {
-        return Assets::class;
+        return AssetsExt::class;
     }
 }

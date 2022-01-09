@@ -46,12 +46,7 @@ class PortfoliosAPIControllerExt extends PortfoliosAPIController
 
         $now = date('Y-m-d');
 
-        $portfolioAssetsRepo = \App::make(PortfolioAssetsRepository::class);
-        $query = $portfolioAssetsRepo->makeModel()->newQuery();
-        $query->where('portfolio_id', $id);
-        $query->whereDate('start_dt', '<=', $now);
-        $query->whereDate('end_dt', '>', $now);
-        $portfolioAssets = $query->get(['*']);
+        $portfolioAssets = $portfolios->assetsAsOf($now);
 
         $rss = new PortfoliosResource($portfolios);
         $arr = $rss->toArray(NULL);

@@ -64,4 +64,4 @@ Route::resource('tradingRules', App\Http\Controllers\TradingRulesController::cla
 Route::resource('transactions', App\Http\Controllers\TransactionsController::class);
 
 
-Route::resource('users', App\Http\Controllers\UsersController::class);
+// Route::resource('users', App\Http\Controllers\UsersController::class);

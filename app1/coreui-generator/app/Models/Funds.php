@@ -70,7 +70,7 @@ class Funds extends Model
      **/
     public function accounts()
     {
-        return $this->hasMany(\App\Models\Account::class, 'fund_id');
+        return $this->hasMany(\App\Models\Accounts::class, 'fund_id');
     }
 
     /**
@@ -78,6 +78,6 @@ class Funds extends Model
      **/
     public function portfolios()
     {
-        return $this->hasMany(\App\Models\Portfolio::class, 'fund_id');
+        return $this->hasMany(\App\Models\Portfolios::class, 'fund_id');
     }
 }
