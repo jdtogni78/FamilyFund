@@ -57,23 +57,17 @@ class PortfoliosAPIControllerExt extends PortfoliosAPIController
             $asset = array();
             $asset_id = $pa['asset_id'];
             $shares = $pa['shares'];
+
             if ($shares == 0) 
                 continue;
 
             $asset['asset_id'] = $asset_id;
             $asset['shares'] = $shares;
 
-            $assetPricesRepo = \App::make(AssetPricesRepository::class);
             $assetsRepo = \App::make(AssetsRepository::class);
-
             $assets = $assetsRepo->find($asset_id);
             $asset['name'] = $assets['name'];
-
-            $query = $assetPricesRepo->makeModel()->newQuery();
-            $query->where('asset_id', $asset_id);
-            $query->whereDate('start_dt', '<=', $now);
-            $query->whereDate('end_dt', '>', $now);
-            $assetPrices = $query->get(['*']);
+            $assetPrices = $assets->pricesAsOf($now);
             
             if (count($assetPrices) == 1) {
                 $price = $assetPrices[0]['price'];

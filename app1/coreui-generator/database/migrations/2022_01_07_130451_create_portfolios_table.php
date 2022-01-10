@@ -17,6 +17,7 @@ class CreatePortfoliosTable extends Migration
         Schema::create('portfolios', function (Blueprint $table) {
             $table->bigInteger('id', true, true);
             $table->foreignId('fund_id')->index();
+            $table->string('code', 30);
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();
