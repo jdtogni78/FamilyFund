@@ -19,7 +19,7 @@ class CreateAccountsTable extends Migration
             $table->string('code', 15);
             $table->string('nickname', 15)->nullable();
             $table->string('email_cc', 1024)->nullable();
-            $table->foreignId('user_id')->index();
+            $table->foreignId('user_id')->index()->nullable();
             $table->foreignId('fund_id')->index();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();

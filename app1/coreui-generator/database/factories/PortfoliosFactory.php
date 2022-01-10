@@ -12,7 +12,7 @@ class PortfoliosFactory extends Factory
      *
      * @var string
      */
-    protected $model = Portfolios::class;
+    protected $model = PortfoliosExt::class;
 
     /**
      * Define the model's default state.

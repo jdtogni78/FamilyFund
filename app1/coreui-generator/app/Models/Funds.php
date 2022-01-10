@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \Illuminate\Database\Eloquent\Collection $portfolios
  * @property string $name
  * @property string $goal
- * @property number $total_shares
  */
 class Funds extends Model
 {
@@ -36,7 +35,6 @@ class Funds extends Model
     public $fillable = [
         'name',
         'goal',
-        'total_shares'
     ];
 
     /**
@@ -48,7 +46,6 @@ class Funds extends Model
         'id' => 'integer',
         'name' => 'string',
         'goal' => 'string',
-        'total_shares' => 'decimal:4'
     ];
 
     /**
@@ -59,7 +56,6 @@ class Funds extends Model
     public static $rules = [
         'name' => 'required|string|max:30',
         'goal' => 'nullable|string|max:1024',
-        'total_shares' => 'required|numeric',
         'created_at' => 'required',
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'
@@ -70,7 +66,7 @@ class Funds extends Model
      **/
     public function accounts()
     {
-        return $this->hasMany(\App\Models\Accounts::class, 'fund_id');
+        return $this->hasMany(\App\Models\AccountsExt::class, 'fund_id');
     }
 
     /**
@@ -78,6 +74,6 @@ class Funds extends Model
      **/
     public function portfolios()
     {
-        return $this->hasMany(\App\Models\Portfolios::class, 'fund_id');
+        return $this->hasMany(\App\Models\PortfoliosExt::class, 'fund_id');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Accounts;
+use App\Models\AccountsExt;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AccountsFactory extends Factory
@@ -12,7 +12,7 @@ class AccountsFactory extends Factory
      *
      * @var string
      */
-    protected $model = Accounts::class;
+    protected $model = AccountsExt::class;
 
     /**
      * Define the model's default state.

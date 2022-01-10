@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Accounts;
+use App\Models\AccountsExt;
 use App\Repositories\BaseRepository;
 
 /**
@@ -38,6 +38,6 @@ class AccountsRepository extends BaseRepository
      **/
     public function model()
     {
-        return Accounts::class;
+        return AccountsExt::class;
     }
 }

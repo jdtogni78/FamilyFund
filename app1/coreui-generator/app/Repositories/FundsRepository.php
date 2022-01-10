@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Funds;
+use App\Models\FundsExt;
 use App\Repositories\BaseRepository;
 
 /**
@@ -19,7 +19,6 @@ class FundsRepository extends BaseRepository
     protected $fieldSearchable = [
         'name',
         'goal',
-        'total_shares'
     ];
 
     /**
@@ -37,6 +36,6 @@ class FundsRepository extends BaseRepository
      **/
     public function model()
     {
-        return Funds::class;
+        return FundsExt::class;
     }
 }

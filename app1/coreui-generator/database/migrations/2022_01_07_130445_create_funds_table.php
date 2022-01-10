@@ -18,7 +18,7 @@ class CreateFundsTable extends Migration
             $table->integer('id', true);
             $table->string('name', 30);
             $table->string('goal', 1024)->nullable();
-            $table->decimal('total_shares', 20, 4);
+            // $table->decimal('total_shares', 20, 4); -- will be calculated by account with no user
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();

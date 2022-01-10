@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Funds;
+use App\Models\FundsExt;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FundsFactory extends Factory
@@ -12,7 +12,7 @@ class FundsFactory extends Factory
      *
      * @var string
      */
-    protected $model = Funds::class;
+    protected $model = FundsExt::class;
 
     /**
      * Define the model's default state.
@@ -23,11 +23,11 @@ class FundsFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-        'goal' => $this->faker->word,
-        'total_shares' => $this->faker->word,
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+            'goal' => $this->faker->word,
+            // 'total_shares' => $this->faker->word,
+            'created_at' => $this->faker->date('Y-m-d H:i:s'),
+            'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+            'deleted_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

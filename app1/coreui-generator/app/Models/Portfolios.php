@@ -70,7 +70,7 @@ class Portfolios extends Model
      **/
     public function fund()
     {
-        return $this->belongsTo(\App\Models\Funds::class, 'fund_id');
+        return $this->belongsTo(\App\Models\FundsExt::class, 'fund_id');
     }
 
     /**

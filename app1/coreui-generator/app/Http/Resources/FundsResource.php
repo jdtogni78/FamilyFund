@@ -18,7 +18,7 @@ class FundsResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'goal' => $this->goal,
-            'total_shares' => $this->total_shares,
+            // 'total_shares' => $this->total_shares,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at

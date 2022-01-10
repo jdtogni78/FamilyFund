@@ -50,18 +50,13 @@ class AccountsAPIControllerExt extends AccountsAPIController
         $arr = $rss->toArray(NULL);
 
         // TODO: move this to a more appropriate place: model? AB controller?
-        $accountBalancesRepo = \App::make(AccountBalancesRepository::class);
-        $query = $accountBalancesRepo->makeModel()->newQuery();
-        $query->where('account_id', $id);
-        $query->whereDate('start_dt', '<=', $now);
-        $query->whereDate('end_dt', '>', $now);
-        $accountBalances = $query->get(['*']);
+        $accountBalances = $accounts->balanceAsOf($now);
 
         $fund = $accounts->fund()->get()->first();
-        $totalShares = $fund['total_shares'];
+        $totalShares = $fund->account()->first()->ownBalanceAsOf($now);
+        
         $portfolio = $fund->portfolios()->get()->first();
-        $portfolioExt = PortfoliosExt::findOrFail($portfolio['id']);
-        $totalValue = $portfolioExt->totalValue($now);
+        $totalValue = $portfolio->totalValue($now);
 
         $arr['balances'] = array();
         foreach ($accountBalances as $ab) {
