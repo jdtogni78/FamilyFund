@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::resource('funds', App\Http\Controllers\API\fundsAPIController::class);
+Route::resource('funds', App\Http\Controllers\API\FundsAPIControllerExt::class);
 Route::resource('account_balances', App\Http\Controllers\API\AccountBalancesAPIController::class);
 Route::resource('account_matching_rules', App\Http\Controllers\API\AccountMatchingRulesAPIController::class);
 Route::resource('account_trading_rules', App\Http\Controllers\API\AccountTradingRulesAPIController::class);

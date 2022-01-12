@@ -18,6 +18,25 @@
 --
 -- Table structure for table `account_balances`
 --
+DROP TABLE IF EXISTS `accounts`;
+DROP TABLE IF EXISTS `transactions`;
+DROP TABLE IF EXISTS `account_balances`;
+DROP TABLE IF EXISTS `account_matching_rules`;
+DROP TABLE IF EXISTS `account_trading_rules`;
+DROP TABLE IF EXISTS `accounts`;
+DROP TABLE IF EXISTS `asset_change_logs`;
+DROP TABLE IF EXISTS `asset_prices`;
+DROP TABLE IF EXISTS `assets`;
+DROP TABLE IF EXISTS `failed_jobs`;
+DROP TABLE IF EXISTS `funds`;
+DROP TABLE IF EXISTS `matching_rules`;
+DROP TABLE IF EXISTS `migrations`;
+DROP TABLE IF EXISTS `password_resets`;
+DROP TABLE IF EXISTS `personal_access_tokens`;
+DROP TABLE IF EXISTS `portfolio_assets`;
+DROP TABLE IF EXISTS `portfolios`;
+DROP TABLE IF EXISTS `trading_rules`;
+DROP TABLE IF EXISTS `transactions`;
 
 DROP TABLE IF EXISTS `account_balances`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -121,7 +140,7 @@ CREATE TABLE `accounts` (
   `code` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nickname` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_cc` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned,
   `fund_id` bigint(20) unsigned NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),

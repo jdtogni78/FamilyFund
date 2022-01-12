@@ -31,7 +31,7 @@ class PortfoliosExt extends Portfolios
     /**
      * @return money
      **/
-    public function totalValue($now)
+    public function value($now)
     {
         $portfolioAssets = $this->assetsAsOf($now);
 

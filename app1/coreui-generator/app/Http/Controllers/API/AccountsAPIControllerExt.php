@@ -53,10 +53,8 @@ class AccountsAPIControllerExt extends AccountsAPIController
         $accountBalances = $accounts->balanceAsOf($now);
 
         $fund = $accounts->fund()->get()->first();
-        $totalShares = $fund->account()->first()->ownBalanceAsOf($now);
-        
-        $portfolio = $fund->portfolios()->get()->first();
-        $totalValue = $portfolio->totalValue($now);
+        $totalShares = $fund->shares($now);
+        $portfolio = $fund->value($now);
 
         $arr['balances'] = array();
         foreach ($accountBalances as $ab) {

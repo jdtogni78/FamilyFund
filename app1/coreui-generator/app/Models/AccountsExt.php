@@ -27,8 +27,8 @@ class AccountsExt extends Accounts
     public function ownBalanceAsOf($now) {
         $accountBalances = $this->balanceAsOf($now);
         foreach ($accountBalances as $balance) {
-            if ($balance['type'] == 'OWN') {
-                return $balance['shares'];
+            if ($balance->type == 'OWN') {
+                return $balance->shares;
             }
         }
         return 0;

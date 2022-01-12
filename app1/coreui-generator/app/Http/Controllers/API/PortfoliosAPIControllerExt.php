@@ -16,7 +16,7 @@ use App\Http\Resources\PortfoliosResource;
 use Response;
 
 /**
- * Class PortfoliosController
+ * Class PortfoliosControllerExt
  * @package App\Http\Controllers\API
  */
 
