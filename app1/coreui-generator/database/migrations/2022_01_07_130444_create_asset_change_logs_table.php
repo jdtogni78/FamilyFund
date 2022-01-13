@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTradingRulesTable extends Migration
+class CreateAssetChangeLogsTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -14,14 +13,15 @@ class CreateTradingRulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('trading_rules', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->string('name', 30);
-            $table->decimal('max_sale_increase_pcnt', 5, 2)->nullable();
-            $table->decimal('min_fund_performance_pcnt', 5, 2)->nullable();
+        Schema::create('asset_change_logs', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('action');
+            $table->foreignId('asset_id')->constrained();
+            $table->text('field');
+            $table->text('content');
+            $table->timestamp('datetime');
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
-            $table->softDeletes();
         });
     }
 
@@ -32,6 +32,6 @@ class CreateTradingRulesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('trading_rules');
+        Schema::dropIfExists('asset_change_logs');
     }
 }

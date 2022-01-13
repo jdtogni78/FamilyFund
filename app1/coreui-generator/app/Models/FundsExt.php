@@ -12,8 +12,11 @@ use App\Repositories\AccountsRepository;
  */
 class FundsExt extends Funds
 {
-    /**
-     **/
+    public function portfolio()
+    {
+        return $this->portfolios()->first();
+    }
+
     public function account()
     {
         $accountsRepo = \App::make(AccountsRepository::class);
@@ -21,28 +24,25 @@ class FundsExt extends Funds
         $query->where('fund_id', $this->id);
         $query->where('user_id', null);
         $accounts = $query->get(['*']);
-        return $accounts;
+        // TODO: add throws to models
+        // if ($account == null) {
+        //     throw 
+        // }
+        return $accounts->first();
     }
 
     /**
      * @return money
      **/
-    public function shares($now)
+    public function sharesAsOf($now)
     {
-        $account = $this->account();
-        // TODO: add throws to models
-        // if ($account == null) {
-        //     throw 
-        // }
         $balance = $this->account()->first()->ownBalanceAsOf($now);
         return ((int) ($balance * 10000)) / 10000;
     }
 
-    public function value($now)
+    public function valueAsOf($now)
     {
-        $portfolio = $this->portfolios()->get()->first();
-        $totalValue = $portfolio->value($now);
-        return $totalValue;
+        return $this->portfolio()->valueAsOf($now);
     }
 
     public function allocatedShares($now, $inverse=false) {
@@ -68,4 +68,15 @@ class FundsExt extends Funds
     public function unallocatedShares($now) {
         return $this->allocatedShares($now, true);
     }
+
+    public function periodPerformance($from, $to)
+    {
+        return $this->portfolio()->periodPerformance($from, $to);
+    }
+
+    public function yearlyPerformance($year)
+    {
+        return $this->portfolio()->yearlyPerformance($year);
+    }
+
 }

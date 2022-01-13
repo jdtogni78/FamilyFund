@@ -15,12 +15,11 @@ class CreateAccountBalancesTable extends Migration
     public function up()
     {
         Schema::create('account_balances', function (Blueprint $table) {
-            $table->integer('id', true);
+            $table->bigIncrements('id');
             $table->string('type', 3)->nullable();
             $table->decimal('shares', 19, 4);
-            // $table->integer('account_id', false);
-            $table->foreignId('account_id')->nullable()->index();
-            $table->foreignId('tran_id')->index();
+            $table->foreignId('account_id')->nullable()->constrained();
+            $table->foreignId('transaction_id')->constrained();
             $table->date('start_dt')->default(DB::raw('curdate()'));
             $table->date('end_dt')->default('9999-12-31');
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();

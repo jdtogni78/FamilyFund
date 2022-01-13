@@ -50,12 +50,23 @@ class FundsAPIControllerExt extends FundsAPIController
         $ret = $rss->toArray(NULL);
         $arr = array();
 
-        $value = $arr['value'] = $funds->value($now);
-        $shares = $arr['shares'] = $funds->shares($now);
+        $value = $arr['value'] = $funds->valueAsOf($now);
+        $shares = $arr['shares'] = $funds->sharesAsOf($now);
         $arr['unallocated_shares'] = $funds->unallocatedShares($now);
         $arr['share_value'] = $value/$shares;
         $arr['as_of'] = $now;
-        
+
+        $year = date('Y');
+        $yearStart = $year.'-01-01';
+
+        $perf = array();
+        $perf['year-to-date'] = $funds->periodPerformance($yearStart, $now);
+
+        for ($year--; $year >= 2021; $year--) {
+            $perf[$year] = $funds->yearlyPerformance($year);
+        }
+        $arr['performance'] = $perf;
+
         $ret['calculated'] = $arr;
         return $this->sendResponse($ret, 'Fund retrieved successfully');
     }

@@ -16,8 +16,8 @@ class CreatePortfolioAssetsTable extends Migration
     {
         Schema::create('portfolio_assets', function (Blueprint $table) {
             $table->bigInteger('id', true, true);
-            $table->foreignId('portfolio_id')->index();
-            $table->foreignId('asset_id')->index();
+            $table->foreignId('portfolio_id')->constrained();
+            $table->foreignId('asset_id')->constrained();
             $table->decimal('shares', 21, 8);
             $table->date('start_dt')->default(DB::raw('curdate()'));
             $table->date('end_dt')->default('9999-12-31');

@@ -15,9 +15,9 @@ class CreateAccountMatchingRulesTable extends Migration
     public function up()
     {
         Schema::create('account_matching_rules', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->foreignId('account_id')->index();
-            $table->foreignId('matching_id')->index();
+            $table->bigIncrements('id');
+            $table->foreignId('account_id')->constrained();
+            $table->foreignId('matching_rule_id')->constrained();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();

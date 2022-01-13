@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFundsTable extends Migration
+class CreateTradingRulesTable extends Migration
 {
 
     /**
@@ -14,11 +14,11 @@ class CreateFundsTable extends Migration
      */
     public function up()
     {
-        Schema::create('funds', function (Blueprint $table) {
-            $table->integer('id', true);
+        Schema::create('trading_rules', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('name', 30);
-            $table->string('goal', 1024)->nullable();
-            // $table->decimal('total_shares', 20, 4); -- will be calculated by account with no user
+            $table->decimal('max_sale_increase_pcnt', 5, 2)->nullable();
+            $table->decimal('min_fund_performance_pcnt', 5, 2)->nullable();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();
@@ -32,6 +32,6 @@ class CreateFundsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('funds');
+        Schema::dropIfExists('trading_rules');
     }
 }

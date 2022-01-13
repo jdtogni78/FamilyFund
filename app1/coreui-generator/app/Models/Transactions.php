@@ -79,7 +79,7 @@ class Transactions extends Model
      **/
     public function account()
     {
-        return $this->belongsTo(\App\Models\Account::class, 'account_id');
+        return $this->belongsTo(\App\Models\Accounts::class, 'account_id');
     }
 
     /**
@@ -87,7 +87,7 @@ class Transactions extends Model
      **/
     public function matching()
     {
-        return $this->belongsTo(\App\Models\MatchingRule::class, 'matching_id');
+        return $this->belongsTo(\App\Models\MatchingRules::class, 'matching_id');
     }
 
     /**
@@ -95,6 +95,6 @@ class Transactions extends Model
      **/
     public function accountBalances()
     {
-        return $this->hasMany(\App\Models\AccountBalance::class, 'tran_id');
+        return $this->hasMany(\App\Models\AccountBalances::class, 'tran_id');
     }
 }

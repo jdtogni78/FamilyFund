@@ -4,8 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAssetChangeLogsTable extends Migration
+class CreateFundsTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -13,15 +14,14 @@ class CreateAssetChangeLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('asset_change_logs', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('action');
-            $table->unsignedInteger('asset_id');
-            $table->text('field');
-            $table->text('content');
-            $table->timestamp('datetime');
+        Schema::create('funds', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name', 30);
+            $table->string('goal', 1024)->nullable();
+            // $table->decimal('total_shares', 20, 4); -- will be calculated by account with no user
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
+            $table->softDeletes();
         });
     }
 
@@ -32,6 +32,6 @@ class CreateAssetChangeLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('asset_change_logs');
+        Schema::dropIfExists('funds');
     }
 }

@@ -15,9 +15,9 @@ class CreateMatchingRulesTable extends Migration
     public function up()
     {
         Schema::create('matching_rules', function (Blueprint $table) {
-            $table->integer('id', true);
+            $table->bigIncrements('id');
             $table->string('name', 50);
-            $table->decimal('dollar_range_start', 13, 2)->default(0);
+            $table->decimal('dollar_range_start', 13, 2)->nullable()->default(0);
             $table->decimal('dollar_range_end', 13, 2)->nullable();
             $table->date('date_start');
             $table->date('date_end');

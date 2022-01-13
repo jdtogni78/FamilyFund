@@ -19,7 +19,7 @@ use Response;
 class TransactionsAPIController extends AppBaseController
 {
     /** @var  TransactionsRepository */
-    private $transactionsRepository;
+    protected $transactionsRepository;
 
     public function __construct(TransactionsRepository $transactionsRepo)
     {

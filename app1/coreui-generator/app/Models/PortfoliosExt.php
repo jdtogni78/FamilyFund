@@ -31,7 +31,7 @@ class PortfoliosExt extends Portfolios
     /**
      * @return money
      **/
-    public function value($now)
+    public function valueAsOf($now)
     {
         $portfolioAssets = $this->assetsAsOf($now);
 
@@ -54,5 +54,21 @@ class PortfoliosExt extends Portfolios
             }
         }
         return $totalValue;
+    }
+
+    public function periodPerformance($from, $to)
+    {
+        $valueFrom = $this->valueAsOf($from);
+        $valueTo = $this->valueAsOf($to);
+        // var_dump(array($from, $to, $valueFrom, $valueTo));
+        if ($valueFrom == 0) return 0;
+        return ((int) (($valueTo/$valueFrom - 1)*10000))/100;
+    }
+
+    public function yearlyPerformance($year)
+    {
+        $from = $year.'-01-01';
+        $to = ($year+1).'-01-01';
+        return $this->periodPerformance($from, $to);
     }
 }

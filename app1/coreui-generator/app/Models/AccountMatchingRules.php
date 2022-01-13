@@ -71,7 +71,7 @@ class AccountMatchingRules extends Model
      **/
     public function account()
     {
-        return $this->belongsTo(\App\Models\Account::class, 'account_id');
+        return $this->belongsTo(\App\Models\Accounts::class, 'account_id');
     }
 
     /**
@@ -79,6 +79,6 @@ class AccountMatchingRules extends Model
      **/
     public function matching()
     {
-        return $this->belongsTo(\App\Models\MatchingRule::class, 'matching_id');
+        return $this->belongsTo(\App\Models\MatchingRules::class, 'matching_id');
     }
 }

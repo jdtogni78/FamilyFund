@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionsTable extends Migration
+class CreatePortfoliosTable extends Migration
 {
 
     /**
@@ -14,14 +14,10 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->string('source', 3);
-            $table->string('type', 3);
-            $table->decimal('value', 13, 2);
-            $table->decimal('shares', 19, 4);
-            $table->foreignId('account_id')->index();
-            $table->foreignId('matching_id')->nullable()->index();
+        Schema::create('portfolios', function (Blueprint $table) {
+            $table->bigInteger('id', true, true);
+            $table->foreignId('fund_id')->constrained();
+            $table->string('code', 30);
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();
@@ -35,6 +31,6 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('portfolios');
     }
 }

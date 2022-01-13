@@ -15,9 +15,9 @@ class CreateAccountTradingRulesTable extends Migration
     public function up()
     {
         Schema::create('account_trading_rules', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->foreignId('account_id')->index();
-            $table->foreignId('trading_rule_id')->index();
+            $table->bigIncrements('id');
+            $table->foreignId('account_id')->constrained();
+            $table->foreignId('trading_rule_id')->constrained();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();

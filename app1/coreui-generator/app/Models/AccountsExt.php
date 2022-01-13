@@ -33,4 +33,8 @@ class AccountsExt extends Accounts
         }
         return 0;
     }
+
+    public function remainingMatchings() { 
+        return NULL; 
+    }
 }
