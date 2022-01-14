@@ -36,26 +36,27 @@ class AccountAPIControllerExt extends AccountAPIController
      */
     public function show($id)
     {
-        /** @var Accounts $Accounts */
-        $accounts = $this->accountRepository->find($id);
+        /** @var Accounts $account */
+        $account = $this->accountRepository->find($id);
 
-        if (empty($accounts)) {
+        if (empty($account)) {
             return $this->sendError('Account not found');
         }
 
         // TODO: allow date as param
         $now = date('Y-m-d');
 
-        $rss = new AccountResource($accounts);
+        $rss = new AccountResource($account);
         $arr = $rss->toArray(NULL);
 
         // TODO: move this to a more appropriate place: model? AB controller?
-        $accountBalance = $accounts->balanceAsOf($now);
 
-        $fund = $accounts->fund()->get()->first();
+        $fund = $account->fund()->get()->first();
         $totalShares = $fund->sharesAsOf($now);
         $totalValue = $fund->valueAsOf($now);
+        $shareValue = $totalValue / $totalShares;
 
+        $accountBalance = $account->balanceAsOf($now);
         $arr['balances'] = array();
         foreach ($accountBalance as $ab) {
             $balance = array();
@@ -63,6 +64,17 @@ class AccountAPIControllerExt extends AccountAPIController
             $balance['shares'] = $ab['shares'];
             $balance['market_value'] = ((int)(($totalValue / $totalShares) * $ab['shares'] * 100))/100;
             array_push($arr['balances'], $balance);
+        }
+
+        $transactions = $account->transactions()->get();
+        $arr['transactions'] = array();
+        foreach ($transactions as $transaction) {
+            $tran = array();
+            $tran['type'] = $transaction->type;
+            $tran['shares'] = $transaction->shares;
+            $tran['value'] = $transaction->value;
+            $tran['current_value'] = ((int) ($transaction->shares * $shareValue * 100))/100;
+            array_push($arr['transactions'], $tran);
         }
 
         $arr['as_of'] = $now;
