@@ -1,36 +1,36 @@
 <!-- Type Field -->
 <div class="form-group">
     {!! Form::label('type', 'Type:') !!}
-    <p>{{ $accountBalances->type }}</p>
+    <p>{{ $accountBalance->type }}</p>
 </div>
 
 <!-- Shares Field -->
 <div class="form-group">
     {!! Form::label('shares', 'Shares:') !!}
-    <p>{{ $accountBalances->shares }}</p>
+    <p>{{ $accountBalance->shares }}</p>
 </div>
 
 <!-- Account Id Field -->
 <div class="form-group">
     {!! Form::label('account_id', 'Account Id:') !!}
-    <p>{{ $accountBalances->account_id }}</p>
+    <p>{{ $accountBalance->account_id }}</p>
 </div>
 
-<!-- Tran Id Field -->
+<!-- Transaction Id Field -->
 <div class="form-group">
-    {!! Form::label('tran_id', 'Tran Id:') !!}
-    <p>{{ $accountBalances->tran_id }}</p>
+    {!! Form::label('transaction_id', 'Transaction Id:') !!}
+    <p>{{ $accountBalance->transaction_id }}</p>
 </div>
 
 <!-- Start Dt Field -->
 <div class="form-group">
     {!! Form::label('start_dt', 'Start Dt:') !!}
-    <p>{{ $accountBalances->start_dt }}</p>
+    <p>{{ $accountBalance->start_dt }}</p>
 </div>
 
 <!-- End Dt Field -->
 <div class="form-group">
     {!! Form::label('end_dt', 'End Dt:') !!}
-    <p>{{ $accountBalances->end_dt }}</p>
+    <p>{{ $accountBalance->end_dt }}</p>
 </div>
 

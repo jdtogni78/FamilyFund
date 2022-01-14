@@ -6,27 +6,21 @@
         <th>Type</th>
         <th>Source Feed</th>
         <th>Feed Id</th>
-        <th>Last Price</th>
-        <th>Last Price Date</th>
-        <th>Deactivated</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>
         <tbody>
-        @foreach($assets as $assets)
+        @foreach($assets as $asset)
             <tr>
-                <td>{{ $assets->name }}</td>
-            <td>{{ $assets->type }}</td>
-            <td>{{ $assets->source_feed }}</td>
-            <td>{{ $assets->feed_id }}</td>
-            <td>{{ $assets->last_price }}</td>
-            <td>{{ $assets->last_price_date }}</td>
-            <td>{{ $assets->deactivated }}</td>
+                <td>{{ $asset->name }}</td>
+            <td>{{ $asset->type }}</td>
+            <td>{{ $asset->source_feed }}</td>
+            <td>{{ $asset->feed_id }}</td>
                 <td>
-                    {!! Form::open(['route' => ['assets.destroy', $assets->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['assets.destroy', $asset->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a href="{{ route('assets.show', [$assets->id]) }}" class='btn btn-ghost-success'><i class="fa fa-eye"></i></a>
-                        <a href="{{ route('assets.edit', [$assets->id]) }}" class='btn btn-ghost-info'><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('assets.show', [$asset->id]) }}" class='btn btn-ghost-success'><i class="fa fa-eye"></i></a>
+                        <a href="{{ route('assets.edit', [$asset->id]) }}" class='btn btn-ghost-info'><i class="fa fa-edit"></i></a>
                         {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-ghost-danger', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     </div>
                     {!! Form::close() !!}

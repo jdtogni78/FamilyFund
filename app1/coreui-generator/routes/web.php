@@ -22,46 +22,43 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::resource('funds', App\Http\Controllers\fundsController::class);
+Route::resource('funds', App\Http\Controllers\FundController::class);
 
 
-Route::resource('accountBalances', App\Http\Controllers\AccountBalancesController::class);
+Route::resource('accountBalances', App\Http\Controllers\AccountBalanceController::class);
 
 
-Route::resource('accountBalances', App\Http\Controllers\AccountBalancesController::class);
+Route::resource('accountMatchingRules', App\Http\Controllers\AccountMatchingRuleController::class);
 
 
-Route::resource('accountBalances', App\Http\Controllers\AccountBalancesController::class);
+Route::resource('accountTradingRules', App\Http\Controllers\AccountTradingRuleController::class);
 
 
-Route::resource('accountMatchingRules', App\Http\Controllers\AccountMatchingRulesController::class);
+Route::resource('accounts', App\Http\Controllers\AccountController::class);
 
 
-Route::resource('accountTradingRules', App\Http\Controllers\AccountTradingRulesController::class);
+Route::resource('assetPrices', App\Http\Controllers\AssetPriceController::class);
 
 
-Route::resource('accounts', App\Http\Controllers\AccountsController::class);
+Route::resource('assets', App\Http\Controllers\AssetController::class);
 
 
-Route::resource('assetPrices', App\Http\Controllers\AssetPricesController::class);
+Route::resource('matchingRules', App\Http\Controllers\MatchingRuleController::class);
 
 
-Route::resource('assets', App\Http\Controllers\AssetsController::class);
+Route::resource('portfolioAssets', App\Http\Controllers\PortfolioAssetController::class);
 
 
-Route::resource('matchingRules', App\Http\Controllers\MatchingRulesController::class);
+Route::resource('portfolios', App\Http\Controllers\PortfolioController::class);
 
 
-Route::resource('portfolioAssets', App\Http\Controllers\PortfolioAssetsController::class);
+Route::resource('tradingRules', App\Http\Controllers\TradingRuleController::class);
 
 
-Route::resource('portfolios', App\Http\Controllers\PortfoliosController::class);
+Route::resource('transactions', App\Http\Controllers\TransactionController::class);
 
 
-Route::resource('tradingRules', App\Http\Controllers\TradingRulesController::class);
+// Route::resource('users', App\Http\Controllers\UserController::class);
 
 
-Route::resource('transactions', App\Http\Controllers\TransactionsController::class);
-
-
-// Route::resource('users', App\Http\Controllers\UsersController::class);
+Route::resource('assetChangeLogs', App\Http\Controllers\AssetChangeLogController::class);

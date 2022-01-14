@@ -3,7 +3,7 @@
 @section('content')
     <ol class="breadcrumb">
           <li class="breadcrumb-item">
-             <a href="{!! route('accountMatchingRules.index') !!}">Account Matching Rules</a>
+             <a href="{!! route('accountMatchingRules.index') !!}">Account Matching Rule</a>
           </li>
           <li class="breadcrumb-item active">Edit</li>
         </ol>
@@ -15,10 +15,10 @@
                       <div class="card">
                           <div class="card-header">
                               <i class="fa fa-edit fa-lg"></i>
-                              <strong>Edit Account Matching Rules</strong>
+                              <strong>Edit Account Matching Rule</strong>
                           </div>
                           <div class="card-body">
-                              {!! Form::model($accountMatchingRules, ['route' => ['accountMatchingRules.update', $accountMatchingRules->id], 'method' => 'patch']) !!}
+                              {!! Form::model($accountMatchingRule, ['route' => ['accountMatchingRules.update', $accountMatchingRule->id], 'method' => 'patch']) !!}
 
                               @include('account_matching_rules.fields')
 

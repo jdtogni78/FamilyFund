@@ -3,7 +3,7 @@
 @section('content')
      <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('assetPrices.index') }}">Asset Prices</a>
+                <a href="{{ route('assetPrices.index') }}">Asset Price</a>
             </li>
             <li class="breadcrumb-item active">Detail</li>
      </ol>

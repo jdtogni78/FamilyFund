@@ -1,30 +1,30 @@
 <!-- Name Field -->
 <div class="form-group">
     {!! Form::label('name', 'Name:') !!}
-    <p>{{ $users->name }}</p>
+    <p>{{ $user->name }}</p>
 </div>
 
 <!-- Email Field -->
 <div class="form-group">
     {!! Form::label('email', 'Email:') !!}
-    <p>{{ $users->email }}</p>
+    <p>{{ $user->email }}</p>
 </div>
 
 <!-- Email Verified At Field -->
 <div class="form-group">
     {!! Form::label('email_verified_at', 'Email Verified At:') !!}
-    <p>{{ $users->email_verified_at }}</p>
+    <p>{{ $user->email_verified_at }}</p>
 </div>
 
 <!-- Password Field -->
 <div class="form-group">
     {!! Form::label('password', 'Password:') !!}
-    <p>{{ $users->password }}</p>
+    <p>{{ $user->password }}</p>
 </div>
 
 <!-- Remember Token Field -->
 <div class="form-group">
     {!! Form::label('remember_token', 'Remember Token:') !!}
-    <p>{{ $users->remember_token }}</p>
+    <p>{{ $user->remember_token }}</p>
 </div>
 

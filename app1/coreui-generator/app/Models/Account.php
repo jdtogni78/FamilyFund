@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Account
  * @package App\Models
- * @version January 14, 2022, 4:12 am UTC
+ * @version January 14, 2022, 4:53 am UTC
  *
  * @property \App\Models\Fund $fund
  * @property \App\Models\User $user

@@ -16,10 +16,10 @@
     {!! Form::number('account_id', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Tran Id Field -->
+<!-- Transaction Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('tran_id', 'Tran Id:') !!}
-    {!! Form::number('tran_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('transaction_id', 'Transaction Id:') !!}
+    {!! Form::number('transaction_id', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Start Dt Field -->

@@ -3,7 +3,7 @@
 @section('content')
      <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('tradingRules.index') }}">Trading Rules</a>
+                <a href="{{ route('tradingRules.index') }}">Trading Rule</a>
             </li>
             <li class="breadcrumb-item active">Detail</li>
      </ol>

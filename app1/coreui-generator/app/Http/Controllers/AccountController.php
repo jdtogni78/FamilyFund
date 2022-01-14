@@ -13,7 +13,7 @@ use Response;
 class AccountController extends AppBaseController
 {
     /** @var  AccountRepository */
-    private $accountRepository;
+    protected $accountRepository;
 
     public function __construct(AccountRepository $accountRepo)
     {

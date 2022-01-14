@@ -10,6 +10,12 @@
     {!! Form::text('type', null, ['class' => 'form-control','maxlength' => 3,'maxlength' => 3]) !!}
 </div>
 
+<!-- Value Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('value', 'Value:') !!}
+    {!! Form::number('value', null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Shares Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('shares', 'Shares:') !!}
@@ -22,10 +28,10 @@
     {!! Form::number('account_id', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Matching Id Field -->
+<!-- Matching Rule Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('matching_id', 'Matching Id:') !!}
-    {!! Form::number('matching_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('matching_rule_id', 'Matching Rule Id:') !!}
+    {!! Form::number('matching_rule_id', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Submit Field -->

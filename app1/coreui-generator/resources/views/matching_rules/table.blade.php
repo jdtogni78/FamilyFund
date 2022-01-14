@@ -12,19 +12,19 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($matchingRules as $matchingRules)
+        @foreach($matchingRules as $matchingRule)
             <tr>
-                <td>{{ $matchingRules->name }}</td>
-            <td>{{ $matchingRules->dollar_range_start }}</td>
-            <td>{{ $matchingRules->dollar_range_end }}</td>
-            <td>{{ $matchingRules->date_start }}</td>
-            <td>{{ $matchingRules->date_end }}</td>
-            <td>{{ $matchingRules->match_percent }}</td>
+                <td>{{ $matchingRule->name }}</td>
+            <td>{{ $matchingRule->dollar_range_start }}</td>
+            <td>{{ $matchingRule->dollar_range_end }}</td>
+            <td>{{ $matchingRule->date_start }}</td>
+            <td>{{ $matchingRule->date_end }}</td>
+            <td>{{ $matchingRule->match_percent }}</td>
                 <td>
-                    {!! Form::open(['route' => ['matchingRules.destroy', $matchingRules->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['matchingRules.destroy', $matchingRule->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a href="{{ route('matchingRules.show', [$matchingRules->id]) }}" class='btn btn-ghost-success'><i class="fa fa-eye"></i></a>
-                        <a href="{{ route('matchingRules.edit', [$matchingRules->id]) }}" class='btn btn-ghost-info'><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('matchingRules.show', [$matchingRule->id]) }}" class='btn btn-ghost-success'><i class="fa fa-eye"></i></a>
+                        <a href="{{ route('matchingRules.edit', [$matchingRule->id]) }}" class='btn btn-ghost-info'><i class="fa fa-edit"></i></a>
                         {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-ghost-danger', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     </div>
                     {!! Form::close() !!}

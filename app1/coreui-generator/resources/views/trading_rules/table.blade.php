@@ -9,16 +9,16 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($tradingRules as $tradingRules)
+        @foreach($tradingRules as $tradingRule)
             <tr>
-                <td>{{ $tradingRules->name }}</td>
-            <td>{{ $tradingRules->max_sale_increase_pcnt }}</td>
-            <td>{{ $tradingRules->min_fund_performance_pcnt }}</td>
+                <td>{{ $tradingRule->name }}</td>
+            <td>{{ $tradingRule->max_sale_increase_pcnt }}</td>
+            <td>{{ $tradingRule->min_fund_performance_pcnt }}</td>
                 <td>
-                    {!! Form::open(['route' => ['tradingRules.destroy', $tradingRules->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['tradingRules.destroy', $tradingRule->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a href="{{ route('tradingRules.show', [$tradingRules->id]) }}" class='btn btn-ghost-success'><i class="fa fa-eye"></i></a>
-                        <a href="{{ route('tradingRules.edit', [$tradingRules->id]) }}" class='btn btn-ghost-info'><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('tradingRules.show', [$tradingRule->id]) }}" class='btn btn-ghost-success'><i class="fa fa-eye"></i></a>
+                        <a href="{{ route('tradingRules.edit', [$tradingRule->id]) }}" class='btn btn-ghost-info'><i class="fa fa-edit"></i></a>
                         {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-ghost-danger', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     </div>
                     {!! Form::close() !!}

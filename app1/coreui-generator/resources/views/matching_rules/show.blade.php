@@ -3,7 +3,7 @@
 @section('content')
      <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('matchingRules.index') }}">Matching Rules</a>
+                <a href="{{ route('matchingRules.index') }}">Matching Rule</a>
             </li>
             <li class="breadcrumb-item active">Detail</li>
      </ol>

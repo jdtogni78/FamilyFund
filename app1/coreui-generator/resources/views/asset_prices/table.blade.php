@@ -10,17 +10,17 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($assetPrices as $assetPrices)
+        @foreach($assetPrices as $assetPrice)
             <tr>
-                <td>{{ $assetPrices->asset_id }}</td>
-            <td>{{ $assetPrices->price }}</td>
-            <td>{{ $assetPrices->start_dt }}</td>
-            <td>{{ $assetPrices->end_dt }}</td>
+                <td>{{ $assetPrice->asset_id }}</td>
+            <td>{{ $assetPrice->price }}</td>
+            <td>{{ $assetPrice->start_dt }}</td>
+            <td>{{ $assetPrice->end_dt }}</td>
                 <td>
-                    {!! Form::open(['route' => ['assetPrices.destroy', $assetPrices->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['assetPrices.destroy', $assetPrice->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a href="{{ route('assetPrices.show', [$assetPrices->id]) }}" class='btn btn-ghost-success'><i class="fa fa-eye"></i></a>
-                        <a href="{{ route('assetPrices.edit', [$assetPrices->id]) }}" class='btn btn-ghost-info'><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('assetPrices.show', [$assetPrice->id]) }}" class='btn btn-ghost-success'><i class="fa fa-eye"></i></a>
+                        <a href="{{ route('assetPrices.edit', [$assetPrice->id]) }}" class='btn btn-ghost-info'><i class="fa fa-edit"></i></a>
                         {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-ghost-danger', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     </div>
                     {!! Form::close() !!}

@@ -3,7 +3,7 @@
 @section('content')
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-         <a href="{!! route('users.index') !!}">Users</a>
+         <a href="{!! route('users.index') !!}">User</a>
       </li>
       <li class="breadcrumb-item active">Create</li>
     </ol>
@@ -15,7 +15,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-plus-square-o fa-lg"></i>
-                                <strong>Create Users</strong>
+                                <strong>Create User</strong>
                             </div>
                             <div class="card-body">
                                 {!! Form::open(['route' => 'users.store']) !!}

@@ -3,7 +3,7 @@
 @section('content')
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-         <a href="{!! route('accountMatchingRules.index') !!}">Account Matching Rules</a>
+         <a href="{!! route('accountMatchingRules.index') !!}">Account Matching Rule</a>
       </li>
       <li class="breadcrumb-item active">Create</li>
     </ol>
@@ -15,7 +15,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-plus-square-o fa-lg"></i>
-                                <strong>Create Account Matching Rules</strong>
+                                <strong>Create Account Matching Rule</strong>
                             </div>
                             <div class="card-body">
                                 {!! Form::open(['route' => 'accountMatchingRules.store']) !!}

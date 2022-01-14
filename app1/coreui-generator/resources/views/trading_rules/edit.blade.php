@@ -3,7 +3,7 @@
 @section('content')
     <ol class="breadcrumb">
           <li class="breadcrumb-item">
-             <a href="{!! route('tradingRules.index') !!}">Trading Rules</a>
+             <a href="{!! route('tradingRules.index') !!}">Trading Rule</a>
           </li>
           <li class="breadcrumb-item active">Edit</li>
         </ol>
@@ -15,10 +15,10 @@
                       <div class="card">
                           <div class="card-header">
                               <i class="fa fa-edit fa-lg"></i>
-                              <strong>Edit Trading Rules</strong>
+                              <strong>Edit Trading Rule</strong>
                           </div>
                           <div class="card-body">
-                              {!! Form::model($tradingRules, ['route' => ['tradingRules.update', $tradingRules->id], 'method' => 'patch']) !!}
+                              {!! Form::model($tradingRule, ['route' => ['tradingRules.update', $tradingRule->id], 'method' => 'patch']) !!}
 
                               @include('trading_rules.fields')
 

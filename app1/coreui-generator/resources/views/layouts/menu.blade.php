@@ -82,3 +82,9 @@
         <span>Samples</span>
     </a>
 </li>
+<li class="nav-item {{ Request::is('assetChangeLogs*') ? 'active' : '' }}">
+    <a class="nav-link" href="{{ route('assetChangeLogs.index') }}">
+        <i class="nav-icon icon-cursor"></i>
+        <span>Asset Change Logs</span>
+    </a>
+</li>

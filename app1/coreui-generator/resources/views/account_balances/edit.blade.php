@@ -3,7 +3,7 @@
 @section('content')
     <ol class="breadcrumb">
           <li class="breadcrumb-item">
-             <a href="{!! route('accountBalances.index') !!}">Account Balances</a>
+             <a href="{!! route('accountBalances.index') !!}">Account Balance</a>
           </li>
           <li class="breadcrumb-item active">Edit</li>
         </ol>
@@ -15,10 +15,10 @@
                       <div class="card">
                           <div class="card-header">
                               <i class="fa fa-edit fa-lg"></i>
-                              <strong>Edit Account Balances</strong>
+                              <strong>Edit Account Balance</strong>
                           </div>
                           <div class="card-body">
-                              {!! Form::model($accountBalances, ['route' => ['accountBalances.update', $accountBalances->id], 'method' => 'patch']) !!}
+                              {!! Form::model($accountBalance, ['route' => ['accountBalances.update', $accountBalance->id], 'method' => 'patch']) !!}
 
                               @include('account_balances.fields')
 

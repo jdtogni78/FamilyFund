@@ -1,30 +1,36 @@
 <!-- Source Field -->
 <div class="form-group">
     {!! Form::label('source', 'Source:') !!}
-    <p>{{ $transactions->source }}</p>
+    <p>{{ $transaction->source }}</p>
 </div>
 
 <!-- Type Field -->
 <div class="form-group">
     {!! Form::label('type', 'Type:') !!}
-    <p>{{ $transactions->type }}</p>
+    <p>{{ $transaction->type }}</p>
+</div>
+
+<!-- Value Field -->
+<div class="form-group">
+    {!! Form::label('value', 'Value:') !!}
+    <p>{{ $transaction->value }}</p>
 </div>
 
 <!-- Shares Field -->
 <div class="form-group">
     {!! Form::label('shares', 'Shares:') !!}
-    <p>{{ $transactions->shares }}</p>
+    <p>{{ $transaction->shares }}</p>
 </div>
 
 <!-- Account Id Field -->
 <div class="form-group">
     {!! Form::label('account_id', 'Account Id:') !!}
-    <p>{{ $transactions->account_id }}</p>
+    <p>{{ $transaction->account_id }}</p>
 </div>
 
-<!-- Matching Id Field -->
+<!-- Matching Rule Id Field -->
 <div class="form-group">
-    {!! Form::label('matching_id', 'Matching Id:') !!}
-    <p>{{ $transactions->matching_id }}</p>
+    {!! Form::label('matching_rule_id', 'Matching Rule Id:') !!}
+    <p>{{ $transaction->matching_rule_id }}</p>
 </div>
 

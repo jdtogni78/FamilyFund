@@ -11,18 +11,18 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($portfolioAssets as $portfolioAssets)
+        @foreach($portfolioAssets as $portfolioAsset)
             <tr>
-                <td>{{ $portfolioAssets->portfolio_id }}</td>
-            <td>{{ $portfolioAssets->asset_id }}</td>
-            <td>{{ $portfolioAssets->shares }}</td>
-            <td>{{ $portfolioAssets->start_dt }}</td>
-            <td>{{ $portfolioAssets->end_dt }}</td>
+                <td>{{ $portfolioAsset->portfolio_id }}</td>
+            <td>{{ $portfolioAsset->asset_id }}</td>
+            <td>{{ $portfolioAsset->shares }}</td>
+            <td>{{ $portfolioAsset->start_dt }}</td>
+            <td>{{ $portfolioAsset->end_dt }}</td>
                 <td>
-                    {!! Form::open(['route' => ['portfolioAssets.destroy', $portfolioAssets->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['portfolioAssets.destroy', $portfolioAsset->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-                        <a href="{{ route('portfolioAssets.show', [$portfolioAssets->id]) }}" class='btn btn-ghost-success'><i class="fa fa-eye"></i></a>
-                        <a href="{{ route('portfolioAssets.edit', [$portfolioAssets->id]) }}" class='btn btn-ghost-info'><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('portfolioAssets.show', [$portfolioAsset->id]) }}" class='btn btn-ghost-success'><i class="fa fa-eye"></i></a>
+                        <a href="{{ route('portfolioAssets.edit', [$portfolioAsset->id]) }}" class='btn btn-ghost-info'><i class="fa fa-edit"></i></a>
                         {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-ghost-danger', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     </div>
                     {!! Form::close() !!}

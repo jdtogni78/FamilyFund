@@ -3,7 +3,7 @@
 @section('content')
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-         <a href="{!! route('portfolioAssets.index') !!}">Portfolio Assets</a>
+         <a href="{!! route('portfolioAssets.index') !!}">Portfolio Asset</a>
       </li>
       <li class="breadcrumb-item active">Create</li>
     </ol>
@@ -15,7 +15,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <i class="fa fa-plus-square-o fa-lg"></i>
-                                <strong>Create Portfolio Assets</strong>
+                                <strong>Create Portfolio Asset</strong>
                             </div>
                             <div class="card-body">
                                 {!! Form::open(['route' => 'portfolioAssets.store']) !!}
