@@ -89,6 +89,6 @@ class MatchingRule extends Model
      **/
     public function transactions()
     {
-        return $this->hasMany(\App\Models\Transaction::class, 'matching_rule_id');
+        return $this->hasMany(\App\Models\TransactionExt::class, 'matching_rule_id');
     }
 }

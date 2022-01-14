@@ -40,6 +40,6 @@ class TransactionRepository extends BaseRepository
      **/
     public function model()
     {
-        return Transaction::class;
+        return TransactionExt::class;
     }
 }

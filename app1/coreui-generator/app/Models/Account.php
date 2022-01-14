@@ -82,7 +82,7 @@ class Account extends Model
      **/
     public function fund()
     {
-        return $this->belongsTo(\App\Models\Fund::class, 'fund_id');
+        return $this->belongsTo(\App\Models\FundExt::class, 'fund_id');
     }
 
     /**
@@ -122,6 +122,6 @@ class Account extends Model
      **/
     public function transactions()
     {
-        return $this->hasMany(\App\Models\Transaction::class, 'account_id');
+        return $this->hasMany(\App\Models\TransactionExt::class, 'account_id');
     }
 }

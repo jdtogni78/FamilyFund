@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class PortfolioAsset extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
 
     use HasFactory;
 
@@ -85,6 +85,6 @@ class PortfolioAsset extends Model
      **/
     public function portfolio()
     {
-        return $this->belongsTo(\App\Models\Portfolio::class, 'portfolio_id');
+        return $this->belongsTo(\App\Models\PortfolioExt::class, 'portfolio_id');
     }
 }

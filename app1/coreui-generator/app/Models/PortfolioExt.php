@@ -3,23 +3,24 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use App\Models\Portfolios;
-use App\Models\PortfolioAssets;
-use App\Repositories\PortfoliosRepository;
-use App\Repositories\PortfolioAssetsRepository;
+use App\Models\Portfolio;
+use App\Models\PortfolioAsset;
+use App\Models\AssetExt;
+use App\Repositories\PortfolioRepository;
+use App\Repositories\PortfolioAssetRepository;
 
 /**
- * Class PortfoliosExt
+ * Class PortfolioExt
  * @package App\Models
  */
-class PortfoliosExt extends Portfolios
+class PortfolioExt extends Portfolio
 {
     /**
      * @return money
      **/
     public function assetsAsOf($now)
     {
-        $portfolioAssetsRepo = \App::make(PortfolioAssetsRepository::class);
+        $portfolioAssetsRepo = \App::make(PortfolioAssetRepository::class);
         $query = $portfolioAssetsRepo->makeModel()->newQuery();
         $query->where('portfolio_id', $this->id);
         $query->whereDate('start_dt', '<=', $now);
@@ -42,7 +43,7 @@ class PortfoliosExt extends Portfolios
             if ($shares == 0) 
                 continue;
 
-            $asset = AssetsExt::findOrFail($asset_id);
+            $asset = AssetExt::findOrFail($asset_id);
             $assetPrices = $asset->pricesAsOf($now);
             
             if (count($assetPrices) == 1) {

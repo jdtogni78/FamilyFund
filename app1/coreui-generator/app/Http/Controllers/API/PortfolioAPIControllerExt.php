@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreatePortfoliosAPIRequest;
-use App\Http\Requests\API\UpdatePortfoliosAPIRequest;
-use App\Models\Portfolios;
-use App\Models\PortfolioAssets;
-use App\Repositories\PortfoliosRepository;
-use App\Repositories\PortfolioAssetsRepository;
+use App\Http\Requests\API\CreatePortfolioAPIRequest;
+use App\Http\Requests\API\UpdatePortfolioAPIRequest;
+use App\Models\Portfolio;
+use App\Models\PortfolioAsset;
+use App\Repositories\PortfolioRepository;
+use App\Repositories\PortfolioAssetRepository;
 use App\Repositories\AssetPricesRepository;
 use App\Repositories\AssetsRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\PortfoliosAPIController;
-use App\Http\Resources\PortfoliosResource;
+use App\Http\Controllers\API\PortfolioAPIController;
+use App\Http\Resources\PortfolioResource;
 use Response;
 
 /**
- * Class PortfoliosControllerExt
+ * Class PortfolioControllerExt
  * @package App\Http\Controllers\API
  */
 
-class PortfoliosAPIControllerExt extends PortfoliosAPIController
+class PortfolioAPIControllerExt extends PortfolioAPIController
 {
-    public function __construct(PortfoliosRepository $portfoliosRepo)
+    public function __construct(PortfolioRepository $portfolioRepo)
     {
-        parent::__construct($portfoliosRepo);
+        parent::__construct($portfolioRepo);
     }
 
     /**
-     * Display the specified Portfolios.
+     * Display the specified Portfolio.
      * GET|HEAD /portfolios/{id}
      *
      * @param int $id
@@ -37,18 +37,18 @@ class PortfoliosAPIControllerExt extends PortfoliosAPIController
      */
     public function show($id)
     {
-        /** @var Portfolios $portfolios */
-        $portfolios = $this->portfoliosRepository->find($id);
+        /** @var Portfolio $portfolio */
+        $portfolio = $this->portfolioRepository->find($id);
 
-        if (empty($portfolios)) {
+        if (empty($portfolio)) {
             return $this->sendError('Portfolio not found');
         }
 
         $now = date('Y-m-d');
 
-        $portfolioAssets = $portfolios->assetsAsOf($now);
+        $portfolioAssets = $portfolio->assetsAsOf($now);
 
-        $rss = new PortfoliosResource($portfolios);
+        $rss = new PortfolioResource($portfolio);
         $arr = $rss->toArray(NULL);
 
         $totalValue = 0;
@@ -83,6 +83,6 @@ class PortfoliosAPIControllerExt extends PortfoliosAPIController
         $arr['total_value'] = $totalValue;
         $arr['as_of'] = $now;
         
-        return $this->sendResponse($arr, 'Portfolios retrieved successfully');
+        return $this->sendResponse($arr, 'Portfolio retrieved successfully');
     }
 }

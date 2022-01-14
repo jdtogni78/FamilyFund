@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateFundsAPIRequest;
-use App\Http\Requests\API\UpdateFundsAPIRequest;
-use App\Models\Funds;
+use App\Http\Requests\API\CreateFundAPIRequest;
+use App\Http\Requests\API\UpdateFundAPIRequest;
+use App\Models\Fund;
 use App\Models\FundAssets;
-use App\Repositories\FundsRepository;
+use App\Repositories\FundRepository;
 use App\Repositories\FundAssetsRepository;
 use App\Repositories\AssetPricesRepository;
 use App\Repositories\AssetsRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\FundsAPIController;
-use App\Http\Resources\FundsResource;
+use App\Http\Controllers\API\FundAPIController;
+use App\Http\Resources\FundResource;
 use Response;
 
 /**
- * Class FundsControllerExt
+ * Class FundControllerExt
  * @package App\Http\Controllers\API
  */
 
-class FundsAPIControllerExt extends FundsAPIController
+class FundAPIControllerExt extends FundAPIController
 {
-    public function __construct(FundsRepository $fundsRepo)
+    public function __construct(FundRepository $fundRepo)
     {
-        parent::__construct($fundsRepo);
+        parent::__construct($fundRepo);
     }
 
     /**
-     * Display the specified Funds.
+     * Display the specified Fund.
      * GET|HEAD /funds/{id}
      *
      * @param int $id
@@ -37,22 +37,22 @@ class FundsAPIControllerExt extends FundsAPIController
      */
     public function show($id)
     {
-        /** @var Funds $funds */
-        $funds = $this->fundsRepository->find($id);
+        /** @var Fund $fund */
+        $fund = $this->fundRepository->find($id);
 
-        if (empty($funds)) {
+        if (empty($fund)) {
             return $this->sendError('Fund not found');
         }
 
         $now = date('Y-m-d');
 
-        $rss = new FundsResource($funds);
+        $rss = new FundResource($fund);
         $ret = $rss->toArray(NULL);
         $arr = array();
 
-        $value = $arr['value'] = $funds->valueAsOf($now);
-        $shares = $arr['shares'] = $funds->sharesAsOf($now);
-        $arr['unallocated_shares'] = $funds->unallocatedShares($now);
+        $value = $arr['value'] = $fund->valueAsOf($now);
+        $shares = $arr['shares'] = $fund->sharesAsOf($now);
+        $arr['unallocated_shares'] = $fund->unallocatedShares($now);
         $arr['share_value'] = $value/$shares;
         $arr['as_of'] = $now;
 
@@ -60,10 +60,10 @@ class FundsAPIControllerExt extends FundsAPIController
         $yearStart = $year.'-01-01';
 
         $perf = array();
-        $perf['year-to-date'] = $funds->periodPerformance($yearStart, $now);
+        $perf['year-to-date'] = $fund->periodPerformance($yearStart, $now);
 
         for ($year--; $year >= 2021; $year--) {
-            $perf[$year] = $funds->yearlyPerformance($year);
+            $perf[$year] = $fund->yearlyPerformance($year);
         }
         $arr['performance'] = $perf;
 

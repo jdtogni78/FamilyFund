@@ -76,6 +76,6 @@ class User extends Model
      **/
     public function accounts()
     {
-        return $this->hasMany(\App\Models\Account::class, 'user_id');
+        return $this->hasMany(\App\Models\AccountExt::class, 'user_id');
     }
 }

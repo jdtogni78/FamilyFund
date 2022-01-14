@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Portfolios;
-use App\Models\PortfoliosExt;
+use App\Models\Portfolio;
+use App\Models\PortfolioExt;
 // use App\Models\AccountAssets;
-use App\Repositories\AccountsRepository;
-use App\Repositories\AccountBalancesRepository;
-use App\Repositories\FundsRepository;
+use App\Repositories\AccountRepository;
+use App\Repositories\AccountBalanceRepository;
+use App\Repositories\FundRepository;
 // use App\Repositories\AssetsRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\AccountsAPIController;
-use App\Http\Resources\AccountsResource;
+use App\Http\Controllers\API\AccountAPIController;
+use App\Http\Resources\AccountResource;
 use Response;
 
 /**
@@ -19,11 +19,11 @@ use Response;
  * @package App\Http\Controllers\API
  */
 
-class AccountsAPIControllerExt extends AccountsAPIController
+class AccountAPIControllerExt extends AccountAPIController
 {
-    public function __construct(AccountsRepository $accountsRepo)
+    public function __construct(AccountRepository $accountRepo)
     {
-        parent::__construct($accountsRepo);
+        parent::__construct($accountRepo);
     }
 
     /**
@@ -37,7 +37,7 @@ class AccountsAPIControllerExt extends AccountsAPIController
     public function show($id)
     {
         /** @var Accounts $Accounts */
-        $accounts = $this->accountsRepository->find($id);
+        $accounts = $this->accountRepository->find($id);
 
         if (empty($accounts)) {
             return $this->sendError('Account not found');
@@ -46,18 +46,18 @@ class AccountsAPIControllerExt extends AccountsAPIController
         // TODO: allow date as param
         $now = date('Y-m-d');
 
-        $rss = new AccountsResource($accounts);
+        $rss = new AccountResource($accounts);
         $arr = $rss->toArray(NULL);
 
         // TODO: move this to a more appropriate place: model? AB controller?
-        $accountBalances = $accounts->balanceAsOf($now);
+        $accountBalance = $accounts->balanceAsOf($now);
 
         $fund = $accounts->fund()->get()->first();
-        $totalShares = $fund->shares($now);
-        $portfolio = $fund->value($now);
+        $totalShares = $fund->sharesAsOf($now);
+        $totalValue = $fund->valueAsOf($now);
 
         $arr['balances'] = array();
-        foreach ($accountBalances as $ab) {
+        foreach ($accountBalance as $ab) {
             $balance = array();
             $balance['type'] = $ab['type'];
             $balance['shares'] = $ab['shares'];

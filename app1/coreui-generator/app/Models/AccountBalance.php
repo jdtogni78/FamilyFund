@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class AccountBalance extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
 
     use HasFactory;
 
@@ -81,7 +81,7 @@ class AccountBalance extends Model
      **/
     public function account()
     {
-        return $this->belongsTo(\App\Models\Account::class, 'account_id');
+        return $this->belongsTo(\App\Models\AccountExt::class, 'account_id');
     }
 
     /**
@@ -89,6 +89,6 @@ class AccountBalance extends Model
      **/
     public function transaction()
     {
-        return $this->belongsTo(\App\Models\Transaction::class, 'transaction_id');
+        return $this->belongsTo(\App\Models\TransactionExt::class, 'transaction_id');
     }
 }

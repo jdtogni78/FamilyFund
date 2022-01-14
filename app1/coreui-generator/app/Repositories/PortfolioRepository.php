@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Portfolio;
+use App\Models\PortfolioExt;
 use App\Repositories\BaseRepository;
 
 /**
@@ -36,6 +36,6 @@ class PortfolioRepository extends BaseRepository
      **/
     public function model()
     {
-        return Portfolio::class;
+        return PortfolioExt::class;
     }
 }

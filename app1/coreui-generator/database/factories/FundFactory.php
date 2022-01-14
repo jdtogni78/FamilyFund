@@ -12,7 +12,7 @@ class FundFactory extends Factory
      *
      * @var string
      */
-    protected $model = Fund::class;
+    protected $model = FundExt::class;
 
     /**
      * Define the model's default state.

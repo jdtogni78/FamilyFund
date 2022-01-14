@@ -12,7 +12,7 @@ class AccountFactory extends Factory
      *
      * @var string
      */
-    protected $model = Account::class;
+    protected $model = AccountExt::class;
 
     /**
      * Define the model's default state.

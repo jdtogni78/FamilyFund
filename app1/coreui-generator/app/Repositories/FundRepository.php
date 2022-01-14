@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Fund;
+use App\Models\FundExt;
 use App\Repositories\BaseRepository;
 
 /**
@@ -36,6 +36,6 @@ class FundRepository extends BaseRepository
      **/
     public function model()
     {
-        return Fund::class;
+        return FundExt::class;
     }
 }

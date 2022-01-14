@@ -12,7 +12,7 @@ class TransactionFactory extends Factory
      *
      * @var string
      */
-    protected $model = Transaction::class;
+    protected $model = TransactionExt::class;
 
     /**
      * Define the model's default state.

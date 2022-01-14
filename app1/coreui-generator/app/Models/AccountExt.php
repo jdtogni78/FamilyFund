@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Models\Accounts;
-use App\Repositories\AccountBalancesRepository;
+use App\Models\Account;
+use App\Repositories\AccountBalanceRepository;
 
 /**
- * Class AccountsExt
+ * Class AccountExt
  * @package App\Models
  */
-class AccountsExt extends Accounts
+class AccountExt extends Account
 {
     /**
      **/
     public function balanceAsOf($now)
     {
-        $accountBalancesRepo = \App::make(AccountBalancesRepository::class);
-        $query = $accountBalancesRepo->makeModel()->newQuery();
+        $accountBalanceRepo = \App::make(AccountBalanceRepository::class);
+        $query = $accountBalanceRepo->makeModel()->newQuery();
         $query->where('account_id', $this->id);
         $query->whereDate('start_dt', '<=', $now);
         $query->whereDate('end_dt', '>', $now);

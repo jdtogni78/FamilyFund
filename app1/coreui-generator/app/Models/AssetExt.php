@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\Assets;
-use App\Repositories\AssetPricesRepository;
+use App\Models\Asset;
+use App\Repositories\AssetPriceRepository;
 
 /**
- * Class AssetsExt
+ * Class AssetExt
  * @package App\Models
  */
-class AssetsExt extends Assets
+class AssetExt extends Asset
 {
     /**
      **/
     public function pricesAsOf($now)
     {
-        $assetPricesRepo = \App::make(AssetPricesRepository::class);
+        $assetPricesRepo = \App::make(AssetPriceRepository::class);
         $query = $assetPricesRepo->makeModel()->newQuery();
         $query->where('asset_id', $this->id);
         $query->whereDate('start_dt', '<=', $now);

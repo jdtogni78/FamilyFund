@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Funds;
-use App\Repositories\AccountsRepository;
+use App\Models\Fund;
+use App\Repositories\AccountRepository;
 
 
 /**
- * Class FundsExt
+ * Class FundExt
  * @package App\Models
  */
-class FundsExt extends Funds
+class FundExt extends Fund
 {
     public function portfolio()
     {
@@ -19,8 +19,8 @@ class FundsExt extends Funds
 
     public function account()
     {
-        $accountsRepo = \App::make(AccountsRepository::class);
-        $query = $accountsRepo->makeModel()->newQuery();
+        $accountRepo = \App::make(AccountRepository::class);
+        $query = $accountRepo->makeModel()->newQuery();
         $query->where('fund_id', $this->id);
         $query->where('user_id', null);
         $accounts = $query->get(['*']);
@@ -46,8 +46,8 @@ class FundsExt extends Funds
     }
 
     public function allocatedShares($now, $inverse=false) {
-        $accountsRepo = \App::make(AccountsRepository::class);
-        $query = $accountsRepo->makeModel()->newQuery();
+        $accountRepo = \App::make(AccountRepository::class);
+        $query = $accountRepo->makeModel()->newQuery();
         $query->where('fund_id', $this->id);
         $accounts = $query->get(['*']);
         
