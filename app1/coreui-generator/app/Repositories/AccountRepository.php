@@ -2,16 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Models\AccountsExt;
+use App\Models\Account;
 use App\Repositories\BaseRepository;
 
 /**
- * Class AccountsRepository
+ * Class AccountRepository
  * @package App\Repositories
- * @version January 4, 2022, 6:08 pm UTC
+ * @version January 14, 2022, 4:12 am UTC
 */
 
-class AccountsRepository extends BaseRepository
+class AccountRepository extends BaseRepository
 {
     /**
      * @var array
@@ -20,7 +20,8 @@ class AccountsRepository extends BaseRepository
         'code',
         'nickname',
         'email_cc',
-        'user_id'
+        'user_id',
+        'fund_id'
     ];
 
     /**
@@ -38,6 +39,6 @@ class AccountsRepository extends BaseRepository
      **/
     public function model()
     {
-        return AccountsExt::class;
+        return Account::class;
     }
 }

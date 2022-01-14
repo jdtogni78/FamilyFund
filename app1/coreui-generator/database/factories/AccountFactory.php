@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\AccountsExt;
+use App\Models\Account;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class AccountsFactory extends Factory
+class AccountFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = AccountsExt::class;
+    protected $model = Account::class;
 
     /**
      * Define the model's default state.
@@ -26,8 +26,9 @@ class AccountsFactory extends Factory
         'nickname' => $this->faker->word,
         'email_cc' => $this->faker->word,
         'user_id' => $this->faker->word,
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
+        'fund_id' => $this->faker->word,
         'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+        'created_at' => $this->faker->date('Y-m-d H:i:s'),
         'deleted_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }

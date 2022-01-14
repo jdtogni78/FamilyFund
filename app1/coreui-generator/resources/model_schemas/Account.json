@@ -1,7 +1,7 @@
 [
     {
         "name": "id",
-        "dbType": "integer,true",
+        "dbType": "bigInteger,true,true",
         "htmlType": null,
         "validations": null,
         "searchable": false,
@@ -51,7 +51,7 @@
         "name": "user_id",
         "dbType": "bigInteger,false,true",
         "htmlType": null,
-        "validations": "required",
+        "validations": "nullable|nullable",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -61,9 +61,9 @@
     },
     {
         "name": "fund_id",
-        "dbType": "integer,false",
+        "dbType": "bigInteger,false,true",
         "htmlType": null,
-        "validations": "required|integer|integer",
+        "validations": "required",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -72,10 +72,10 @@
         "inView": true
     },
     {
-        "name": "created_at",
-        "dbType": "datetime",
+        "name": "updated_at",
+        "dbType": "datetime:nullable",
         "htmlType": "date",
-        "validations": "required",
+        "validations": "nullable|nullable",
         "searchable": false,
         "fillable": false,
         "primary": false,
@@ -84,10 +84,10 @@
         "inView": false
     },
     {
-        "name": "updated_at",
-        "dbType": "datetime:nullable",
+        "name": "created_at",
+        "dbType": "datetime",
         "htmlType": "date",
-        "validations": "nullable|nullable",
+        "validations": "required",
         "searchable": false,
         "fillable": false,
         "primary": false,

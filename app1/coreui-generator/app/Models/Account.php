@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * Class Accounts
+ * Class Account
  * @package App\Models
- * @version January 4, 2022, 6:08 pm UTC
+ * @version January 14, 2022, 4:12 am UTC
  *
- * @property \App\Models\Funds $fund
  * @property \App\Models\Fund $fund
  * @property \App\Models\User $user
  * @property \Illuminate\Database\Eloquent\Collection $accountBalances
@@ -22,8 +21,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $nickname
  * @property string $email_cc
  * @property integer $user_id
+ * @property integer $fund_id
  */
-class Accounts extends Model
+class Account extends Model
 {
     use SoftDeletes;
 
@@ -31,6 +31,9 @@ class Accounts extends Model
 
     public $table = 'accounts';
     
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
+
 
     protected $dates = ['deleted_at'];
 
@@ -40,7 +43,8 @@ class Accounts extends Model
         'code',
         'nickname',
         'email_cc',
-        'user_id'
+        'user_id',
+        'fund_id'
     ];
 
     /**
@@ -53,7 +57,8 @@ class Accounts extends Model
         'code' => 'string',
         'nickname' => 'string',
         'email_cc' => 'string',
-        'user_id' => 'integer'
+        'user_id' => 'integer',
+        'fund_id' => 'integer'
     ];
 
     /**
@@ -62,13 +67,14 @@ class Accounts extends Model
      * @var array
      */
     public static $rules = [
-        'code' => 'required|string|max:15|string|max:15',
-        'nickname' => 'nullable|string|max:15|nullable|string|max:15',
-        'email_cc' => 'nullable|string|max:1024|nullable|string|max:1024',
-        'user_id' => 'required',
+        'code' => 'required|string|max:15',
+        'nickname' => 'nullable|string|max:15',
+        'email_cc' => 'nullable|string|max:1024',
+        'user_id' => 'nullable',
+        'fund_id' => 'required',
+        'updated_at' => 'nullable',
         'created_at' => 'required',
-        'updated_at' => 'nullable|nullable',
-        'deleted_at' => 'nullable|nullable'
+        'deleted_at' => 'nullable'
     ];
 
     /**
@@ -76,7 +82,7 @@ class Accounts extends Model
      **/
     public function fund()
     {
-        return $this->belongsTo(\App\Models\FundsExt::class, 'fund_id');
+        return $this->belongsTo(\App\Models\Fund::class, 'fund_id');
     }
 
     /**
@@ -84,7 +90,7 @@ class Accounts extends Model
      **/
     public function user()
     {
-        return $this->belongsTo(\App\Models\Users::class, 'user_id');
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
     /**
@@ -92,7 +98,7 @@ class Accounts extends Model
      **/
     public function accountBalances()
     {
-        return $this->hasMany(\App\Models\AccountBalances::class, 'account_id');
+        return $this->hasMany(\App\Models\AccountBalance::class, 'account_id');
     }
 
     /**
@@ -100,7 +106,7 @@ class Accounts extends Model
      **/
     public function accountMatchingRules()
     {
-        return $this->hasMany(\App\Models\AccountMatchingRules::class, 'account_id');
+        return $this->hasMany(\App\Models\AccountMatchingRule::class, 'account_id');
     }
 
     /**
@@ -108,7 +114,7 @@ class Accounts extends Model
      **/
     public function accountTradingRules()
     {
-        return $this->hasMany(\App\Models\AccountTradingRules::class, 'account_id');
+        return $this->hasMany(\App\Models\AccountTradingRule::class, 'account_id');
     }
 
     /**
@@ -116,6 +122,6 @@ class Accounts extends Model
      **/
     public function transactions()
     {
-        return $this->hasMany(\App\Models\Transactions::class, 'account_id');
+        return $this->hasMany(\App\Models\Transaction::class, 'account_id');
     }
 }
