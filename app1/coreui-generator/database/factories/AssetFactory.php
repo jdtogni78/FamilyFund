@@ -12,7 +12,7 @@ class AssetFactory extends Factory
      *
      * @var string
      */
-    protected $model = Asset::class;
+    protected $model = AssetExt::class;
 
     /**
      * Define the model's default state.

@@ -6,6 +6,7 @@ use Eloquent as Model;
 use App\Models\Portfolio;
 use App\Models\PortfolioAsset;
 use App\Models\AssetExt;
+use App\Models\Utils;
 use App\Repositories\PortfolioRepository;
 use App\Repositories\PortfolioAssetRepository;
 
@@ -15,6 +16,16 @@ use App\Repositories\PortfolioAssetRepository;
  */
 class PortfolioExt extends Portfolio
 {
+    /**
+     * Validation rules (GET)
+     *
+     * @var array
+     */
+    public static $get_rules = [
+        // 'id' => 'required',
+        // 'as_of' => 'nullable|string|max:10'
+    ];
+
     /**
      * @return money
      **/
@@ -54,7 +65,7 @@ class PortfolioExt extends Portfolio
                 # TODO printf("No price for $asset_id\n");
             }
         }
-        return $totalValue;
+        return Utils::currency($totalValue);
     }
 
     public function periodPerformance($from, $to)
@@ -63,7 +74,7 @@ class PortfolioExt extends Portfolio
         $valueTo = $this->valueAsOf($to);
         // var_dump(array($from, $to, $valueFrom, $valueTo));
         if ($valueFrom == 0) return 0;
-        return ((int) (($valueTo/$valueFrom - 1)*10000))/100;
+        return Utils::percent($valueTo/$valueFrom - 1);
     }
 
     public function yearlyPerformance($year)

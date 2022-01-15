@@ -77,7 +77,7 @@ class PortfolioAsset extends Model
      **/
     public function asset()
     {
-        return $this->belongsTo(\App\Models\Asset::class, 'asset_id');
+        return $this->belongsTo(\App\Models\AssetExt::class, 'asset_id');
     }
 
     /**

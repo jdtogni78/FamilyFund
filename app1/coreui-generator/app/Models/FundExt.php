@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Fund;
 use App\Repositories\AccountRepository;
-
+use App\Models\Utils;
 
 /**
  * Class FundExt
@@ -34,15 +34,24 @@ class FundExt extends Fund
     /**
      * @return money
      **/
+
     public function sharesAsOf($now)
     {
-        $balance = $this->account()->first()->ownBalanceAsOf($now);
-        return ((int) ($balance * 10000)) / 10000;
+        $balance = $this->account()->ownedSharesAsOf($now);
+        return Utils::shares($balance);
     }
 
     public function valueAsOf($now)
     {
         return $this->portfolio()->valueAsOf($now);
+    }
+
+    public function shareValueAsOf($now)
+    {
+        $value = $this->valueAsOf($now);
+        $shares = $this->sharesAsOf($now);
+        if ($shares == 0) return 0;
+        return Utils::currency($value/$shares);
     }
 
     public function allocatedShares($now, $inverse=false) {
@@ -54,7 +63,7 @@ class FundExt extends Fund
         $used = 0;
         $total = 0;
         foreach ($accounts as $account) {
-            $balance = $account->ownBalanceAsOf($now);
+            $balance = $account->ownedSharesAsOf($now);
             if ($account->user_id) {
                 $used += $balance;
             } else {
@@ -62,7 +71,7 @@ class FundExt extends Fund
             }
         }
     
-        return ((int) (($inverse? $total-$used : $used) * 10000)) / 10000;
+        return Utils::shares($inverse? $total-$used : $used);
     }
 
     public function unallocatedShares($now) {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\API\CreateAssetsAPIRequest;
 use App\Http\Requests\API\UpdateAssetsAPIRequest;
 use App\Models\AssetsExt;
-use App\Repositories\AssetsRepository;
+use App\Repositories\AssetRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\AssetsAPIController;
 use App\Http\Resources\AssetPricesResource;
@@ -18,7 +18,7 @@ use Response;
 
 class AssetsAPIControllerExt extends AssetsAPIController
 {
-    public function __construct(AssetsRepository $assetsRepo)
+    public function __construct(AssetRepository $assetsRepo)
     {
         parent::__construct($assetsRepo);
     }

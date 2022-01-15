@@ -4,12 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreatePortfolioAPIRequest;
 use App\Http\Requests\API\UpdatePortfolioAPIRequest;
+use App\Http\Requests\API\GetPortfolioAPIRequest;
+
 use App\Models\Portfolio;
 use App\Models\PortfolioAsset;
 use App\Repositories\PortfolioRepository;
 use App\Repositories\PortfolioAssetRepository;
 use App\Repositories\AssetPricesRepository;
-use App\Repositories\AssetsRepository;
+use App\Repositories\AssetRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\PortfolioAPIController;
 use App\Http\Resources\PortfolioResource;
@@ -29,13 +31,13 @@ class PortfolioAPIControllerExt extends PortfolioAPIController
 
     /**
      * Display the specified Portfolio.
-     * GET|HEAD /portfolios/{id}
+     * GET|HEAD /portfolios/{id}/as_of/{date}
      *
      * @param int $id
      *
      * @return Response
      */
-    public function show($id)
+    public function showAsOf($id, $as_of)
     {
         /** @var Portfolio $portfolio */
         $portfolio = $this->portfolioRepository->find($id);
@@ -44,9 +46,7 @@ class PortfolioAPIControllerExt extends PortfolioAPIController
             return $this->sendError('Portfolio not found');
         }
 
-        $now = date('Y-m-d');
-
-        $portfolioAssets = $portfolio->assetsAsOf($now);
+        $portfolioAssets = $portfolio->assetsAsOf($as_of);
 
         $rss = new PortfolioResource($portfolio);
         $arr = $rss->toArray(NULL);
@@ -64,10 +64,10 @@ class PortfolioAPIControllerExt extends PortfolioAPIController
             $asset['asset_id'] = $asset_id;
             $asset['shares'] = $shares;
 
-            $assetsRepo = \App::make(AssetsRepository::class);
+            $assetsRepo = \App::make(AssetRepository::class);
             $assets = $assetsRepo->find($asset_id);
             $asset['name'] = $assets['name'];
-            $assetPrices = $assets->pricesAsOf($now);
+            $assetPrices = $assets->pricesAsOf($as_of);
             
             if (count($assetPrices) == 1) {
                 $price = $assetPrices[0]['price'];
@@ -81,8 +81,22 @@ class PortfolioAPIControllerExt extends PortfolioAPIController
             array_push($arr['assets'], $asset);
         }
         $arr['total_value'] = $totalValue;
-        $arr['as_of'] = $now;
+        $arr['as_of'] = $as_of;
         
         return $this->sendResponse($arr, 'Portfolio retrieved successfully');
+    }
+
+    /**
+     * Display the specified Portfolio.
+     * GET|HEAD /portfolios/{id}
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function show($id) 
+    {
+        $now = date('Y-m-d');
+        return $this->showAsOf($id, $now);
     }
 }

@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AssetController;
-use App\Http\Controllers\Api\AssetPriceHistoryController;
+use App\Http\Controllers\API\PortfolioAPIControllerExt;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('portfolios/{id}/as_of/{as_of}', 'App\Http\Controllers\API\PortfolioAPIControllerExt@showAsOf');
+Route::get('funds/{id}/as_of/{as_of}', 'App\Http\Controllers\API\FundAPIControllerExt@showAsOf');
+Route::get('accounts/{id}/as_of/{as_of}', 'App\Http\Controllers\API\AccountAPIControllerExt@showAsOf');
 
 Route::resource('funds', App\Http\Controllers\API\FundAPIControllerExt::class);
 Route::resource('account_balances', App\Http\Controllers\API\AccountBalanceAPIController::class);
@@ -30,6 +32,7 @@ Route::resource('asset_prices', App\Http\Controllers\API\AssetPriceAPIController
 Route::resource('assets', App\Http\Controllers\API\AssetAPIControllerExt::class);
 Route::resource('matching_rules', App\Http\Controllers\API\MatchingRuleAPIController::class);
 Route::resource('portfolio_assets', App\Http\Controllers\API\PortfolioAssetAPIController::class);
+
 Route::resource('portfolios', App\Http\Controllers\API\PortfolioAPIControllerExt::class);
 Route::resource('trading_rules', App\Http\Controllers\API\TradingRuleAPIController::class);
 Route::resource('transactions', App\Http\Controllers\API\TransactionAPIControllerExt::class);
