@@ -66,7 +66,7 @@ class Asset extends Model
         'source_feed' => 'required|string|max:50',
         'feed_id' => 'required|string|max:128',
         'updated_at' => 'nullable',
-        'created_at' => 'required',
+        'created_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];
 

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Fund;
+use App\Models\FundExt;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FundFactory extends Factory
@@ -24,9 +24,9 @@ class FundFactory extends Factory
         return [
             'name' => $this->faker->word,
         'goal' => $this->faker->word,
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+        //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'created_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'deleted_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

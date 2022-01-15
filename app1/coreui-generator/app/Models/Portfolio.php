@@ -57,7 +57,7 @@ class Portfolio extends Model
         'fund_id' => 'required',
         'code' => 'required|string|max:30',
         'updated_at' => 'nullable',
-        'created_at' => 'required',
+        'created_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];
 

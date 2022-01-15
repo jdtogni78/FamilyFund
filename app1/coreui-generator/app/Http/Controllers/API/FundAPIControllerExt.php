@@ -65,7 +65,7 @@ class FundAPIControllerExt extends FundAPIController
         $value = $arr['value'] = $fund->valueAsOf($asOf);
         $shares = $arr['shares'] = $fund->sharesAsOf($asOf);
         $arr['unallocated_shares'] = $fund->unallocatedShares($asOf);
-        $arr['share_value'] = $value/$shares;
+        $arr['share_value'] = $shares? $value/$shares : 0;
         $arr['as_of'] = $asOf;
 
         $year = date('Y');

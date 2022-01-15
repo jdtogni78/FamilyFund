@@ -68,7 +68,7 @@ class AssetChangeLog extends Model
         'content' => 'required|string',
         'datetime' => 'required',
         'updated_at' => 'nullable',
-        'created_at' => 'required'
+        'created_at' => 'nullable'
     ];
 
     /**

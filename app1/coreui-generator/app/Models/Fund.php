@@ -57,7 +57,7 @@ class Fund extends Model
         'name' => 'required|string|max:30',
         'goal' => 'nullable|string|max:1024',
         'updated_at' => 'nullable',
-        'created_at' => 'required',
+        'created_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];
 
@@ -70,10 +70,10 @@ class Fund extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      **/
     public function portfolios()
     {
-        return $this->hasMany(\App\Models\PortfolioExt::class, 'fund_id');
+        return $this->hasOne(\App\Models\PortfolioExt::class, 'fund_id');
     }
 }

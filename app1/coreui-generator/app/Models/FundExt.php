@@ -12,9 +12,28 @@ use App\Models\Utils;
  */
 class FundExt extends Fund
 {
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     **/
+    public function accountExt()
+    {
+        return $this->hasOne(\App\Models\AccountExt::class, 'fund_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     **/
+    public function portfolioExt()
+    {
+        return $this->hasOne(\App\Models\PortfolioExt::class, 'fund_id');
+    }
+
     public function portfolio()
     {
-        return $this->portfolios()->first();
+        $portfolios = $this->portfolios();
+        if ($portfolios->count() != 1)
+            throw new \Exception("Every fund must have 1 portfolio (found " . $portfolios->count() . ")");
+        return $portfolios->first();
     }
 
     public function account()
@@ -24,10 +43,8 @@ class FundExt extends Fund
         $query->where('fund_id', $this->id);
         $query->where('user_id', null);
         $accounts = $query->get(['*']);
-        // TODO: add throws to models
-        // if ($account == null) {
-        //     throw 
-        // }
+        if ($accounts->count() != 1)
+            throw new \Exception("Every fund must have 1 account with no user id (found " . $accounts->count() . ")");
         return $accounts->first();
     }
 

@@ -24,12 +24,12 @@ class AccountBalanceFactory extends Factory
         return [
             'type' => $this->faker->word,
         'shares' => $this->faker->word,
-        'account_id' => $this->faker->word,
-        'transaction_id' => $this->faker->word,
+        //'account_id' => $this->faker->word,
+        //'transaction_id' => $this->faker->word,
         'start_dt' => $this->faker->word,
         'end_dt' => $this->faker->word,
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'created_at' => $this->faker->date('Y-m-d H:i:s')
+        //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'created_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

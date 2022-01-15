@@ -26,11 +26,11 @@ class TransactionFactory extends Factory
         'type' => $this->faker->word,
         'value' => $this->faker->word,
         'shares' => $this->faker->word,
-        'account_id' => $this->faker->word,
-        'matching_rule_id' => $this->faker->word,
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+        //'account_id' => $this->faker->word,
+        //'matching_rule_id' => $this->faker->word,
+        //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'created_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'deleted_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

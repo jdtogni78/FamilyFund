@@ -68,7 +68,7 @@ class User extends Model
         'password' => 'required|string|max:255',
         'remember_token' => 'nullable|string|max:100',
         'updated_at' => 'nullable',
-        'created_at' => 'required'
+        'created_at' => 'nullable'
     ];
 
     /**

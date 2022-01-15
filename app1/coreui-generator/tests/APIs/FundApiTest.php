@@ -4,7 +4,11 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Tests\ApiTestTrait;
+use App\Models\Account;
 use App\Models\Fund;
+use App\Models\Portfolio;
+use App\Models\AccountExt;
+use App\Models\PortfolioExt;
 
 class FundApiTest extends TestCase
 {
@@ -25,12 +29,21 @@ class FundApiTest extends TestCase
         $this->assertApiResponse($fund);
     }
 
+    public function createFund()
+    {        
+        $fund = Fund::factory()
+            ->has(Portfolio::factory()->count(1))
+            ->has(Account::factory()->count(1))
+            ->create();
+        return $fund;
+    }
+    
     /**
      * @test
      */
     public function test_read_fund()
     {
-        $fund = Fund::factory()->create();
+        $fund = $this->createFund();
 
         $this->response = $this->json(
             'GET',

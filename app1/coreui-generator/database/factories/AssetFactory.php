@@ -26,9 +26,9 @@ class AssetFactory extends Factory
         'type' => $this->faker->word,
         'source_feed' => $this->faker->word,
         'feed_id' => $this->faker->word,
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+        //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'created_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'deleted_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

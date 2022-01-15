@@ -74,7 +74,7 @@ class Transaction extends Model
         'account_id' => 'required',
         'matching_rule_id' => 'nullable',
         'updated_at' => 'nullable',
-        'created_at' => 'required',
+        'created_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];
 

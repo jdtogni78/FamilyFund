@@ -60,7 +60,7 @@ class TradingRule extends Model
         'max_sale_increase_pcnt' => 'nullable|numeric',
         'min_fund_performance_pcnt' => 'nullable|numeric',
         'updated_at' => 'nullable',
-        'created_at' => 'required',
+        'created_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];
 

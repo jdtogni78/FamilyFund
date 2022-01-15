@@ -73,7 +73,7 @@ class Account extends Model
         'user_id' => 'nullable',
         'fund_id' => 'required',
         'updated_at' => 'nullable',
-        'created_at' => 'required',
+        'created_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];
 

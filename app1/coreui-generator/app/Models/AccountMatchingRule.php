@@ -57,7 +57,7 @@ class AccountMatchingRule extends Model
         'account_id' => 'required',
         'matching_rule_id' => 'required',
         'updated_at' => 'nullable',
-        'created_at' => 'required',
+        'created_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];
 

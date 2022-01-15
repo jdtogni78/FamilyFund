@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Portfolio;
+use App\Models\PortfolioExt;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PortfolioFactory extends Factory
@@ -22,11 +22,11 @@ class PortfolioFactory extends Factory
     public function definition()
     {
         return [
-            'fund_id' => $this->faker->word,
+            //'fund_id' => $this->faker->word,
         'code' => $this->faker->word,
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+        //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'created_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'deleted_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

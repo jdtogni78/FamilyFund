@@ -64,7 +64,7 @@ class AssetPrice extends Model
         'start_dt' => 'required',
         'end_dt' => 'required',
         'updated_at' => 'nullable',
-        'created_at' => 'required'
+        'created_at' => 'nullable'
     ];
 
     /**

@@ -25,9 +25,9 @@ class TradingRuleFactory extends Factory
             'name' => $this->faker->word,
         'max_sale_increase_pcnt' => $this->faker->word,
         'min_fund_performance_pcnt' => $this->faker->word,
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+        //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'created_at' => $this->faker->date('Y-m-d H:i:s'),
+        //'deleted_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

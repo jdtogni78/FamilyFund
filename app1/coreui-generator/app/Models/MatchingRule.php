@@ -73,7 +73,7 @@ class MatchingRule extends Model
         'date_end' => 'required',
         'match_percent' => 'required|numeric',
         'updated_at' => 'nullable',
-        'created_at' => 'required'
+        'created_at' => 'nullable'
     ];
 
     /**
