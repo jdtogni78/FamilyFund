@@ -6,6 +6,7 @@ use App\Http\Requests\API\CreatePortfolioAPIRequest;
 use App\Http\Requests\API\UpdatePortfolioAPIRequest;
 use App\Http\Requests\API\GetPortfolioAPIRequest;
 
+use App\Models\Utils;
 use App\Models\Portfolio;
 use App\Models\PortfolioAsset;
 use App\Repositories\PortfolioRepository;
@@ -62,25 +63,23 @@ class PortfolioAPIControllerExt extends PortfolioAPIController
                 continue;
 
             $asset['asset_id'] = $asset_id;
-            $asset['shares'] = $shares;
-
-            $assetsRepo = \App::make(AssetRepository::class);
-            $assets = $assetsRepo->find($asset_id);
-            $asset['name'] = $assets['name'];
-            $assetPrices = $assets->pricesAsOf($as_of);
+            $asset['shares'] = Utils::assetShares($shares);
+            $a = $pa->asset()->first();
+            $asset['name'] = $a->name;
+            $assetPrices = $a->pricesAsOf($as_of);
             
             if (count($assetPrices) == 1) {
                 $price = $assetPrices[0]['price'];
-                $value = ((int)($shares * $price * 100))/100;
+                $value = $shares * $price;
                 $totalValue += $value;
-                $asset['price'] = $price;
-                $asset['value'] = $value;
+                $asset['price'] = Utils::currency($price);
+                $asset['value'] = Utils::currency($value);
             } else {
                 # TODO printf("No price for $asset_id\n");
             }
             array_push($arr['assets'], $asset);
         }
-        $arr['total_value'] = $totalValue;
+        $arr['total_value'] = Utils::currency($totalValue);
         $arr['as_of'] = $as_of;
         
         return $this->sendResponse($arr, 'Portfolio retrieved successfully');

@@ -21,6 +21,9 @@ class AssetExt extends Asset
         $query->whereDate('start_dt', '<=', $now);
         $query->whereDate('end_dt', '>', $now);
         $assetPrices = $query->get(['*']);
+        if ($assetPrices->count() > 1) {
+            throw new \Exception("There should only be one asset price (found " . $assetPrices->count() . ") for asset " . $this->id . ' at ' . $now);
+        }
         return $assetPrices;
     }
 }

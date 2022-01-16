@@ -29,7 +29,7 @@ class FundApiTest extends TestCase
         $this->assertApiResponse($fund);
     }
 
-    public function createFund()
+    public static function createFund()
     {        
         $fund = Fund::factory()
             ->has(Portfolio::factory()->count(1))

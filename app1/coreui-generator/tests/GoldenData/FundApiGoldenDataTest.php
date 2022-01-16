@@ -11,7 +11,7 @@ use App\Models\AccountExt;
 use App\Models\PortfolioExt;
 use App\Models\Utils;
 
-class FundExtApiTest extends TestCase
+class FundApiGoldenDataTest extends TestCase
 {
     use ApiTestTrait, WithoutMiddleware, DatabaseTransactions;
 

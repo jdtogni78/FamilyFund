@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Account;
 
-class AccountExtApiTest extends TestCase
+class AccountApiGoldenDataTest extends TestCase
 {
     use ApiTestTrait, WithoutMiddleware, DatabaseTransactions;
 
