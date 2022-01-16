@@ -15,6 +15,15 @@ class AccountExt extends Account
     {
         return parent::fund()->get()->first();
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function transactions()
+    {
+        return $this->hasMany(\App\Models\TransactionExt::class, 'account_id')->orderBy('created_at')->orderBy('matching_rule_id');
+    }
+
     /**
      **/
     public function allSharesAsOf($now)
@@ -25,6 +34,17 @@ class AccountExt extends Account
         $query->whereDate('start_dt', '<=', $now);
         $query->whereDate('end_dt', '>', $now);
         $accountBalances = $query->get(['*']);
+        $typeCount = array();
+        $typeCount['OWN'] = 0;
+        $typeCount['BOR'] = 0;
+        foreach ($accountBalances as $balance) {
+            $typeCount[$balance->type]++;
+        }
+        foreach ($typeCount as $key => $count) {
+            if ($count > 1) {
+                throw new \Exception("Every account can have only 1 balance active at any given day (found " . $count . ")");
+            }
+        }
         return $accountBalances;
     }
 
@@ -32,7 +52,7 @@ class AccountExt extends Account
         $accountBalances = $this->allSharesAsOf($now);
         foreach ($accountBalances as $balance) {
             if ($balance->type == 'OWN') {
-                return Utils::shares($balance->shares);
+                return $balance->shares;
             }
         }
         return 0;
@@ -42,7 +62,7 @@ class AccountExt extends Account
         $shareValue = $this->fund()->shareValueAsOf($now);
         $shares = $this->ownedSharesAsOf($now);
         $value = $shareValue * $shares;
-        return Utils::currency($value);
+        return $value;
     }
 
     public function remainingMatchings() { 
@@ -62,7 +82,7 @@ class AccountExt extends Account
 
         // var_dump(array($from, $to, $shareValueFrom, $shareValueTo, $sharesFrom, $sharesTo, $valueFrom, $valueTo));
         if ($valueFrom == 0) return 0;
-        return Utils::percent($valueTo/$valueFrom - 1);
+        return $valueTo/$valueFrom - 1;
     }
 
     public function yearlyPerformance($year)

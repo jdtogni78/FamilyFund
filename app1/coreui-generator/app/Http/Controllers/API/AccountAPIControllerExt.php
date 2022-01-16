@@ -44,7 +44,7 @@ class AccountAPIControllerExt extends AccountAPIController
 
     /**
      * Display the specified Accounts.
-     * GET|HEAD /Accounts/{id}/as_of/{date}
+     * GET|HEAD /accounts/{id}/as_of/{date}
      *
      * @param int $id
      *
@@ -62,12 +62,8 @@ class AccountAPIControllerExt extends AccountAPIController
         $rss = new AccountResource($account);
         $arr = $rss->toArray(NULL);
 
-        // TODO: move this to a more appropriate place: model? AB controller?
-
         $fund = $account->fund();
-        $totalShares = $fund->sharesAsOf($asOf);
-        $totalValue = $fund->valueAsOf($asOf);
-        $shareValue = $totalShares > 0 ? $totalValue / $totalShares : 0;
+        $shareValue = $fund->shareValueAsOf($asOf);
 
         $accountBalance = $account->allSharesAsOf($asOf);
         $arr['balances'] = array();
@@ -75,25 +71,41 @@ class AccountAPIControllerExt extends AccountAPIController
             $balance = array();
             $balance['type'] = $ab['type'];
             $balance['shares'] = Utils::shares($ab['shares']);
-            $balance['market_value'] = Utils::currency(($totalValue / $totalShares) * $ab['shares']);
+            $balance['market_value'] = Utils::currency($shareValue * $ab['shares']);
             array_push($arr['balances'], $balance);
         }
 
-        $transactions = $account->transactions()->get();
-        $arr['transactions'] = array();
-        foreach ($transactions as $transaction) {
-            $tran = array();
-            if ($transaction->created_at->gte(Carbon::createFromFormat('Y-m-d', $asOf)))
-                continue;
-            $tran['type'] = $transaction->type;
-            $tran['shares'] = Utils::shares($transaction->shares);
-            $tran['value'] = Utils::currency($transaction->value);
-            if ($transaction->matching_rule_id)
-                $tran['matching_id'] = $transaction->matching_rule_id;
-            $tran['current_value'] = Utils::currency($transaction->shares * $shareValue * 100);
-            $tran['created_at'] = $transaction->created_at;
-            array_push($arr['transactions'], $tran);
+        $arr['as_of'] = $asOf;
+
+        return $this->sendResponse($arr, 'Account retrieved successfully');
+    }
+
+    public function createAccountArray($account)
+    {
+        $arr = array();
+        $arr['nickname'] = $account->nickname;
+        $arr['id'] = $account->id;
+        return $arr;
+    }
+
+    /**
+     * Display the specified Accounts.
+     * GET|HEAD /accounts/{id}/performance_as_of/{date}
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function showPerformanceAsOf($id, $asOf)
+    {
+        /** @var Accounts $account */
+        $account = $this->accountRepository->find($id);
+
+        if (empty($account)) {
+            return $this->sendError('Account not found');
         }
+
+        $arr = $this->createAccountArray($account);
 
         $perf = array();
         $year = date('Y');
@@ -110,6 +122,51 @@ class AccountAPIControllerExt extends AccountAPIController
         $arr['performance'] = $perf;
 
         $arr['as_of'] = $asOf;
+
+        return $this->sendResponse($arr, 'Account retrieved successfully');
+    }
+
+    /**
+     * Display the specified Accounts.
+     * GET|HEAD /accounts/{id}/transactions_as_of/{date}
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function showTransactionsAsOf($id, $asOf)
+    {
+        /** @var Accounts $account */
+        $account = $this->accountRepository->find($id);
+
+        if (empty($account)) {
+            return $this->sendError('Account not found');
+        }
+
+        $arr = array();
+        $arr['nickname'] = $account->nickname;
+        $arr['id'] = $account->id;
+
+        // TODO: move this to a more appropriate place: model? AB controller?
+
+        $fund = $account->fund();
+        $shareValue = $fund->shareValueAsOf($asOf);
+
+        $transactions = $account->transactions()->get();
+        $arr['transactions'] = array();
+        foreach ($transactions as $transaction) {
+            $tran = array();
+            if ($transaction->created_at->gte(Carbon::createFromFormat('Y-m-d', $asOf)))
+                continue;
+            $tran['type'] = $transaction->type;
+            $tran['shares'] = Utils::shares($transaction->shares);
+            $tran['value'] = Utils::currency($transaction->value);
+            if ($transaction->matching_rule_id)
+                $tran['matching_id'] = $transaction->matching_rule_id;
+            $tran['current_value'] = Utils::currency($transaction->shares * $shareValue);
+            $tran['created_at'] = $transaction->created_at;
+            array_push($arr['transactions'], $tran);
+        }
 
         return $this->sendResponse($arr, 'Account retrieved successfully');
     }

@@ -55,7 +55,7 @@ class FundExt extends Fund
     public function sharesAsOf($now)
     {
         $balance = $this->account()->ownedSharesAsOf($now);
-        return Utils::shares($balance);
+        return $balance;
     }
 
     public function valueAsOf($now)
@@ -68,7 +68,7 @@ class FundExt extends Fund
         $value = $this->valueAsOf($now);
         $shares = $this->sharesAsOf($now);
         if ($shares == 0) return 0;
-        return Utils::currency($value/$shares);
+        return $value/$shares;
     }
 
     public function allocatedShares($now, $inverse=false) {
@@ -88,7 +88,7 @@ class FundExt extends Fund
             }
         }
     
-        return Utils::shares($inverse? $total-$used : $used);
+        return $inverse? $total-$used : $used;
     }
 
     public function unallocatedShares($now) {

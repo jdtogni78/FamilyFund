@@ -22,6 +22,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('portfolios/{id}/as_of/{as_of}', 'App\Http\Controllers\API\PortfolioAPIControllerExt@showAsOf');
 Route::get('funds/{id}/as_of/{as_of}', 'App\Http\Controllers\API\FundAPIControllerExt@showAsOf');
 Route::get('accounts/{id}/as_of/{as_of}', 'App\Http\Controllers\API\AccountAPIControllerExt@showAsOf');
+Route::get('accounts/{id}/transactions_as_of/{as_of}', 'App\Http\Controllers\API\AccountAPIControllerExt@showTransactionsAsOf');
+Route::get('accounts/{id}/performance_as_of/{as_of}', 'App\Http\Controllers\API\AccountAPIControllerExt@showPerformanceAsOf');
 
 Route::resource('funds', App\Http\Controllers\API\FundAPIControllerExt::class);
 Route::resource('account_balances', App\Http\Controllers\API\AccountBalanceAPIController::class);

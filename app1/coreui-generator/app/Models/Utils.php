@@ -10,17 +10,17 @@ class Utils
 {
     public static function currency($value)
     {
-        return ((int)($value * 100))/100;
+        return round($value, 2);
     }
 
     public static function shares($value)
     {
-        return ((int)($value * 10000))/10000;
+        return floor($value * 10000)/10000;
     }
 
     public static function percent($value)
     {
-        return ((int)($value * 100))/100;
+        return round($value,2);
     }
     
 }

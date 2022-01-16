@@ -65,7 +65,7 @@ class PortfolioExt extends Portfolio
                 # TODO printf("No price for $asset_id\n");
             }
         }
-        return Utils::currency($totalValue);
+        return $totalValue;
     }
 
     public function periodPerformance($from, $to)
@@ -74,7 +74,7 @@ class PortfolioExt extends Portfolio
         $valueTo = $this->valueAsOf($to);
         // var_dump(array($from, $to, $valueFrom, $valueTo));
         if ($valueFrom == 0) return 0;
-        return Utils::percent($valueTo/$valueFrom - 1);
+        return $valueTo/$valueFrom - 1;
     }
 
     public function yearlyPerformance($year)
