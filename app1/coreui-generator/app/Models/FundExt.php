@@ -59,17 +59,20 @@ class FundExt extends Fund
         return $balance;
     }
 
-    public function valueAsOf($now)
+    public function valueAsOf($now, $verbose=false)
     {
-        return $this->portfolio()->valueAsOf($now);
+        $portfolio = $this->portfolio();
+        // print_r(['port',$portfolio->id,$this->id]);
+        return $portfolio->valueAsOf($now,$verbose);
     }
 
     public function shareValueAsOf($now)
     {
         $value = $this->valueAsOf($now);
         $shares = $this->sharesAsOf($now);
+        // print_r([$value,$shares,$now,$this->id]);
         if ($shares == 0) return 0;
-        return $value/$shares;
+        return $value / $shares;
     }
 
     public function allocatedShares($now, $inverse=false) {

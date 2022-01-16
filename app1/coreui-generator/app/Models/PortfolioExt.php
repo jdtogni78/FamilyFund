@@ -43,14 +43,14 @@ class PortfolioExt extends Portfolio
     /**
      * @return money
      **/
-    public function valueAsOf($now)
+    public function valueAsOf($now, $verbose=false)
     {
         $portfolioAssets = $this->assetsAsOf($now);
 
         $totalValue = 0;
         foreach ($portfolioAssets as $pa) {
-            $shares = $pa['shares'];
-            $asset_id = $pa['asset_id'];
+            $shares = $pa->shares;
+            $asset_id = $pa->asset_id;
             if ($shares == 0) 
                 continue;
 
@@ -59,11 +59,25 @@ class PortfolioExt extends Portfolio
             
             if (count($assetPrices) == 1) {
                 $price = $assetPrices[0]['price'];
-                $value = ((int)($shares * $price * 100))/100;
+                $value = $shares * $price;
                 $totalValue += $value;
+                if ($verbose) {
+                    print($asset->id.', ');
+                    print($asset->name.', ');
+                    print($shares.', ');
+                    print($price.', ');
+                    print($value.', ');
+                    print("\n");
+                }
             } else {
                 # TODO printf("No price for $asset_id\n");
             }
+        }
+        // $totalValue = round($totalValue,4);
+        if ($verbose) {
+            print('id '.$this->id."\n");
+            print('asOf '.$now."\n");
+            print('totalvalue '.$totalValue."\n");
         }
         return $totalValue;
     }

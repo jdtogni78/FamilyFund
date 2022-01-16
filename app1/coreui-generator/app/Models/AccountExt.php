@@ -11,10 +11,10 @@ use App\Repositories\AccountBalanceRepository;
  */
 class AccountExt extends Account
 {
-    public function fund()
-    {
-        return parent::fund()->get()->first();
-    }
+    // public function fund()
+    // {
+    //     return parent::fund()->get()->first();
+    // }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
