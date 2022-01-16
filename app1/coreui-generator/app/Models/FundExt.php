@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Fund;
 use App\Repositories\AccountRepository;
+use App\Repositories\AccountBalanceRepository;
 use App\Models\Utils;
 
 /**
@@ -104,5 +105,20 @@ class FundExt extends Fund
     {
         return $this->portfolio()->yearlyPerformance($year);
     }
+
+    public function accountBalancesAsOf($asOf)
+    {
+        $accountBalanceRepo = \App::make(AccountBalanceRepository::class);
+        $query = $accountBalanceRepo->makeModel()->newQuery();
+        $query->whereDate('start_dt', '<=', $asOf);
+        $query->whereDate('end_dt', '>', $asOf);
+
+        $query->leftJoin('accounts', 'accounts.id', '=', 'account_balances.account_id');
+        $query->where('fund_id', '=', $this->id);
+
+        $accountBalances = $query->get(['*']);
+        return $accountBalances;
+    }
+
 
 }

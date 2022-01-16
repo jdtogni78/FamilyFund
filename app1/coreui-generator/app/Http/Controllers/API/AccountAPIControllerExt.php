@@ -107,19 +107,26 @@ class AccountAPIControllerExt extends AccountAPIController
 
         $arr = $this->createAccountArray($account);
 
-        $perf = array();
         $year = date('Y');
         $yearStart = $year.'-01-01';
 
-        $perf[$asOf . '-shares'] = $account->ownedSharesAsOf($asOf);
-        $perf[$asOf . '-value'] = $account->valueAsOf($asOf);
+
+        $perf = array();
+        if ($asOf != $yearStart) {
+            $yp = array();
+            $yp['value']        = Utils::currency($account->valueAsOf($asOf));
+            $yp['shares']       = Utils::shares($account->ownedSharesAsOf($asOf));
+            $perf[$asOf] = $yp;
+        }
 
         for ($year; $year >= 2021; $year--) {
-            $perf[$year . '-yearly'] = $account->yearlyPerformance($year);
-            $perf[$year . '-01-01-shares'] = $account->ownedSharesAsOf($year . '-01-01');
-            $perf[$year . '-01-01-value'] = $account->valueAsOf($year . '-01-01');
+            $yearStart = $year.'-01-01';
+            $yp = array();
+            $yp['value']        = Utils::currency($account->valueAsOf($yearStart));
+            $yp['shares']       = Utils::shares($account->ownedSharesAsOf($yearStart));
+            $yp['performance']  = Utils::percent($account->yearlyPerformance($year));
+            $perf[$year] = $yp;
         }
-        $arr['performance'] = $perf;
 
         $arr['as_of'] = $asOf;
 
