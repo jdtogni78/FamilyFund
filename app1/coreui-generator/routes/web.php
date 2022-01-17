@@ -31,9 +31,6 @@ Route::resource('accountBalances', App\Http\Controllers\AccountBalanceController
 Route::resource('accountMatchingRules', App\Http\Controllers\AccountMatchingRuleController::class);
 
 
-Route::resource('accountTradingRules', App\Http\Controllers\AccountTradingRuleController::class);
-
-
 Route::resource('accounts', App\Http\Controllers\AccountController::class);
 
 
@@ -50,9 +47,6 @@ Route::resource('portfolioAssets', App\Http\Controllers\PortfolioAssetController
 
 
 Route::resource('portfolios', App\Http\Controllers\PortfolioController::class);
-
-
-Route::resource('tradingRules', App\Http\Controllers\TradingRuleController::class);
 
 
 Route::resource('transactions', App\Http\Controllers\TransactionController::class);

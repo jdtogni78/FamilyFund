@@ -2,7 +2,6 @@ DROP TABLE IF EXISTS `accounts`;
 DROP TABLE IF EXISTS `transactions`;
 DROP TABLE IF EXISTS `account_balances`;
 DROP TABLE IF EXISTS `account_matching_rules`;
-DROP TABLE IF EXISTS `account_trading_rules`;
 DROP TABLE IF EXISTS `accounts`;
 DROP TABLE IF EXISTS `asset_change_logs`;
 DROP TABLE IF EXISTS `asset_prices`;
@@ -15,7 +14,6 @@ DROP TABLE IF EXISTS `password_resets`;
 DROP TABLE IF EXISTS `personal_access_tokens`;
 DROP TABLE IF EXISTS `portfolio_assets`;
 DROP TABLE IF EXISTS `portfolios`;
-DROP TABLE IF EXISTS `trading_rules`;
 DROP TABLE IF EXISTS `transactions`;
 
 -- MySQL dump 10.13  Distrib 8.0.27, for macos11 (x86_64)
@@ -158,40 +156,6 @@ INSERT INTO `account_matching_rules` VALUES (1,1,1,'2021-12-29 03:18:34','2022-0
 (16,11,3,NULL,'2022-01-12 05:27:52',NULL),
 (17,12,4,NULL,'2022-01-12 05:27:52',NULL);
 /*!40000 ALTER TABLE `account_matching_rules` ENABLE KEYS */;
-
---
--- Table structure for table `account_trading_rules`
---
-
-DROP TABLE IF EXISTS `account_trading_rules`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `account_trading_rules` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `account_id` bigint(20) unsigned NOT NULL,
-  `trading_rule_id` bigint(20) unsigned NOT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `account_trading_rules_account_id_foreign` (`account_id`),
-  KEY `account_trading_rules_trading_rule_id_foreign` (`trading_rule_id`),
-  CONSTRAINT `account_trading_rules_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
-  CONSTRAINT `account_trading_rules_trading_rule_id_foreign` FOREIGN KEY (`trading_rule_id`) REFERENCES `trading_rules` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `account_trading_rules`
---
-
-/*!40000 ALTER TABLE `account_trading_rules` DISABLE KEYS */;
-INSERT INTO `account_trading_rules` VALUES (1,1,1,'2021-12-29 03:19:28','2022-01-07 21:44:19',NULL),
-(2,2,2,'2022-01-12 05:47:54','2022-01-07 21:44:19',NULL),
-(3,3,3,'2022-01-12 05:47:54','2022-01-07 21:44:19',NULL),
-(4,4,1,'2021-12-29 03:19:28','2022-01-07 21:44:19',NULL),
-(5,5,1,'2021-12-29 03:19:28','2022-01-07 21:44:19',NULL);
-/*!40000 ALTER TABLE `account_trading_rules` ENABLE KEYS */;
 
 --
 -- Table structure for table `accounts`
@@ -488,7 +452,7 @@ INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),
 (5,'2021_12_22_154221_create_asset_change_logs_table',1),
 (6,'2022_01_07_130430_create_account_balances_table',1),
 (7,'2022_01_07_130434_create_account_matching_rules_table',1),
-(8,'2022_01_07_130437_create_account_trading_rules_table',1),
+-- (8,'2022_01_07_130437_create_account_trading_rules_table',1),
 (9,'2022_01_07_130439_create_accounts_table',1),
 (10,'2022_01_07_130441_create_asset_prices_table',1),
 (11,'2022_01_07_130443_create_assets_table',1),
@@ -496,7 +460,7 @@ INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),
 (13,'2022_01_07_130447_create_matching_rules_table',1),
 (14,'2022_01_07_130449_create_portfolio_assets_table',1),
 (15,'2022_01_07_130451_create_portfolios_table',1),
-(16,'2022_01_07_130452_create_trading_rules_table',1),
+-- (16,'2022_01_07_130452_create_trading_rules_table',1),
 (17,'2022_01_07_130454_create_transactions_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
@@ -643,35 +607,6 @@ INSERT INTO `portfolios` VALUES (1,1,'FFFidelity','2021-12-31 08:51:32','2021-12
 /*!40000 ALTER TABLE `portfolios` ENABLE KEYS */;
 
 --
--- Table structure for table `trading_rules`
---
-
-DROP TABLE IF EXISTS `trading_rules`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `trading_rules` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `max_sale_increase_pcnt` decimal(5,2) DEFAULT NULL,
-  `min_fund_performance_pcnt` decimal(5,2) DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `trading_rules`
---
-
-/*!40000 ALTER TABLE `trading_rules` DISABLE KEYS */;
-INSERT INTO `trading_rules` VALUES (1,'3%',3.00,NULL,'2021-12-29 03:18:09','2022-01-07 21:44:19',NULL),
-(2,'min perf 3%',NULL,3.00,NULL,'2022-01-12 05:47:35',NULL),
-(3,'3%-3%',3.00,3.00,NULL,'2022-01-12 05:47:35',NULL);
-/*!40000 ALTER TABLE `trading_rules` ENABLE KEYS */;
-
---
 -- Table structure for table `transactions`
 --
 
@@ -793,4 +728,4 @@ INSERT INTO `users` VALUES (1,'NieceA1','niecea1@familyfund.com',NULL,'$2y$10$0I
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-16 20:54:09
+-- Dump completed on 2022-01-16 20:58:54

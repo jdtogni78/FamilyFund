@@ -1,8 +1,0 @@
-id,name,email,email_verified_at,password,remember_token,created_at,updated_at
-1,NieceA1,niecea1@familyfund.com,,$2y$10$0Izqs4fkkhLTlqpH0J8Kg.tYqAPCT0MsGLbfElHnvWEv9ZwNwFM5u,,2021-12-31 11:26:15,2021-12-31 11:26:15
-2,NieceA2,niecea2@familyfund.com,,$2y$10$I8XWYlnpDsJSXvZcXCD0/uGtuwaiCBpc32a8r91Gxm/HQQhSso9Zu,,2021-12-31 11:26:15,2021-12-31 11:26:15
-3,NieceB1,nieceb1@familyfund.com,,$2y$10$TqTqP9KS37cu/4eLwyDkieQc3qhpACBHAjx/kP0UbreS0D7redAbS,,2021-12-31 11:26:15,2021-12-31 11:26:15
-4,NieceB2,nieceb2@familyfund.com,,$2y$10$6/YMhjhMLaXTdgIatYY2eOfMi5tGlHM1W3bVEpZR.olZb6ioSWaMy,,2021-12-31 11:26:16,2021-12-31 11:26:16
-5,NephewC1,nephewc1@familyfund.com,,$2y$10$X.dHjYYldFId4Nj0j3Uf0OTbvyprEiOKjVd2KRFc2KfUEMwqkuuaW,,2021-12-31 11:26:16,2021-12-31 11:26:16
-6,Admin1,admin1@familyfund.com,,$2y$10$2bHnNO3bCShADCbwiezrTezCcCf1R0KWrpYhtcBbFiaE3xhq1Ki66,,2021-12-31 11:26:16,2021-12-31 11:26:16
-7,Org1,org1@familyfund.com,,$2y$10$TumucOzMRLEJXfpHHA8eeuzvwJUrQONEzyPgZidLVuvoCOmGIKaJq,,2021-12-31 11:26:16,2021-12-31 11:26:16
