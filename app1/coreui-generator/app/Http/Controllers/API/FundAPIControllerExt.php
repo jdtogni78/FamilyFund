@@ -114,7 +114,7 @@ class FundAPIControllerExt extends FundAPIController
             $yp['value']        = Utils::currency($fund->valueAsOf($yearStart));
             $yp['shares']       = Utils::shares($fund->sharesAsOf($yearStart));
             $yp['shareValue']   = Utils::currency($fund->shareValueAsOf($yearStart));
-            $yp['performance']  = Utils::percent($fund->yearlyPerformance($year));
+            $yp['performance']  = Utils::percent($fund->periodPerformance($year, min($yearStart, $asOf)));
             $perf[$year] = $yp;
         }
 

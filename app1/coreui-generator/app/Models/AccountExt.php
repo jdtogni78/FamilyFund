@@ -21,7 +21,9 @@ class AccountExt extends Account
      **/
     public function transactions()
     {
-        return $this->hasMany(\App\Models\TransactionExt::class, 'account_id')->orderBy('created_at')->orderBy('matching_rule_id');
+        return $this->hasMany(\App\Models\TransactionExt::class, 'account_id')
+            ->orderBy('created_at')
+            ->orderBy('matching_rule_id');
     }
 
     /**

@@ -62,7 +62,7 @@ class AccountAPIControllerExt extends AccountAPIController
         $rss = new AccountResource($account);
         $arr = $rss->toArray(NULL);
 
-        $fund = $account->fund();
+        $fund = $account->fund()->first();
         $shareValue = $fund->shareValueAsOf($asOf);
 
         $accountBalance = $account->allSharesAsOf($asOf);
@@ -156,7 +156,7 @@ class AccountAPIControllerExt extends AccountAPIController
 
         // TODO: move this to a more appropriate place: model? AB controller?
 
-        $fund = $account->fund();
+        $fund = $account->fund()->first();
         $shareValue = $fund->shareValueAsOf($asOf);
 
         $transactions = $account->transactions()->get();
@@ -165,6 +165,7 @@ class AccountAPIControllerExt extends AccountAPIController
             $tran = array();
             if ($transaction->created_at->gte(Carbon::createFromFormat('Y-m-d', $asOf)))
                 continue;
+            $tran['id'] = $transaction->id;
             $tran['type'] = $transaction->type;
             $tran['shares'] = Utils::shares($transaction->shares);
             $tran['value'] = Utils::currency($transaction->value);

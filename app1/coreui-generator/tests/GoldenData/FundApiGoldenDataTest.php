@@ -36,16 +36,28 @@ class FundApiGoldenDataTest extends TestCase
         $arr['calculated'] = $calc;
         $this->assertApiResponse($arr);
     }
+    
+    public static function fund2_values()
+    {
+        return [25000, 28343.62, 39237.36, 34452.72];
+    }
 
+    public static function fund2_shares()
+    {
+        return [25000, 25540.6597];
+    }
+    
     /**
      * @test
      */
     public function test_fund_as_of()
     {
-        $this->_test_fund_as_of(2, '2021-01-01', 25850.87, 25000, 10000);
-        $this->_test_fund_as_of(2, '2021-07-02', 25850.87, 25529.22, 10000);
-        $this->_test_fund_as_of(2, '2022-01-01', 35781.53, 25529.22, 10000);
-        $this->_test_fund_as_of(2, '2022-01-15', 34452.66, 25529.22, 7110.12760);
+        $shares = $this->fund2_shares();
+        $values = $this->fund2_values();
+        $this->_test_fund_as_of(2, '2021-01-01', $values[0], $shares[0], 10000);
+        $this->_test_fund_as_of(2, '2021-07-02', $values[1], $shares[1], 10000.0001);
+        $this->_test_fund_as_of(2, '2022-01-01', $values[2], $shares[1], 10000.0001);
+        $this->_test_fund_as_of(2, '2022-01-15', $values[3], $shares[1], 7108.8599);
     }
 
 
@@ -69,10 +81,10 @@ class FundApiGoldenDataTest extends TestCase
         foreach ($performances as $performance) {
             [$year, $yp, $sv, $s, $v] = $performance;
             $p = array();
-            $p['performance'] = $yp;
-            $p['shareValue'] = $sv;
-            $p['shares'] = $s;
-            $p['value'] = $v;
+            $p['performance']   = Utils::percent($yp);
+            $p['shareValue']    = Utils::currency($sv);
+            $p['shares']        = Utils::shares($s);
+            $p['value']         = Utils::currency($v);
             $perf[$year] = $p;
         }
 
@@ -85,10 +97,13 @@ class FundApiGoldenDataTest extends TestCase
      */
     public function test_fund_performance_as_of()
     {
-        $p21     = ["2021",        0.38, 1.03, 25000.00, 25850.87];
-        $p2107   = ["2021-07-01",   0.0, 1.01, 25529.22, 25850.87];
-        $p22     = ["2022",       -0.04, 1.40, 25529.22, 35781.53];
-        $p220115 = ["2022-01-15", -0.04, 1.35, 25529.22, 34452.66];
+        $shares = $this->fund2_shares();
+        $values = $this->fund2_values();
+
+        $p21     = ["2021",         0.0, 1.00, $shares[0], $values[0]];
+        $p2107   = ["2021-07-01",  0.13, 1.11, $shares[1], $values[1]];
+        $p22     = ["2022",         0.0, 1.54, $shares[1], $values[2]];
+        $p220115 = ["2022-01-15", -0.12, 1.35, $shares[1], $values[3]];
 
         $this->_test_fund_performance_as_of(2, '2021-01-01', [$p21]);
         $this->_test_fund_performance_as_of(2, '2021-07-01', [$p21, $p2107]);
@@ -143,22 +158,22 @@ class FundApiGoldenDataTest extends TestCase
             [null, "F2", 25000],
         ];
         $b2107     = [
-            [1, "LT", 2264.61],
-            [2, "GT", 2264.61],
+            [1, "LT", 2270.3298],
+            [2, "GT", 2270.3298],
             [3, "GG", 2000],
             [4, "PG", 2000],
             [5, "NB", 5000],
             [8, "VT", 2000],
-            [null, "F2", 25529.22],
+            [null, "F2", 25540.6597],
         ];
         $b2201     = [
-            [1, "LT", 2561.0072],
-            [2, "GT", 2561.0072],
-            [3, "GG", 2444.5957],
-            [4, "PG", 2296.3972],
+            [1, "LT", 2566.857],
+            [2, "GT", 2566.857],
+            [3, "GG", 2444.7908],
+            [4, "PG", 2296.5272],
             [5, "NB", 5000],
-            [8, "VT", 3556.0851],
-            [null, "F2", 25529.22],
+            [8, "VT", 3556.7678],
+            [null, "F2", 25540.6597],
         ];
 
         $this->_test_fund_balances_as_of(2, '2021-01-01', $b21);

@@ -5,6 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Transaction;
+use App\Models\AccountBalance;
 use App\Models\Utils;
 
 class TransactionApiGoldenDataTest extends TestCase
@@ -14,10 +15,13 @@ class TransactionApiGoldenDataTest extends TestCase
     /**
      * @test
      */
-    public function test_read_transaction()
+    public function test_transaction_share_value()
     {
-        $verbose = false;
-        $transactions = Transaction::all();
+        $verbose = true;
+        $transactions = Transaction::
+            orderBy('created_at')
+            ->orderBy('account_id')
+            ->orderBy('matching_rule_id')->get();
 
         $accts = array();
         foreach($transactions as $transaction) {
@@ -52,10 +56,57 @@ class TransactionApiGoldenDataTest extends TestCase
             $assets = $portfolio->valueAsOf($asOf, $verbose);
             $this->assertEquals(Utils::shares($transaction->value / $shareValue), $transaction->shares);
             $this->assertEquals($transaction->value, Utils::currency($shareValue * $transaction->shares));
-            // AccountBalance::
-            // find the balance change
-            // calculate 
         }
     }
 
+    /**
+     * @test
+     */
+    public function test_balance_share_value()
+    {
+        $verbose = true;
+        $balances = AccountBalance::
+            orderBy('account_id')
+            ->orderBy('start_dt')
+            ->orderBy('shares')
+            ->get();
+
+        print("\n");
+        $bals = array();
+        foreach($balances as $balance) {
+            $a = array();
+            $a[] = $balance->id;
+            $a[] = $account_id = $balance->account_id;
+            $a[] = $balance->transaction_id;
+            $a[] = $bal_type = $balance->type;
+            $a[] = $shares = $balance->shares;
+            $tran = $balance->transaction()->first();
+            $a[] = $tran_type = $tran->type;
+            $a[] = $tran_shares = $tran->shares;
+            $a[] = substr($balance->start_dt,0,10);
+            
+            $key = $bal_type . $account_id;
+            if (array_key_exists($key, $bals)) {
+                if ($verbose) {
+                    print("bo " . implode(', ', $bals[$key]) . "\n");
+                    print("bn " . implode(', ', $a)."\n");
+                }
+                $old_shares = $bals[$key][4];
+                if ($bal_type == 'OWN') {
+                    if ($tran_type == 'PUR' || $tran_type == 'REP') {
+                        $this->assertEquals($shares, $old_shares + $tran_shares);
+                    } else {
+                        $this->assertEquals($shares, $old_shares - $tran_shares);
+                    }
+                } elseif ($bal_type == 'BOR') {
+                    if ($tran_type == 'PUR' || $tran_type == 'REP') {
+                        $this->assertEquals($shares, $old_shares - $tran_shares);
+                    } else {
+                        $this->assertEquals($shares, $old_shares + $tran_shares);
+                    }
+                }
+            }
+            $bals[$key] = $a;
+        }
+    }
 }
