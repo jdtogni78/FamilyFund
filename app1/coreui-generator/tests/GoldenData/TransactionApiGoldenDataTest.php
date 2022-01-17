@@ -17,7 +17,7 @@ class TransactionApiGoldenDataTest extends TestCase
      */
     public function test_transaction_share_value()
     {
-        $verbose = true;
+        $verbose = false;
         $transactions = Transaction::
             orderBy('created_at')
             ->orderBy('account_id')
@@ -29,7 +29,6 @@ class TransactionApiGoldenDataTest extends TestCase
                 $accts[$transaction->account_id] = 0;
             $accts[$transaction->account_id] += $transaction->shares;
 
-
             $account = $transaction->account()->first();
             $fund = $account->fund()->first();
             $asOf = substr($transaction->created_at,0,10);
@@ -37,9 +36,9 @@ class TransactionApiGoldenDataTest extends TestCase
             $totalShares = $fund->sharesAsOf($asOf);
 
             if ($verbose) {
-                print_r([$transaction->account()->count()]);
-                print_r([$account->fund()->count()]);
                 $arr = array();
+                $arr['tc'] = $transaction->account()->count();
+                $arr['ac'] = $account->fund()->count();
                 $arr['id'] = $transaction->id;
                 $arr['type'] = $transaction->type;
                 $arr['value'] = $transaction->value;
@@ -54,8 +53,11 @@ class TransactionApiGoldenDataTest extends TestCase
             
             $portfolio = $fund->portfolio();
             $assets = $portfolio->valueAsOf($asOf, $verbose);
-            $this->assertEquals(Utils::shares($transaction->value / $shareValue), $transaction->shares);
-            $this->assertEquals($transaction->value, Utils::currency($shareValue * $transaction->shares));
+            if ($transaction->type != 'INI') {
+                if ($shareValue > 0) 
+                    $this->assertEquals(Utils::shares($transaction->value / $shareValue), $transaction->shares);
+                $this->assertEquals($transaction->value, Utils::currency($shareValue * $transaction->shares));
+            }
         }
     }
 
@@ -64,7 +66,7 @@ class TransactionApiGoldenDataTest extends TestCase
      */
     public function test_balance_share_value()
     {
-        $verbose = true;
+        $verbose = false;
         $balances = AccountBalance::
             orderBy('account_id')
             ->orderBy('start_dt')

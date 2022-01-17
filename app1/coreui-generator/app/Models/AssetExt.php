@@ -17,11 +17,12 @@ class AssetExt extends Asset
     {
         $assetPricesRepo = \App::make(AssetPriceRepository::class);
         $query = $assetPricesRepo->makeModel()->newQuery();
-        $query->where('asset_id', $this->id);
-        $query->whereDate('start_dt', '<=', $now);
-        $query->whereDate('end_dt', '>', $now);
+        $query->where('asset_id', $this->id)
+            ->whereDate('start_dt', '<=', $now)
+            ->whereDate('end_dt', '>', $now);
         $assetPrices = $query->get(['*']);
         if ($assetPrices->count() > 1) {
+            print_r($assetPrices->toArray());
             throw new \Exception("There should only be one asset price (found " . $assetPrices->count() . ") for asset " . $this->id . ' at ' . $now);
         }
         return $assetPrices;

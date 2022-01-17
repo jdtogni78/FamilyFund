@@ -68,7 +68,7 @@ class PortfolioApiGoldenDataTest extends TestCase
             [9, 'LTC',     147.97, 1.76610087],
             [11,'XRP',       0.81, 885.169592],
             [12,'XLM',       0.27, 911.5277976],
-            [10,'CASH',      1.00, 8675.4572008],
+            [10,'CASH',      1.00, 9275.4572008],
         ];
         $this->_test_read_portfolio_as_of(2, '2021-01-01', $a21);
         $this->_test_read_portfolio_as_of(2, '2022-01-01', $a22);
