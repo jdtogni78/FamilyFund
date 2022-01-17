@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \App\Models\User $user
  * @property \Illuminate\Database\Eloquent\Collection $accountBalances
  * @property \Illuminate\Database\Eloquent\Collection $accountMatchingRules
- * @property \Illuminate\Database\Eloquent\Collection $accountTradingRules
  * @property \Illuminate\Database\Eloquent\Collection $transactions
  * @property string $code
  * @property string $nickname
@@ -107,14 +106,6 @@ class Account extends Model
     public function accountMatchingRules()
     {
         return $this->hasMany(\App\Models\AccountMatchingRule::class, 'account_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function accountTradingRules()
-    {
-        return $this->hasMany(\App\Models\AccountTradingRule::class, 'account_id');
     }
 
     /**

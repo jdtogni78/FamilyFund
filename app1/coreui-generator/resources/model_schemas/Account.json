@@ -125,10 +125,6 @@
     },
     {
         "type": "relation",
-        "relation": "1tm,AccountTradingRule,account_id"
-    },
-    {
-        "type": "relation",
         "relation": "1tm,Transaction,account_id"
     }
 ]

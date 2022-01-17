@@ -16,12 +16,6 @@
         <span>Account Matching Rules</span>
     </a>
 </li>
-<li class="nav-item {{ Request::is('accountTradingRules*') ? 'active' : '' }}">
-    <a class="nav-link" href="{{ route('accountTradingRules.index') }}">
-        <i class="nav-icon icon-cursor"></i>
-        <span>Account Trading Rules</span>
-    </a>
-</li>
 <li class="nav-item {{ Request::is('accounts*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('accounts.index') }}">
         <i class="nav-icon icon-cursor"></i>
@@ -56,12 +50,6 @@
     <a class="nav-link" href="{{ route('portfolios.index') }}">
         <i class="nav-icon icon-cursor"></i>
         <span>Portfolios</span>
-    </a>
-</li>
-<li class="nav-item {{ Request::is('tradingRules*') ? 'active' : '' }}">
-    <a class="nav-link" href="{{ route('tradingRules.index') }}">
-        <i class="nav-icon icon-cursor"></i>
-        <span>Trading Rules</span>
     </a>
 </li>
 <li class="nav-item {{ Request::is('transactions*') ? 'active' : '' }}">
