@@ -390,7 +390,8 @@ CREATE TABLE `funds` (
 
 /*!40000 ALTER TABLE `funds` DISABLE KEYS */;
 INSERT INTO `funds` VALUES (1,'IB Fund','To create generational wealth','2021-12-28 23:38:52','2022-01-07 21:44:19',NULL),
-(2,'Fidelity Fund','Something','2022-01-09 02:14:45','2022-01-07 21:44:19',NULL);
+(2,'Fidelity Fund','Something','2022-01-09 02:14:45','2022-01-07 21:44:19',NULL),
+(165,'IBKR Tests','Testing with DSTrader',NULL,'2022-01-17 08:31:00',NULL);
 /*!40000 ALTER TABLE `funds` ENABLE KEYS */;
 
 --
@@ -452,7 +453,7 @@ INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),
 (5,'2021_12_22_154221_create_asset_change_logs_table',1),
 (6,'2022_01_07_130430_create_account_balances_table',1),
 (7,'2022_01_07_130434_create_account_matching_rules_table',1),
--- (8,'2022_01_07_130437_create_account_trading_rules_table',1),
+(8,'2022_01_07_130437_create_account_trading_rules_table',1),
 (9,'2022_01_07_130439_create_accounts_table',1),
 (10,'2022_01_07_130441_create_asset_prices_table',1),
 (11,'2022_01_07_130443_create_assets_table',1),
@@ -460,7 +461,7 @@ INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),
 (13,'2022_01_07_130447_create_matching_rules_table',1),
 (14,'2022_01_07_130449_create_portfolio_assets_table',1),
 (15,'2022_01_07_130451_create_portfolios_table',1),
--- (16,'2022_01_07_130452_create_trading_rules_table',1),
+(16,'2022_01_07_130452_create_trading_rules_table',1),
 (17,'2022_01_07_130454_create_transactions_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
@@ -603,7 +604,8 @@ CREATE TABLE `portfolios` (
 
 /*!40000 ALTER TABLE `portfolios` DISABLE KEYS */;
 INSERT INTO `portfolios` VALUES (1,1,'FFFidelity','2021-12-31 08:51:32','2021-12-31 11:51:37',NULL),
-(2,2,'FFIB','2021-12-31 19:54:41','2021-12-31 22:54:44',NULL);
+(2,2,'FFIB','2021-12-31 19:54:41','2021-12-31 22:54:44',NULL),
+(102,165,'IBKR1',NULL,'2022-01-17 08:31:33',NULL);
 /*!40000 ALTER TABLE `portfolios` ENABLE KEYS */;
 
 --
@@ -618,7 +620,7 @@ CREATE TABLE `transactions` (
   `source` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` decimal(13,2) NOT NULL,
-  `shares` decimal(19,4) NOT NULL,
+  `shares` decimal(19,4) DEFAULT NULL,
   `account_id` bigint(20) unsigned NOT NULL,
   `matching_rule_id` bigint(20) unsigned DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
@@ -728,4 +730,4 @@ INSERT INTO `users` VALUES (1,'NieceA1','niecea1@familyfund.com',NULL,'$2y$10$0I
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-16 20:58:54
+-- Dump completed on 2022-01-18  0:58:39
