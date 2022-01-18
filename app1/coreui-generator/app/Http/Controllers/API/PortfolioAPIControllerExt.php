@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreatePortfolioAPIRequest;
 use App\Http\Requests\API\UpdatePortfolioAPIRequest;
-use App\Http\Requests\API\GetPortfolioAPIRequest;
+use App\Http\Requests\API\BulkUpdatePortfolioAPIRequest;
 
 use App\Models\Utils;
 use App\Models\Portfolio;
@@ -97,5 +97,43 @@ class PortfolioAPIControllerExt extends PortfolioAPIController
     {
         $now = date('Y-m-d');
         return $this->showAsOf($id, $now);
+    }
+    
+    /**
+     * Update the specified Portfolio in storage.
+     * PUT/PATCH /portfolios/{code}/bulk_update
+     *
+     * @param int $code
+     * @param BulkUpdatePortfolioAPIRequest $request
+     *
+     * @return Response
+     */
+    public function bulkUpdate($code, BulkUpdatePortfolioAPIRequest $request)
+    {
+        $input = $request->all();
+
+        // /** @var Portfolio $portfolio */
+        $portfolio = Portfolio::where('code', '=', $code)->first();
+
+        if (empty($portfolio)) {
+            return $this->sendError('Portfolio not found');
+        }
+
+        // print_r($portfolio->toArray());
+        // print_r($input);
+        foreach($input as $symbol => $values) {
+            $price = $values['price'];
+            $position = $values['position'];
+
+            $asset = Asset::
+                where('feed_id', '=', $symbol)
+                ->where('source_feed', '=', $code)
+                ->first();
+            if ($asset == null) {
+                
+            }
+        }
+
+        return $this->sendResponse(new PortfolioResource($portfolio), 'Portfolio updated successfully');
     }
 }

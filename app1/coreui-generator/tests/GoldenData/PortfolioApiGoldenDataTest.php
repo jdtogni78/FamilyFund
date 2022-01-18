@@ -73,4 +73,5 @@ class PortfolioApiGoldenDataTest extends TestCase
         $this->_test_read_portfolio_as_of(2, '2021-01-01', $a21);
         $this->_test_read_portfolio_as_of(2, '2022-01-01', $a22);
     }
+
 }

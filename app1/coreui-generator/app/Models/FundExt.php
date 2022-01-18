@@ -13,22 +13,6 @@ use App\Models\Utils;
  */
 class FundExt extends Fund
 {
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     **/
-    public function accountExt()
-    {
-        return $this->hasOne(\App\Models\AccountExt::class, 'fund_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     **/
-    public function portfolioExt()
-    {
-        return $this->hasOne(\App\Models\PortfolioExt::class, 'fund_id');
-    }
-
     public function portfolio()
     {
         $portfolios = $this->portfolios();

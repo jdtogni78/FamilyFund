@@ -22,12 +22,12 @@ class AccountBalanceFactory extends Factory
     public function definition()
     {
         return [
-            'type' => $this->faker->word,
-        'shares' => $this->faker->word,
+            'type' => $this->faker->randomElement(['OWN', 'BOR']),
+        'shares' => $this->faker->randomFloat(4, $min = 0.0001, $max = 999999.9999),
         //'account_id' => $this->faker->word,
         //'transaction_id' => $this->faker->word,
-        'start_dt' => $this->faker->word,
-        'end_dt' => $this->faker->word,
+        'start_dt' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+        'end_dt' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
         //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
         //'created_at' => $this->faker->date('Y-m-d H:i:s')
         ];

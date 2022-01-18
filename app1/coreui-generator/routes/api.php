@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('portfolios/{id}/as_of/{as_of}', 'App\Http\Controllers\API\PortfolioAPIControllerExt@showAsOf');
+Route::get('portfolios/{code}/bulk_update', 'App\Http\Controllers\API\PortfolioAPIControllerExt@bulkUpdate');
 Route::get('funds/{id}/as_of/{as_of}', 'App\Http\Controllers\API\FundAPIControllerExt@showAsOf');
 Route::get('funds/{id}/performance_as_of/{as_of}', 'App\Http\Controllers\API\FundAPIControllerExt@showPerformanceAsOf');
 Route::get('funds/{id}/account_balances_as_of/{as_of}', 'App\Http\Controllers\API\FundAPIControllerExt@showAccountBalancesAsOf');
@@ -37,6 +38,6 @@ Route::resource('matching_rules', App\Http\Controllers\API\MatchingRuleAPIContro
 Route::resource('portfolio_assets', App\Http\Controllers\API\PortfolioAssetAPIController::class);
 
 Route::resource('portfolios', App\Http\Controllers\API\PortfolioAPIControllerExt::class);
-Route::resource('transactions', App\Http\Controllers\API\TransactionAPIControllerExt::class);
+Route::resource('transactions', App\Http\Controllers\API\TransactionAPIController::class);
 // Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
 Route::resource('asset_change_logs', App\Http\Controllers\API\AssetChangeLogAPIController::class);

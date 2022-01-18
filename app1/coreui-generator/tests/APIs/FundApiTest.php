@@ -29,21 +29,12 @@ class FundApiTest extends TestCase
         $this->assertApiResponse($fund);
     }
 
-    public static function createFund()
-    {        
-        $fund = Fund::factory()
-            ->has(Portfolio::factory()->count(1))
-            ->has(Account::factory()->count(1))
-            ->create();
-        return $fund;
-    }
-    
     /**
      * @test
      */
     public function test_read_fund()
     {
-        $fund = $this->createFund();
+        $fund = (new DataFactory())->setupFund();
 
         $this->response = $this->json(
             'GET',

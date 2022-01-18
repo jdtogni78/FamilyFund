@@ -30,8 +30,9 @@ class AccountApiTest extends TestCase
 
     public function createAccount()
     {
-        $fund = FundApiTest::createFund();
-        $account = $fund->accounts()->first();
+        $factory = new DataFactory();
+        $factory->setupFund();
+        $account = $factory->fundAccount;
         return $account;
     }
     /**
@@ -73,8 +74,7 @@ class AccountApiTest extends TestCase
      */
     public function test_delete_account()
     {
-        $fund = FundApiTest::createFund();
-        $account = $fund->accounts()->first();
+        $account = $this->createAccount();
 
         $this->response = $this->json(
             'DELETE',

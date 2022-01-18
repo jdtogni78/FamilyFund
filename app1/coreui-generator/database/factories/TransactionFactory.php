@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Transaction;
+use App\Models\TransactionExt;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TransactionFactory extends Factory
@@ -22,11 +22,11 @@ class TransactionFactory extends Factory
     public function definition()
     {
         return [
-            'source' => $this->faker->word,
-        'type' => $this->faker->word,
-        'value' => $this->faker->word,
-        'shares' => $this->faker->word,
-        //'account_id' => $this->faker->word,
+            'source' => $this->faker->randomElement(['SPO', 'DIR', 'MAT']),
+            'type' => $this->faker->randomElement(['PUR','SAL','BOR','REP']),
+            'value' => $this->faker->randomFloat(2, $min = 0.01, $max = 999999.99),
+        // 'shares' => $this->faker->word,
+        // 'account_id' => $this->faker->numberBetween(1, 12),
         //'matching_rule_id' => $this->faker->word,
         //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
         //'created_at' => $this->faker->date('Y-m-d H:i:s'),

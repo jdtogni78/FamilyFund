@@ -70,7 +70,7 @@ class Transaction extends Model
         'source' => 'required|string|max:3',
         'type' => 'required|string|max:3',
         'value' => 'required|numeric',
-        'shares' => 'required|numeric',
+        'shares' => 'nullable|numeric',
         'account_id' => 'required',
         'matching_rule_id' => 'nullable',
         'updated_at' => 'nullable',
