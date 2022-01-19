@@ -18,7 +18,7 @@ class PortfolioAssetResource extends JsonResource
             'id' => $this->id,
             'portfolio_id' => $this->portfolio_id,
             'asset_id' => $this->asset_id,
-            'shares' => $this->shares,
+            'position' => $this->position,
             'start_dt' => $this->start_dt,
             'end_dt' => $this->end_dt,
             'updated_at' => $this->updated_at,

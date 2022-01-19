@@ -19,7 +19,7 @@ class PortfolioAssetRepository extends BaseRepository
     protected $fieldSearchable = [
         'portfolio_id',
         'asset_id',
-        'shares',
+        'position',
         'start_dt',
         'end_dt'
     ];

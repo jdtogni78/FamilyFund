@@ -10,10 +10,10 @@
     <p>{{ $portfolioAsset->asset_id }}</p>
 </div>
 
-<!-- Shares Field -->
+<!-- Position Field -->
 <div class="form-group">
-    {!! Form::label('shares', 'Shares:') !!}
-    <p>{{ $portfolioAsset->shares }}</p>
+    {!! Form::label('position', 'Position:') !!}
+    <p>{{ $portfolioAsset->position }}</p>
 </div>
 
 <!-- Start Dt Field -->

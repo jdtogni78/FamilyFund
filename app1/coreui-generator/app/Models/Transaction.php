@@ -28,7 +28,7 @@ class Transaction extends Model
     use HasFactory;
 
     public $table = 'transactions';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -57,6 +57,7 @@ class Transaction extends Model
         'type' => 'string',
         'value' => 'decimal:2',
         'shares' => 'decimal:4',
+        'timestamp' => 'datetime',
         'account_id' => 'integer',
         'matching_rule_id' => 'integer'
     ];
@@ -71,6 +72,7 @@ class Transaction extends Model
         'type' => 'required|string|max:3',
         'value' => 'required|numeric',
         'shares' => 'nullable|numeric',
+        'timestamp' => 'required',
         'account_id' => 'required',
         'matching_rule_id' => 'nullable',
         'updated_at' => 'nullable',

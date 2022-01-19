@@ -4,7 +4,7 @@
             <tr>
                 <th>Portfolio Id</th>
         <th>Asset Id</th>
-        <th>Shares</th>
+        <th>Position</th>
         <th>Start Dt</th>
         <th>End Dt</th>
                 <th colspan="3">Action</th>
@@ -15,7 +15,7 @@
             <tr>
                 <td>{{ $portfolioAsset->portfolio_id }}</td>
             <td>{{ $portfolioAsset->asset_id }}</td>
-            <td>{{ $portfolioAsset->shares }}</td>
+            <td>{{ $portfolioAsset->position }}</td>
             <td>{{ $portfolioAsset->start_dt }}</td>
             <td>{{ $portfolioAsset->end_dt }}</td>
                 <td>

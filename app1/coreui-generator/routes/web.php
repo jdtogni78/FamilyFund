@@ -56,3 +56,6 @@ Route::resource('transactions', App\Http\Controllers\TransactionController::clas
 
 
 Route::resource('assetChangeLogs', App\Http\Controllers\AssetChangeLogController::class);
+
+
+Route::resource('transactionMatchings', App\Http\Controllers\TransactionMatchingController::class);

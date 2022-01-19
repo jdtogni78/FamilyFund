@@ -41,3 +41,4 @@ Route::resource('portfolios', App\Http\Controllers\API\PortfolioAPIControllerExt
 Route::resource('transactions', App\Http\Controllers\API\TransactionAPIController::class);
 // Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
 Route::resource('asset_change_logs', App\Http\Controllers\API\AssetChangeLogAPIController::class);
+Route::resource('transaction_matchings', App\Http\Controllers\API\TransactionMatchingAPIController::class);

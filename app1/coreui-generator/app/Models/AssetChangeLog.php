@@ -25,7 +25,7 @@ class AssetChangeLog extends Model
     use HasFactory;
 
     public $table = 'asset_change_logs';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 

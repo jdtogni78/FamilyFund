@@ -36,10 +36,10 @@
         "inView": true
     },
     {
-        "name": "shares",
+        "name": "position",
         "dbType": "decimal,21,8",
         "htmlType": null,
-        "validations": "required|numeric|numeric",
+        "validations": "required|numeric",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -75,7 +75,7 @@
         "name": "updated_at",
         "dbType": "datetime:nullable",
         "htmlType": "date",
-        "validations": "nullable|nullable",
+        "validations": "nullable",
         "searchable": false,
         "fillable": false,
         "primary": false,

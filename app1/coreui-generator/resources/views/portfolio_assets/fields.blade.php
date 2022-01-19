@@ -10,10 +10,10 @@
     {!! Form::number('asset_id', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Shares Field -->
+<!-- Position Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('shares', 'Shares:') !!}
-    {!! Form::number('shares', null, ['class' => 'form-control']) !!}
+    {!! Form::label('position', 'Position:') !!}
+    {!! Form::number('position', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Start Dt Field -->

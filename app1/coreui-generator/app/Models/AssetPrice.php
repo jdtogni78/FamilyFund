@@ -24,7 +24,7 @@ class AssetPrice extends Model
     use HasFactory;
 
     public $table = 'asset_prices';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 

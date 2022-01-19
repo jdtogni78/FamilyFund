@@ -23,7 +23,7 @@ class AccountMatchingRule extends Model
     use HasFactory;
 
     public $table = 'account_matching_rules';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 

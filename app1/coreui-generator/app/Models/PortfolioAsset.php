@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \App\Models\Portfolio $portfolio
  * @property integer $portfolio_id
  * @property integer $asset_id
- * @property number $shares
+ * @property number $position
  * @property string $start_dt
  * @property string $end_dt
  */
@@ -26,7 +26,7 @@ class PortfolioAsset extends Model
     use HasFactory;
 
     public $table = 'portfolio_assets';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -38,7 +38,7 @@ class PortfolioAsset extends Model
     public $fillable = [
         'portfolio_id',
         'asset_id',
-        'shares',
+        'position',
         'start_dt',
         'end_dt'
     ];
@@ -52,7 +52,7 @@ class PortfolioAsset extends Model
         'id' => 'integer',
         'portfolio_id' => 'integer',
         'asset_id' => 'integer',
-        'shares' => 'decimal:8',
+        'position' => 'decimal:2',
         'start_dt' => 'date',
         'end_dt' => 'date'
     ];
@@ -65,7 +65,7 @@ class PortfolioAsset extends Model
     public static $rules = [
         'portfolio_id' => 'required',
         'asset_id' => 'required',
-        'shares' => 'required|numeric',
+        'position' => 'required|numeric',
         'start_dt' => 'required',
         'end_dt' => 'required',
         'updated_at' => 'nullable',

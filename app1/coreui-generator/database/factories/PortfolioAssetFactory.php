@@ -24,7 +24,7 @@ class PortfolioAssetFactory extends Factory
         return [
             //'portfolio_id' => $this->faker->word,
         //'asset_id' => $this->faker->word,
-        'shares' => $this->faker->word,
+        'position' => $this->faker->word,
         'start_dt' => $this->faker->word,
         'end_dt' => $this->faker->word,
         //'updated_at' => $this->faker->date('Y-m-d H:i:s'),

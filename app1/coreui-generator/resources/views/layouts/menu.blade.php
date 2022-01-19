@@ -76,3 +76,9 @@
         <span>Asset Change Logs</span>
     </a>
 </li>
+<li class="nav-item {{ Request::is('transactionMatchings*') ? 'active' : '' }}">
+    <a class="nav-link" href="{{ route('transactionMatchings.index') }}">
+        <i class="nav-icon icon-cursor"></i>
+        <span>Transaction Matchings</span>
+    </a>
+</li>
