@@ -454,6 +454,24 @@ CREATE TABLE `migrations` (
 -- Dumping data for table `migrations`
 --
 
+/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),
+(2,'2014_10_12_100000_create_password_resets_table',1),
+(3,'2019_08_19_000000_create_failed_jobs_table',1),
+(4,'2019_12_14_000001_create_personal_access_tokens_table',1),
+(5,'2022_01_07_130410_create_matching_rules_table',1),
+(6,'2022_01_07_130412_create_assets_table',1),
+(7,'2022_01_07_130420_create_funds_table',1),
+(8,'2022_01_07_130423_create_portfolios_table',1),
+(9,'2022_01_07_130425_create_accounts_table',1),
+(10,'2022_01_07_130428_create_transactions_table',1),
+(11,'2022_01_07_130430_create_account_balances_table',1),
+(12,'2022_01_07_130434_create_account_matching_rules_table',1),
+(13,'2022_01_07_130441_create_asset_prices_table',1),
+(14,'2022_01_07_130444_create_asset_change_logs_table',1),
+(15,'2022_01_07_130449_create_portfolio_assets_table',1),
+(16,'2022_01_19_045001_create_transaction_matchings_table',1);
+/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 --
 -- Table structure for table `password_resets`
@@ -608,18 +626,18 @@ DROP TABLE IF EXISTS `transaction_matchings`;
 CREATE TABLE `transaction_matchings` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `matching_rule_id` bigint(20) unsigned NOT NULL,
-  `source_transaction_id` bigint(20) unsigned NOT NULL,
-  `target_transaction_id` bigint(20) unsigned NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `transaction_id` bigint(20) unsigned NOT NULL,
+  `reference_transaction_id` bigint(20) unsigned NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `transaction_matchings_matching_rule_id_foreign` (`matching_rule_id`),
-  KEY `transaction_matchings_source_transaction_id_foreign` (`source_transaction_id`),
-  KEY `transaction_matchings_target_transaction_id_foreign` (`target_transaction_id`),
+  KEY `transaction_matchings_transaction_id_foreign` (`transaction_id`),
+  KEY `transaction_matchings_reference_transaction_id_foreign` (`reference_transaction_id`),
   CONSTRAINT `transaction_matchings_matching_rule_id_foreign` FOREIGN KEY (`matching_rule_id`) REFERENCES `matching_rules` (`id`),
-  CONSTRAINT `transaction_matchings_source_transaction_id_foreign` FOREIGN KEY (`source_transaction_id`) REFERENCES `transactions` (`id`),
-  CONSTRAINT `transaction_matchings_target_transaction_id_foreign` FOREIGN KEY (`target_transaction_id`) REFERENCES `transactions` (`id`)
+  CONSTRAINT `transaction_matchings_reference_transaction_id_foreign` FOREIGN KEY (`reference_transaction_id`) REFERENCES `transactions` (`id`),
+  CONSTRAINT `transaction_matchings_transaction_id_foreign` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -658,15 +676,12 @@ CREATE TABLE `transactions` (
   `shares` decimal(19,4) DEFAULT NULL,
   `timestamp` timestamp NOT NULL,
   `account_id` bigint(20) unsigned NOT NULL,
-  `matching_rule_id` bigint(20) unsigned DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `transactions_account_id_foreign` (`account_id`),
-  KEY `transactions_matching_rule_id_foreign` (`matching_rule_id`),
-  CONSTRAINT `transactions_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
-  CONSTRAINT `transactions_matching_rule_id_foreign` FOREIGN KEY (`matching_rule_id`) REFERENCES `matching_rules` (`id`)
+  CONSTRAINT `transactions_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
