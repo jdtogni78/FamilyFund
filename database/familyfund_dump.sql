@@ -21,11 +21,6 @@ DROP TABLE IF EXISTS `transactions`;
 -- Host: 127.0.0.1    Database: familyfund
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.6.5-MariaDB
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -445,25 +440,6 @@ CREATE TABLE `migrations` (
 -- Dumping data for table `migrations`
 --
 
-/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),
-(2,'2014_10_12_100000_create_password_resets_table',1),
-(3,'2019_08_19_000000_create_failed_jobs_table',1),
-(4,'2019_12_14_000001_create_personal_access_tokens_table',1),
-(5,'2021_12_22_154221_create_asset_change_logs_table',1),
-(6,'2022_01_07_130430_create_account_balances_table',1),
-(7,'2022_01_07_130434_create_account_matching_rules_table',1),
-(8,'2022_01_07_130437_create_account_trading_rules_table',1),
-(9,'2022_01_07_130439_create_accounts_table',1),
-(10,'2022_01_07_130441_create_asset_prices_table',1),
-(11,'2022_01_07_130443_create_assets_table',1),
-(12,'2022_01_07_130445_create_funds_table',1),
-(13,'2022_01_07_130447_create_matching_rules_table',1),
-(14,'2022_01_07_130449_create_portfolio_assets_table',1),
-(15,'2022_01_07_130451_create_portfolios_table',1),
-(16,'2022_01_07_130452_create_trading_rules_table',1),
-(17,'2022_01_07_130454_create_transactions_table',1);
-/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 --
 -- Table structure for table `password_resets`
@@ -740,14 +716,15 @@ INSERT INTO `users` VALUES (1,'NieceA1','niecea1@familyfund.com',NULL,'$2y$10$0I
 (7,'Org1','org1@familyfund.com',NULL,'$2y$10$TumucOzMRLEJXfpHHA8eeuzvwJUrQONEzyPgZidLVuvoCOmGIKaJq',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16'),
 (8,'Sister2','sister2@familyfund.com',NULL,'$2y$10$TumucOzMRLEJXfpHHA8eeuzvwJUrQONEzyPgZidLVuvoCOmGIKaJq',NULL,NULL,'2022-01-09 02:23:37');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+
+--
+-- Dumping routines for database 'familyfund'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-18 17:19:40
+-- Dump completed on 2022-01-18 20:42:14
