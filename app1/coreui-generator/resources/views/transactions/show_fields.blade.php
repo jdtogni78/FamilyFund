@@ -28,9 +28,3 @@
     <p>{{ $transaction->account_id }}</p>
 </div>
 
-<!-- Matching Rule Id Field -->
-<div class="form-group">
-    {!! Form::label('matching_rule_id', 'Matching Rule Id:') !!}
-    <p>{{ $transaction->matching_rule_id }}</p>
-</div>
-

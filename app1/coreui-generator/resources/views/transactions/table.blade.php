@@ -7,7 +7,6 @@
         <th>Value</th>
         <th>Shares</th>
         <th>Account Id</th>
-        <th>Matching Rule Id</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>
@@ -19,7 +18,6 @@
             <td>{{ $transaction->value }}</td>
             <td>{{ $transaction->shares }}</td>
             <td>{{ $transaction->account_id }}</td>
-            <td>{{ $transaction->matching_rule_id }}</td>
                 <td>
                     {!! Form::open(['route' => ['transactions.destroy', $transaction->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

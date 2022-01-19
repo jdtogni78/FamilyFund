@@ -17,8 +17,8 @@ class TransactionMatchingResource extends JsonResource
         return [
             'id' => $this->id,
             'matching_rule_id' => $this->matching_rule_id,
-            'source_transaction_id' => $this->source_transaction_id,
-            'target_transaction_id' => $this->target_transaction_id,
+            'transaction_id' => $this->transaction_id,
+            'reference_transaction_id' => $this->reference_transaction_id,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
             'deleted_at' => $this->deleted_at

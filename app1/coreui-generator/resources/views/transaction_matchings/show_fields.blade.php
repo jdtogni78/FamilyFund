@@ -4,15 +4,15 @@
     <p>{{ $transactionMatching->matching_rule_id }}</p>
 </div>
 
-<!-- Source Transaction Id Field -->
+<!-- Transaction Id Field -->
 <div class="form-group">
-    {!! Form::label('source_transaction_id', 'Source Transaction Id:') !!}
-    <p>{{ $transactionMatching->source_transaction_id }}</p>
+    {!! Form::label('transaction_id', 'Transaction Id:') !!}
+    <p>{{ $transactionMatching->transaction_id }}</p>
 </div>
 
-<!-- Target Transaction Id Field -->
+<!-- Reference Transaction Id Field -->
 <div class="form-group">
-    {!! Form::label('target_transaction_id', 'Target Transaction Id:') !!}
-    <p>{{ $transactionMatching->target_transaction_id }}</p>
+    {!! Form::label('reference_transaction_id', 'Reference Transaction Id:') !!}
+    <p>{{ $transactionMatching->reference_transaction_id }}</p>
 </div>
 

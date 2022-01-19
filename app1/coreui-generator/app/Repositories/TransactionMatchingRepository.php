@@ -18,8 +18,8 @@ class TransactionMatchingRepository extends BaseRepository
      */
     protected $fieldSearchable = [
         'matching_rule_id',
-        'source_transaction_id',
-        'target_transaction_id'
+        'transaction_id',
+        'reference_transaction_id'
     ];
 
     /**

@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property number $value
  * @property number $shares
  * @property integer $account_id
- * @property integer $matching_rule_id
  */
 class Transaction extends Model
 {
@@ -42,8 +41,7 @@ class Transaction extends Model
         'type',
         'value',
         'shares',
-        'account_id',
-        'matching_rule_id'
+        'account_id'
     ];
 
     /**
@@ -58,8 +56,7 @@ class Transaction extends Model
         'value' => 'decimal:2',
         'shares' => 'decimal:4',
         'timestamp' => 'datetime',
-        'account_id' => 'integer',
-        'matching_rule_id' => 'integer'
+        'account_id' => 'integer'
     ];
 
     /**
@@ -74,7 +71,6 @@ class Transaction extends Model
         'shares' => 'nullable|numeric',
         'timestamp' => 'required',
         'account_id' => 'required',
-        'matching_rule_id' => 'nullable',
         'updated_at' => 'nullable',
         'created_at' => 'nullable',
         'deleted_at' => 'nullable'

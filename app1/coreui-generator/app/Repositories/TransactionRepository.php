@@ -21,8 +21,7 @@ class TransactionRepository extends BaseRepository
         'type',
         'value',
         'shares',
-        'account_id',
-        'matching_rule_id'
+        'account_id'
     ];
 
     /**

@@ -17,8 +17,8 @@ class CreateTransactionMatchingsTable extends Migration
         Schema::create('transaction_matchings', function (Blueprint $table) {
             $table->bigInteger('id', true, true);
             $table->foreignId('matching_rule_id')->constrained();
-            $table->foreignId('source_transaction_id')->references('id')->on('transactions')->constrained();
-            $table->foreignId('target_transaction_id')->references('id')->on('transactions')->constrained();
+            $table->foreignId('transaction_id')->constrained();
+            $table->foreignId('reference_transaction_id')->references('id')->on('transactions')->constrained();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();

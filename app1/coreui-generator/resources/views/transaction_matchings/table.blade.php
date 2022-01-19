@@ -3,8 +3,8 @@
         <thead>
             <tr>
                 <th>Matching Rule Id</th>
-        <th>Source Transaction Id</th>
-        <th>Target Transaction Id</th>
+        <th>Transaction Id</th>
+        <th>Reference Transaction Id</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>
@@ -12,8 +12,8 @@
         @foreach($transactionMatchings as $transactionMatching)
             <tr>
                 <td>{{ $transactionMatching->matching_rule_id }}</td>
-            <td>{{ $transactionMatching->source_transaction_id }}</td>
-            <td>{{ $transactionMatching->target_transaction_id }}</td>
+            <td>{{ $transactionMatching->transaction_id }}</td>
+            <td>{{ $transactionMatching->reference_transaction_id }}</td>
                 <td>
                     {!! Form::open(['route' => ['transactionMatchings.destroy', $transactionMatching->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

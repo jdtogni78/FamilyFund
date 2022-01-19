@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \App\Models\Transaction $transaction1
  * @property \App\Models\MatchingRule $matchingRule
  * @property integer $matching_rule_id
- * @property integer $source_transaction_id
- * @property integer $target_transaction_id
+ * @property integer $transaction_id
+ * @property integer $reference_transaction_id
  */
 class TransactionMatching extends Model
 {
@@ -33,8 +33,8 @@ class TransactionMatching extends Model
 
     public $fillable = [
         'matching_rule_id',
-        'source_transaction_id',
-        'target_transaction_id'
+        'transaction_id',
+        'reference_transaction_id'
     ];
 
     /**
@@ -45,8 +45,8 @@ class TransactionMatching extends Model
     protected $casts = [
         'id' => 'integer',
         'matching_rule_id' => 'integer',
-        'source_transaction_id' => 'integer',
-        'target_transaction_id' => 'integer'
+        'transaction_id' => 'integer',
+        'reference_transaction_id' => 'integer'
     ];
 
     /**
@@ -56,10 +56,10 @@ class TransactionMatching extends Model
      */
     public static $rules = [
         'matching_rule_id' => 'nullable',
-        'source_transaction_id' => 'required',
-        'target_transaction_id' => 'nullable',
+        'transaction_id' => 'required',
+        'reference_transaction_id' => 'required',
         'updated_at' => 'nullable',
-        'created_at' => 'required',
+        'created_at' => 'nullable',
         'deleted_at' => 'nullable'
     ];
 

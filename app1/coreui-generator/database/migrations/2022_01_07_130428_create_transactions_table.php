@@ -22,7 +22,6 @@ class CreateTransactionsTable extends Migration
             $table->decimal('shares', 19, 4)->nullable();
             $table->datetime('timestamp');
             $table->foreignId('account_id')->constrained();
-            $table->foreignId('matching_rule_id')->nullable()->constrained();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();
