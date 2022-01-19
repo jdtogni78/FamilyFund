@@ -1,40 +1,13 @@
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
-DROP TABLE IF EXISTS `accounts`;
-DROP TABLE IF EXISTS `transactions`;
-DROP TABLE IF EXISTS `account_balances`;
-DROP TABLE IF EXISTS `account_matching_rules`;
-DROP TABLE IF EXISTS `accounts`;
-DROP TABLE IF EXISTS `asset_change_logs`;
-DROP TABLE IF EXISTS `asset_prices`;
-DROP TABLE IF EXISTS `assets`;
-DROP TABLE IF EXISTS `failed_jobs`;
-DROP TABLE IF EXISTS `funds`;
-DROP TABLE IF EXISTS `matching_rules`;
-DROP TABLE IF EXISTS `migrations`;
-DROP TABLE IF EXISTS `password_resets`;
-DROP TABLE IF EXISTS `personal_access_tokens`;
-DROP TABLE IF EXISTS `portfolio_assets`;
-DROP TABLE IF EXISTS `portfolios`;
-DROP TABLE IF EXISTS `transactions`;
-DROP TABLE IF EXISTS `transaction_matchings`;
-
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
 -- MySQL dump 10.13  Distrib 8.0.27, for macos11 (x86_64)
 --
 -- Host: 127.0.0.1    Database: familyfund
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.6.5-MariaDB
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -43,34 +16,10 @@ DROP TABLE IF EXISTS `transaction_matchings`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `account_balances`
---
-
-DROP TABLE IF EXISTS `account_balances`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `account_balances` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `type` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shares` decimal(19,4) NOT NULL,
-  `account_id` bigint(20) unsigned DEFAULT NULL,
-  `transaction_id` bigint(20) unsigned NOT NULL,
-  `start_dt` date NOT NULL DEFAULT curdate(),
-  `end_dt` date NOT NULL DEFAULT '9999-12-31',
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `account_balances_account_id_foreign` (`account_id`),
-  KEY `account_balances_transaction_id_foreign` (`transaction_id`),
-  CONSTRAINT `account_balances_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
-  CONSTRAINT `account_balances_transaction_id_foreign` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `account_balances`
 --
 
+LOCK TABLES `account_balances` WRITE;
 /*!40000 ALTER TABLE `account_balances` DISABLE KEYS */;
 INSERT INTO `account_balances` VALUES (1,'OWN',2000.0000,1,2,'2021-01-02','2021-07-02','2022-01-17 03:22:32','2021-03-31 00:00:00'),
 (2,'OWN',2000.0000,2,3,'2021-01-02','2021-07-02','2022-01-17 03:22:32','2021-03-31 00:00:00'),
@@ -119,33 +68,13 @@ INSERT INTO `account_balances` VALUES (1,'OWN',2000.0000,1,2,'2021-01-02','2021-
 (45,'OWN',25000.0000,14,35,'2021-01-01','2021-07-02','2022-01-17 03:58:40','2022-01-11 17:49:41'),
 (46,'OWN',25529.2196,14,36,'2021-07-02','9999-12-31','2022-01-17 04:18:32','2022-01-12 02:28:21');
 /*!40000 ALTER TABLE `account_balances` ENABLE KEYS */;
-
---
--- Table structure for table `account_matching_rules`
---
-
-DROP TABLE IF EXISTS `account_matching_rules`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `account_matching_rules` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `account_id` bigint(20) unsigned NOT NULL,
-  `matching_rule_id` bigint(20) unsigned NOT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `account_matching_rules_account_id_foreign` (`account_id`),
-  KEY `account_matching_rules_matching_rule_id_foreign` (`matching_rule_id`),
-  CONSTRAINT `account_matching_rules_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
-  CONSTRAINT `account_matching_rules_matching_rule_id_foreign` FOREIGN KEY (`matching_rule_id`) REFERENCES `matching_rules` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `account_matching_rules`
 --
 
+LOCK TABLES `account_matching_rules` WRITE;
 /*!40000 ALTER TABLE `account_matching_rules` DISABLE KEYS */;
 INSERT INTO `account_matching_rules` VALUES (1,1,1,'2021-12-29 03:18:34','2022-01-07 21:44:19',NULL),
 (2,2,1,'2021-12-29 03:18:42','2022-01-07 21:44:19',NULL),
@@ -165,36 +94,13 @@ INSERT INTO `account_matching_rules` VALUES (1,1,1,'2021-12-29 03:18:34','2022-0
 (16,11,3,NULL,'2022-01-12 05:27:52',NULL),
 (17,12,4,NULL,'2022-01-12 05:27:52',NULL);
 /*!40000 ALTER TABLE `account_matching_rules` ENABLE KEYS */;
-
---
--- Table structure for table `accounts`
---
-
-DROP TABLE IF EXISTS `accounts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `accounts` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `code` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nickname` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email_cc` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_id` bigint(20) unsigned DEFAULT NULL,
-  `fund_id` bigint(20) unsigned NOT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `accounts_user_id_foreign` (`user_id`),
-  KEY `accounts_fund_id_foreign` (`fund_id`),
-  CONSTRAINT `accounts_fund_id_foreign` FOREIGN KEY (`fund_id`) REFERENCES `funds` (`id`),
-  CONSTRAINT `accounts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `accounts`
 --
 
+LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
 INSERT INTO `accounts` VALUES (1,'','A',NULL,1,1,'2021-12-29 02:58:09','2022-01-07 21:44:19',NULL),
 (2,'','A',NULL,2,1,'2021-12-29 02:58:18','2022-01-07 21:44:19',NULL),
@@ -211,61 +117,22 @@ INSERT INTO `accounts` VALUES (1,'','A',NULL,1,1,'2021-12-29 02:58:09','2022-01-
 (13,'F1','F1',NULL,NULL,1,NULL,'2022-01-11 17:43:38',NULL),
 (14,'F2','F2',NULL,NULL,2,NULL,'2022-01-11 17:43:38',NULL);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
-
---
--- Table structure for table `asset_change_logs`
---
-
-DROP TABLE IF EXISTS `asset_change_logs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asset_change_logs` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `action` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `asset_id` bigint(20) unsigned NOT NULL,
-  `field` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `datetime` timestamp NOT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `asset_change_logs_asset_id_foreign` (`asset_id`),
-  CONSTRAINT `asset_change_logs_asset_id_foreign` FOREIGN KEY (`asset_id`) REFERENCES `assets` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `asset_change_logs`
 --
 
+LOCK TABLES `asset_change_logs` WRITE;
 /*!40000 ALTER TABLE `asset_change_logs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `asset_change_logs` ENABLE KEYS */;
-
---
--- Table structure for table `asset_prices`
---
-
-DROP TABLE IF EXISTS `asset_prices`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asset_prices` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `asset_id` bigint(20) unsigned NOT NULL,
-  `price` decimal(13,2) NOT NULL,
-  `start_dt` date NOT NULL DEFAULT curdate(),
-  `end_dt` date NOT NULL DEFAULT '9999-12-31',
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `asset_prices_asset_id_foreign` (`asset_id`),
-  CONSTRAINT `asset_prices_asset_id_foreign` FOREIGN KEY (`asset_id`) REFERENCES `assets` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `asset_prices`
 --
 
+LOCK TABLES `asset_prices` WRITE;
 /*!40000 ALTER TABLE `asset_prices` DISABLE KEYS */;
 INSERT INTO `asset_prices` VALUES (1,1,144.57,'2021-12-31','2022-01-09','2022-01-17 03:48:22','2022-01-07 21:44:19'),
 (2,2,87.55,'2021-12-31','2022-01-09','2022-01-17 03:48:22','2022-01-07 21:44:19'),
@@ -307,31 +174,13 @@ INSERT INTO `asset_prices` VALUES (1,1,144.57,'2021-12-31','2022-01-09','2022-01
 (39,12,0.26,'2022-01-09','9999-12-31','2022-01-17 03:48:22','2022-01-09 01:53:25'),
 (40,13,375.38,'2022-01-09','9999-12-31','2022-01-17 03:48:22','2022-01-09 01:53:25');
 /*!40000 ALTER TABLE `asset_prices` ENABLE KEYS */;
-
---
--- Table structure for table `assets`
---
-
-DROP TABLE IF EXISTS `assets`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `assets` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `source_feed` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `feed_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `assets`
 --
 
+LOCK TABLES `assets` WRITE;
 /*!40000 ALTER TABLE `assets` DISABLE KEYS */;
 INSERT INTO `assets` VALUES (1,'SPXL','STO','tws','SPXL','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
 (2,'TECL','STO','tws','TECL','2021-12-31 10:05:12','2021-12-31 11:55:54',NULL),
@@ -347,113 +196,47 @@ INSERT INTO `assets` VALUES (1,'SPXL','STO','tws','SPXL','2021-12-31 10:05:12','
 (12,'XLM','DC','CoinBase','XLM',NULL,'2021-12-31 22:29:53',NULL),
 (13,'BCH','DC','CoinBase','BCH',NULL,'2021-12-31 22:29:53',NULL);
 /*!40000 ALTER TABLE `assets` ENABLE KEYS */;
-
---
--- Table structure for table `failed_jobs`
---
-
-DROP TABLE IF EXISTS `failed_jobs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `failed_jobs` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `failed_jobs`
 --
 
+LOCK TABLES `failed_jobs` WRITE;
 /*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
-
---
--- Table structure for table `funds`
---
-
-DROP TABLE IF EXISTS `funds`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `funds` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `goal` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `funds`
 --
 
+LOCK TABLES `funds` WRITE;
 /*!40000 ALTER TABLE `funds` DISABLE KEYS */;
 INSERT INTO `funds` VALUES (1,'IB Fund','To create generational wealth','2021-12-28 23:38:52','2022-01-07 21:44:19',NULL),
 (2,'Fidelity Fund','Something','2022-01-09 02:14:45','2022-01-07 21:44:19',NULL),
 (165,'IBKR Tests','Testing with DSTrader',NULL,'2022-01-17 08:31:00',NULL);
 /*!40000 ALTER TABLE `funds` ENABLE KEYS */;
-
---
--- Table structure for table `matching_rules`
---
-
-DROP TABLE IF EXISTS `matching_rules`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `matching_rules` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dollar_range_start` decimal(13,2) DEFAULT 0.00,
-  `dollar_range_end` decimal(13,2) DEFAULT NULL,
-  `date_start` date NOT NULL,
-  `date_end` date NOT NULL,
-  `match_percent` decimal(5,2) NOT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `matching_rules`
 --
 
+LOCK TABLES `matching_rules` WRITE;
 /*!40000 ALTER TABLE `matching_rules` DISABLE KEYS */;
 INSERT INTO `matching_rules` VALUES (1,'100% up to $200',0.00,200.00,'2021-01-01','2022-01-01',100.00,'2020-01-01 00:12:00','2022-01-07 21:44:19'),
 (2,'100% up to $500',0.00,500.00,'2021-01-01','2022-01-01',100.00,'2020-01-01 00:00:00','2022-01-07 21:44:19'),
 (3,'100% up to $500',0.00,500.00,'2022-01-01','2023-01-01',100.00,'2020-01-01 00:00:00','2022-01-07 21:44:19'),
 (4,'100% up to $200',0.00,200.00,'2022-01-01','2023-01-01',100.00,'2022-01-01 00:00:00','2022-01-07 21:44:19');
 /*!40000 ALTER TABLE `matching_rules` ENABLE KEYS */;
-
---
--- Table structure for table `migrations`
---
-
-DROP TABLE IF EXISTS `migrations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `migrations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `migrations`
 --
 
+LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),
 (2,'2014_10_12_100000_create_password_resets_table',1),
@@ -472,87 +255,31 @@ INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),
 (15,'2022_01_07_130449_create_portfolio_assets_table',1),
 (16,'2022_01_19_045001_create_transaction_matchings_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
-
---
--- Table structure for table `password_resets`
---
-
-DROP TABLE IF EXISTS `password_resets`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  KEY `password_resets_email_index` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `password_resets`
 --
 
+LOCK TABLES `password_resets` WRITE;
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
-
---
--- Table structure for table `personal_access_tokens`
---
-
-DROP TABLE IF EXISTS `personal_access_tokens`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `personal_access_tokens` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tokenable_id` bigint(20) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `last_used_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
-  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `personal_access_tokens`
 --
 
+LOCK TABLES `personal_access_tokens` WRITE;
 /*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
 /*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
-
---
--- Table structure for table `portfolio_assets`
---
-
-DROP TABLE IF EXISTS `portfolio_assets`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `portfolio_assets` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `portfolio_id` bigint(20) unsigned NOT NULL,
-  `asset_id` bigint(20) unsigned NOT NULL,
-  `position` decimal(21,8) NOT NULL,
-  `start_dt` date NOT NULL DEFAULT curdate(),
-  `end_dt` date NOT NULL DEFAULT '9999-12-31',
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `portfolio_assets_portfolio_id_foreign` (`portfolio_id`),
-  KEY `portfolio_assets_asset_id_foreign` (`asset_id`),
-  CONSTRAINT `portfolio_assets_asset_id_foreign` FOREIGN KEY (`asset_id`) REFERENCES `assets` (`id`),
-  CONSTRAINT `portfolio_assets_portfolio_id_foreign` FOREIGN KEY (`portfolio_id`) REFERENCES `portfolios` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `portfolio_assets`
 --
 
+LOCK TABLES `portfolio_assets` WRITE;
 /*!40000 ALTER TABLE `portfolio_assets` DISABLE KEYS */;
 INSERT INTO `portfolio_assets` VALUES (1,1,1,32.00000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19'),
 (2,1,2,53.00000000,'2021-01-01','9999-12-31','2022-01-04 14:56:59','2022-01-07 21:44:19'),
@@ -585,113 +312,49 @@ INSERT INTO `portfolio_assets` VALUES (1,1,1,32.00000000,'2021-01-01','9999-12-3
 (30,2,10,6182.78184414,'2022-01-09','9999-12-31','2022-01-16 21:01:31','2022-01-16 20:20:06'),
 (31,2,10,9275.45720080,'2021-07-02','2022-01-09','2022-01-17 03:59:31','2022-01-16 20:20:06');
 /*!40000 ALTER TABLE `portfolio_assets` ENABLE KEYS */;
-
---
--- Table structure for table `portfolios`
---
-
-DROP TABLE IF EXISTS `portfolios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `portfolios` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `fund_id` bigint(20) unsigned NOT NULL,
-  `code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `portfolios_fund_id_foreign` (`fund_id`),
-  CONSTRAINT `portfolios_fund_id_foreign` FOREIGN KEY (`fund_id`) REFERENCES `funds` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `portfolios`
 --
 
+LOCK TABLES `portfolios` WRITE;
 /*!40000 ALTER TABLE `portfolios` DISABLE KEYS */;
 INSERT INTO `portfolios` VALUES (1,1,'FFFidelity','2021-12-31 08:51:32','2021-12-31 11:51:37',NULL),
 (2,2,'FFIB','2021-12-31 19:54:41','2021-12-31 22:54:44',NULL),
 (102,165,'IBKR1',NULL,'2022-01-17 08:31:33',NULL);
 /*!40000 ALTER TABLE `portfolios` ENABLE KEYS */;
-
---
--- Table structure for table `transaction_matchings`
---
-
-DROP TABLE IF EXISTS `transaction_matchings`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `transaction_matchings` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `matching_rule_id` bigint(20) unsigned NOT NULL,
-  `transaction_id` bigint(20) unsigned NOT NULL,
-  `reference_transaction_id` bigint(20) unsigned NOT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `transaction_matchings_matching_rule_id_foreign` (`matching_rule_id`),
-  KEY `transaction_matchings_transaction_id_foreign` (`transaction_id`),
-  KEY `transaction_matchings_reference_transaction_id_foreign` (`reference_transaction_id`),
-  CONSTRAINT `transaction_matchings_matching_rule_id_foreign` FOREIGN KEY (`matching_rule_id`) REFERENCES `matching_rules` (`id`),
-  CONSTRAINT `transaction_matchings_reference_transaction_id_foreign` FOREIGN KEY (`reference_transaction_id`) REFERENCES `transactions` (`id`),
-  CONSTRAINT `transaction_matchings_transaction_id_foreign` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `transaction_matchings`
 --
 
+LOCK TABLES `transaction_matchings` WRITE;
 /*!40000 ALTER TABLE `transaction_matchings` DISABLE KEYS */;
-INSERT INTO `transaction_matchings` VALUES (1,1,9,8,NULL,NULL,NULL),
-(2,1,10,9,NULL,NULL,NULL),
-(3,1,17,16,NULL,NULL,NULL),
-(4,1,21,20,NULL,NULL,NULL),
-(5,1,25,24,NULL,NULL,NULL),
-(6,1,29,28,NULL,NULL,NULL),
-(7,1,31,30,NULL,NULL,NULL),
-(8,1,44,43,NULL,NULL,NULL),
-(9,1,45,44,NULL,NULL,NULL),
-(10,4,19,18,NULL,NULL,NULL),
-(11,4,23,22,NULL,NULL,NULL),
-(12,4,27,26,NULL,NULL,NULL),
-(13,4,33,32,NULL,NULL,NULL);
+INSERT INTO `transaction_matchings` VALUES (1,1,9,8,NULL,'2022-01-19 05:37:59',NULL),
+(2,1,10,9,NULL,'2022-01-19 05:37:59',NULL),
+(3,1,17,16,NULL,'2022-01-19 05:37:59',NULL),
+(4,1,21,20,NULL,'2022-01-19 05:37:59',NULL),
+(5,1,25,24,NULL,'2022-01-19 05:37:59',NULL),
+(6,1,29,28,NULL,'2022-01-19 05:37:59',NULL),
+(7,1,31,30,NULL,'2022-01-19 05:37:59',NULL),
+(8,1,44,43,NULL,'2022-01-19 05:37:59',NULL),
+(9,1,45,44,NULL,'2022-01-19 05:37:59',NULL),
+(10,4,19,18,NULL,'2022-01-19 05:37:59',NULL),
+(11,4,23,22,NULL,'2022-01-19 05:37:59',NULL),
+(12,4,27,26,NULL,'2022-01-19 05:37:59',NULL),
+(13,4,33,32,NULL,'2022-01-19 05:37:59',NULL);
 /*!40000 ALTER TABLE `transaction_matchings` ENABLE KEYS */;
-
---
--- Table structure for table `transactions`
---
-
-DROP TABLE IF EXISTS `transactions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `transactions` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `source` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` decimal(13,2) NOT NULL,
-  `shares` decimal(19,4) DEFAULT NULL,
-  `timestamp` timestamp NOT NULL,
-  `account_id` bigint(20) unsigned NOT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `transactions_account_id_foreign` (`account_id`),
-  CONSTRAINT `transactions_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `transactions`
 --
 
+LOCK TABLES `transactions` WRITE;
 /*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
-INSERT INTO `transactions` VALUES 
-(2,'SPO','PUR',2000.00,2000.0000,'2021-01-01 00:00:00',1,'2022-01-19 01:04:10','2021-01-01 00:00:00',NULL),
+INSERT INTO `transactions` VALUES (2,'SPO','PUR',2000.00,2000.0000,'2021-01-01 00:00:00',1,'2022-01-19 01:04:10','2021-01-01 00:00:00',NULL),
 (3,'SPO','PUR',2000.00,2000.0000,'2021-01-01 00:00:00',2,'2022-01-19 01:04:10','2021-01-01 00:00:00',NULL),
 (4,'SPO','PUR',2000.00,2000.0000,'2021-01-01 00:00:00',3,'2022-01-19 01:04:10','2021-01-01 00:00:00',NULL),
 (5,'SPO','PUR',2000.00,2000.0000,'2021-01-01 00:00:00',4,'2022-01-19 01:04:10','2021-01-01 00:00:00',NULL),
@@ -736,32 +399,13 @@ INSERT INTO `transactions` VALUES
 (49,'SPO','PUR',2000.00,2000.0000,'2021-01-01 00:00:00',10,'2022-01-19 01:04:10','2021-01-01 00:00:00',NULL),
 (50,'SPO','PUR',5000.00,5000.0000,'2021-01-01 00:00:00',11,'2022-01-19 01:04:10','2021-01-01 00:00:00',NULL);
 /*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
-
---
--- Table structure for table `users`
---
-
-DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+UNLOCK TABLES;
 
 --
 -- Dumping data for table `users`
 --
 
+LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES (1,'NieceA1','niecea1@familyfund.com',NULL,'$2y$10$0Izqs4fkkhLTlqpH0J8Kg.tYqAPCT0MsGLbfElHnvWEv9ZwNwFM5u',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15'),
 (2,'NieceA2','niecea2@familyfund.com',NULL,'$2y$10$I8XWYlnpDsJSXvZcXCD0/uGtuwaiCBpc32a8r91Gxm/HQQhSso9Zu',NULL,'2021-12-31 11:26:15','2021-12-31 11:26:15'),
@@ -772,15 +416,15 @@ INSERT INTO `users` VALUES (1,'NieceA1','niecea1@familyfund.com',NULL,'$2y$10$0I
 (7,'Org1','org1@familyfund.com',NULL,'$2y$10$TumucOzMRLEJXfpHHA8eeuzvwJUrQONEzyPgZidLVuvoCOmGIKaJq',NULL,'2021-12-31 11:26:16','2021-12-31 11:26:16'),
 (8,'Sister2','sister2@familyfund.com',NULL,'$2y$10$TumucOzMRLEJXfpHHA8eeuzvwJUrQONEzyPgZidLVuvoCOmGIKaJq',NULL,NULL,'2022-01-09 02:23:37');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
-
---
--- Dumping routines for database 'familyfund'
---
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-18 21:12:08
+-- Dump completed on 2022-01-18 21:38:04
