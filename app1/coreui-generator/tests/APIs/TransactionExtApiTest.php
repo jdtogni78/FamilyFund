@@ -12,6 +12,7 @@ use App\Models\Account;
 use App\Models\AccountBalance;
 use App\Models\MatchingRule;
 use App\Models\AccountMatchingRule;
+use DB;
 
 class TransactionExtApiTest extends TestCase
 {
@@ -36,11 +37,7 @@ class TransactionExtApiTest extends TestCase
         $this->assertEquals($tran->value, $transaction->value);
         $this->assertNull($tran->shares);
 
-        if ($hasMatching) {
-            $this->assertNull($tran->matching_id);
-        } else {
-            $this->assertNotNull($tran->matching_id);
-        }
+        $this->assertEquals($tran->referredTransactionMatching()->count(), $hasMatching?1:0);
 
         $balance = $tran->accountBalances()->first();
         $this->assertNotNull($balance);
@@ -73,41 +70,49 @@ class TransactionExtApiTest extends TestCase
 
         foreach ($data as $d) {
             DB::beginTransaction();
-            $this->test_create_transaction($d);
+            $this->_test_create_transaction($d);
             DB::rollBack();
         }
     }
 
-    public function test_create_transaction($data)
+    public function _test_create_transaction($data)
     {
         $factory = new DataFactory();
-        
-        $fund = $factory->setupFund($data->fundShares, $data->fundValue);
-        $user = $factory->addUser();
-        if ($data->match) {
-            $matching = $factory->createMatching($data->match->limit, $data->match->match);
-            $factory->addMatchingToUser();
-        }
 
-        foreach($data->trans as $dtran) {
-            $transaction = $factory->addTransaction($dtran->value);
+        $fund = $factory->createFund($data['fund']['shares'], $data['fund']['value']);
+        $user = $factory->createUser();
+        if ($data['match']) {
+            $matching = $factory->createMatching($data['match']['limit'], $data['match']['match']);
+            $factory->createAccountMatching();
+        }
+        print_r($fund->toArray());
+        print_r($user->toArray());
+        print_r($factory->userAccount->toArray());
+        print_r($matching->toArray());
+        print_r($matching->accountMatchingRules()->first()->toArray());
+
+        foreach($data['trans'] as $dtran) {
+            $transaction = $factory->makeTransaction($dtran['value']);
             $this->postTransaction($transaction);
-    
-            $tran = Transactions::find($this->response->getContent()->id);
+
+            $response = json_decode($this->response->getContent(), true);
+            $rdata = $response['data'];
+            $tran = Transaction::find($rdata['id']);
             $this->assertNotNull($tran);
+
+            print_r("\n");
             print_r($tran->toArray());
-    
-            $this->validateTransaction($tran, $transaction, $dtran->value, $dtran->balance);
-    
-            if ($data->match) {
+            $this->validateTransaction($tran, $transaction, $dtran['value'], $dtran['balance']);
+
+            if ($data['match']) {
                 $matchTran = $tran->transaction_matchings()->first();
                 print_r($matchTran->toArray());
-                $this->validateTransaction($matchTran, $transaction, $dtran->matchValue, $dtran->matchBalance);
+                $this->validateTransaction($matchTran, $transaction, $dtran['match']['value'], $dtran['match']['balance']);
             }
         }
     }
 
-    public function test_create_fund_transaction($data) {
+    public function _test_create_fund_transaction($data) {
         $data = [
             [
                 'fund' => ['shares' => 100000, 'value' => 1000],
@@ -124,7 +129,7 @@ class TransactionExtApiTest extends TestCase
                 ],
             ],
         ];
-        
+
         // create transactions towards the fund account (not user account)
         // NO matching, source SPO, type DEP
         // increase balance

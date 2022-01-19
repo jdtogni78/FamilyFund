@@ -38,7 +38,7 @@ Route::resource('matching_rules', App\Http\Controllers\API\MatchingRuleAPIContro
 Route::resource('portfolio_assets', App\Http\Controllers\API\PortfolioAssetAPIController::class);
 
 Route::resource('portfolios', App\Http\Controllers\API\PortfolioAPIControllerExt::class);
-Route::resource('transactions', App\Http\Controllers\API\TransactionAPIController::class);
+Route::resource('transactions', App\Http\Controllers\API\TransactionAPIControllerExt::class);
 // Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
 Route::resource('asset_change_logs', App\Http\Controllers\API\AssetChangeLogAPIController::class);
 Route::resource('transaction_matchings', App\Http\Controllers\API\TransactionMatchingAPIController::class);

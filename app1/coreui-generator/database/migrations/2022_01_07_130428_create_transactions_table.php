@@ -20,7 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->string('type', 3);
             $table->decimal('value', 13, 2);
             $table->decimal('shares', 19, 4)->nullable();
-            $table->timestamp('timestamp');
+            $table->timestamp('timestamp')->useCurrent();
             $table->foreignId('account_id')->constrained();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();

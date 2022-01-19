@@ -68,15 +68,15 @@ class TransactionMatching extends Model
      **/
     public function transaction()
     {
-        return $this->hasOne(\App\Models\Transaction::class, 'source_transaction_id');
+        return $this->belongsTo(\App\Models\Transaction::class, 'transaction_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function transaction1()
+    public function referenceTransaction()
     {
-        return $this->hasOne(\App\Models\Transaction::class, 'target_transaction_id');
+        return $this->belongsTo(\App\Models\Transaction::class, 'reference_transaction_id', 'transaction_id');
     }
 
     /**

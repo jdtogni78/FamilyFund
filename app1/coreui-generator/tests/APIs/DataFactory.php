@@ -6,6 +6,8 @@ use App\Models\Fund;
 use App\Models\Portfolio;
 use App\Models\Account;
 use App\Models\AccountBalance;
+use App\Models\Asset;
+use App\Models\PortfolioAsset;
 use App\Models\MatchingRule;
 use App\Models\AccountMatchingRule;
 
@@ -15,7 +17,7 @@ class DataFactory
     public $users = array();
     public $matchings = array();
 
-    public function setupFund($shares=1000, $value=1000)
+    public function createFund($shares=1000, $value=1000)
     {
         $this->fund = Fund::factory()
             ->has(Portfolio::factory()->count(1), 'portfolios')
@@ -37,18 +39,18 @@ class DataFactory
                 'shares' => $shares
             ]);
 
-        $cash = Assets::where('name', '=', 'CASH')->first();
+        $cash = Asset::where('name', '=', 'CASH')->first();
 
-        PortfolioAssets::factory()
-            ->for($fund)
+        PortfolioAsset::factory()
+            ->for($this->portfolio, 'portfolio')
             ->for($cash)
             ->create([
-                'shares' => $value
+                'position' => $value
             ]);
         return $this->fund;
     }
 
-    public function addUser() {
+    public function createUser() {
         $this->user = User::factory()
             ->has(Account::factory()
                 ->for($this->fund, 'fund')
@@ -70,16 +72,23 @@ class DataFactory
         return $this->matching;
     }
 
-    public function addMatchingToUser() {
+    public function createAccountMatching() {
         return AccountMatchingRule::factory()
             ->for($this->userAccount, 'account')
             ->for($this->matching)
             ->create();
     }
     
-    public function addTransaction($value=100, $type='PUR', $source='DIR') {
+    public function makeTransaction($value=100, $account=null, $type='PUR', $source='DIR') {
+        if ($account == null) {
+            if ($this->userAccount != null) {
+                $account = $this->userAccount;
+            } else {
+                $account = $this->fundAccount;
+            }
+        }
         $this->transaction = Transaction::factory()
-            ->for($this->userAccount, 'account')
+            ->for($account, 'account')
             ->make([
                 'type' => $type,
                 'source' => $source,

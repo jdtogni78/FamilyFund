@@ -20,6 +20,14 @@ trait ApiTestTrait
         $this->response->assertJson(['success' => true]);
     }
 
+    public function assertApiError($code)
+    {
+        $this->response->assertStatus($code);
+        $response = json_decode($this->response->getContent(), true);
+        $this->assertArrayNotHasKey('success', $response);
+        $this->assertNotNull($response['errors']);
+    }
+
     public function assertModelData(Array $actualData, Array $expectedData)
     {
         foreach ($actualData as $key => $value) {

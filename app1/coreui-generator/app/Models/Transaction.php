@@ -65,11 +65,11 @@ class Transaction extends Model
      * @var array
      */
     public static $rules = [
-        'source' => 'required|string|max:3',
-        'type' => 'required|string|max:3',
+        'source' => 'in:SPO,DIR,MAT',
+        'type' => 'in:PUR,BOR,SAL,REP,INI',
         'value' => 'required|numeric',
         'shares' => 'nullable|numeric',
-        'timestamp' => 'required',
+        'timestamp' => 'nullable',
         'account_id' => 'required',
         'updated_at' => 'nullable',
         'created_at' => 'nullable',
@@ -87,9 +87,17 @@ class Transaction extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function matchingRule()
+    public function transactionMatching()
     {
-        return $this->belongsTo(\App\Models\MatchingRule::class, 'matching_rule_id');
+        return $this->belongsTo(\App\Models\TransactionMatching::class, 'transaction_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function referenceTransactionMatching()
+    {
+        return $this->belongsTo(\App\Models\TransactionMatching::class, 'reference_transaction_id');
     }
 
     /**

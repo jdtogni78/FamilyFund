@@ -25,8 +25,8 @@ class PortfolioAssetFactory extends Factory
             //'portfolio_id' => $this->faker->word,
         //'asset_id' => $this->faker->word,
         'position' => $this->faker->word,
-        'start_dt' => $this->faker->word,
-        'end_dt' => $this->faker->word,
+        'start_dt' => $this->faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now'),
+        'end_dt' => $this->faker->dateTimeBetween($startDate = '+1 months', $endDate = '+3 months'),
         //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
         //'created_at' => $this->faker->date('Y-m-d H:i:s')
         ];
