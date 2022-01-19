@@ -24,7 +24,7 @@
         "inView": true
     },
     {
-        "name": "source_transaction_id",
+        "name": "transaction_id",
         "dbType": "bigInteger,false,true",
         "htmlType": null,
         "validations": "required",
@@ -36,7 +36,7 @@
         "inView": true
     },
     {
-        "name": "target_transaction_id",
+        "name": "reference_transaction_id",
         "dbType": "bigInteger,false,true",
         "htmlType": null,
         "validations": "nullable",
