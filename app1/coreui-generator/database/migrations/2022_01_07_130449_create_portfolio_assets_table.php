@@ -18,7 +18,7 @@ class CreatePortfolioAssetsTable extends Migration
             $table->bigInteger('id', true, true);
             $table->foreignId('portfolio_id')->constrained();
             $table->foreignId('asset_id')->constrained();
-            $table->decimal('shares', 21, 8);
+            $table->decimal('position', 21, 8);
             $table->date('start_dt')->default(DB::raw('curdate()'));
             $table->date('end_dt')->default('9999-12-31');
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();

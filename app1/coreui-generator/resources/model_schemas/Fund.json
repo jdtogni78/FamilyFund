@@ -60,18 +60,6 @@
         "inView": false
     },
     {
-        "name": "deleted_at",
-        "dbType": "datetime:nullable",
-        "htmlType": "date",
-        "validations": "nullable",
-        "searchable": false,
-        "fillable": false,
-        "primary": false,
-        "inForm": false,
-        "inIndex": false,
-        "inView": false
-    },
-    {
         "type": "relation",
         "relation": "1tm,Account,fund_id"
     },
