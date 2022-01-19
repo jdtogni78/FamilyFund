@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\Portfolio;
 use InfyOm\Generator\Request\APIRequest;
 
-class BulkUpdatePortfolioAPIRequest extends APIRequest
+class AssetsUpdatePortfolioAPIRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.

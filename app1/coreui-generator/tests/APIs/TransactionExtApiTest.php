@@ -100,7 +100,7 @@ class TransactionExtApiTest extends TestCase
             $this->validateTransaction($tran, $transaction, $dtran->value, $dtran->balance);
     
             if ($data->match) {
-                $matchTran = $tran->next();
+                $matchTran = $tran->transaction_matchings()->first();
                 print_r($matchTran->toArray());
                 $this->validateTransaction($matchTran, $transaction, $dtran->matchValue, $dtran->matchBalance);
             }
@@ -108,7 +108,27 @@ class TransactionExtApiTest extends TestCase
     }
 
     public function test_create_fund_transaction($data) {
+        $data = [
+            [
+                'fund' => ['shares' => 100000, 'value' => 1000],
+                'trans' => [
+                    ['value' => 100, 'balance' => 110000],
+                    ['value' => 100, 'balance' => 120000],
+                ],
+            ],
+            [
+                'fund' => ['shares' => 100000, 'value' => 1000],
+                'trans' => [
+                    ['value' => 100, 'balance' => 10000],
+                    ['value' => 100, 'balance' => 20000],
+                ],
+            ],
+        ];
         
+        // create transactions towards the fund account (not user account)
+        // NO matching, source SPO, type DEP
+        // increase balance
+        // increase CASH position
     }
 
 }

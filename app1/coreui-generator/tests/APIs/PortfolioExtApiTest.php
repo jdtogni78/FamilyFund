@@ -14,13 +14,16 @@ class PortfolioExtApiTest extends TestCase
     public function validateAssets($portfolio, $data)
     {
         $asOf = $data->timestamp;
+        $mode = $data->mode;
         $value = $portfolio->valueAsOf($asOf);
         foreach ($data->symbols as $symbol => $symbolData) {
             $price = $symbolData->price;
-            $position = $symbolData->position;
-            // TODO: validate price types (cash has 2 dec, bitcoin has 8 dec, etc)
             $this->assertEquals($portfolio->priceOfAssetAsOf($symbol, $asOf), $price);
-            $this->assertEquals($portfolio->positionOfAssetAsOf($symbol, $asOf), $position);
+            if ($mode == 'positions') {
+                $position = $symbolData->position;
+                // TODO: validate price types (cash has 2 dec, bitcoin has 8 dec, etc)
+                $this->assertEquals($portfolio->positionOfAssetAsOf($symbol, $asOf), $position);
+            }
         }
         $this->assertEquals($data->symbols->count(), $portfolio->portfolioAssets()->count());
     }
@@ -49,7 +52,7 @@ class PortfolioExtApiTest extends TestCase
      * @test
      */
     // Bulk Update Samples
-    public function test_bulk_update_assets()
+    public function test_portfolio_assets_update()
     {
         $data = 
         [
@@ -62,6 +65,7 @@ class PortfolioExtApiTest extends TestCase
                 ],
                 'post' => [
                     'timestamp' => '2022-01-17T07:16:24',
+                    'mode' => 'positions',
                     'symbols' => [
                         'CASH'  => ['position' => 0.0], // cash never changes price
                         'SPXL2' => ['price' =>   111.11, 'position' => 10.00000000],
@@ -71,7 +75,7 @@ class PortfolioExtApiTest extends TestCase
                 ],
             ],
             [
-                'preValidate' => [
+                'preValidate' => [ // can be run in sequence
                     'timestamp' => '2022-01-17T07:35:32',
                     'symbols' => [
                         'CASH'  => ['position' => 0.0], // cash never changes price
@@ -82,12 +86,25 @@ class PortfolioExtApiTest extends TestCase
                 ],
                 'post' => [
                     'timestamp' => '2022-01-17T07:35:32',
+                    'mode' => 'positions',
                     'symbols' => [
                         'CASH'   => ['position' => 222.22], // cash never changes price
                         'SPXL2'  => ['price' =>   111.11, 'position' => 10.00000000 ],
                         'ETH3'   => ['price' =>     0.00, 'position' => 12345678.12340000 ], // that is concerning, should cause share calculation failures
                         'FIPDX2' => ['price' => '133.01', 'position' => 12345678.12340000 ],
                         'LTC2'   => ['price' => '600000.01' ], // treat as position=0
+                    ],
+                ],
+            ],
+            [
+                'post' => [
+                    'timestamp' => '2022-01-19T07:35:32',
+                    'mode' => 'price_only',
+                    'symbols' => [
+                        'SPXL2'  => ['price' =>   111.12],
+                        'ETH3'   => ['price' =>     0.00], // that is concerning, should cause share calculation failures
+                        'FIPDX2' => ['price' => '133.02'],
+                        'LTC2'   => ['price' => '600000.02'], // treat as position=0
                     ],
                 ],
             ],

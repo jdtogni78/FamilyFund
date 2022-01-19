@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreatePortfolioAPIRequest;
 use App\Http\Requests\API\UpdatePortfolioAPIRequest;
-use App\Http\Requests\API\BulkUpdatePortfolioAPIRequest;
+use App\Http\Requests\API\AssetsUpdatePortfolioAPIRequest;
 
 use App\Models\Utils;
 use App\Models\Portfolio;
@@ -104,11 +104,11 @@ class PortfolioAPIControllerExt extends PortfolioAPIController
      * PUT/PATCH /portfolios/{code}/bulk_update
      *
      * @param int $code
-     * @param BulkUpdatePortfolioAPIRequest $request
+     * @param AssetsUpdatePortfolioAPIRequest $request
      *
      * @return Response
      */
-    public function bulkUpdate($code, BulkUpdatePortfolioAPIRequest $request)
+    public function assetsUpdate($code, AssetsUpdatePortfolioAPIRequest $request)
     {
         $input = $request->all();
 
