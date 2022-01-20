@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\APIv1;
 
 use App\Http\Requests\API\CreatePortfolioAPIRequest;
 use App\Http\Requests\API\UpdatePortfolioAPIRequest;
@@ -56,21 +56,21 @@ class PortfolioAPIControllerExt extends PortfolioAPIController
         $arr['assets'] = array();
         foreach ($portfolioAssets as $pa) {
             $asset = array();
-            $asset_id = $pa['asset_id'];
-            $shares = $pa['shares'];
+            $asset_id = $pa->asset_id;
+            $position = $pa->position;
 
-            if ($shares == 0) 
+            if ($position == 0) 
                 continue;
 
             $asset['asset_id'] = $asset_id;
-            $asset['shares'] = Utils::assetShares($shares);
+            $asset['position'] = Utils::position($position);
             $a = $pa->asset()->first();
             $asset['name'] = $a->name;
             $assetPrices = $a->pricesAsOf($as_of);
             
             if (count($assetPrices) == 1) {
                 $price = $assetPrices[0]['price'];
-                $value = $shares * $price;
+                $value = $position * $price;
                 $totalValue += $value;
                 $asset['price'] = Utils::currency($price);
                 $asset['value'] = Utils::currency($value);

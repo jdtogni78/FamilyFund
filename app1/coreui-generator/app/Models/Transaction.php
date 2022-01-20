@@ -85,19 +85,19 @@ class Transaction extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      **/
     public function transactionMatching()
     {
-        return $this->belongsTo(\App\Models\TransactionMatching::class, 'transaction_id');
+        return $this->hasOne(\App\Models\TransactionMatching::class, 'transaction_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      **/
     public function referenceTransactionMatching()
     {
-        return $this->belongsTo(\App\Models\TransactionMatching::class, 'reference_transaction_id');
+        return $this->hasOne(\App\Models\TransactionMatching::class, 'reference_transaction_id');
     }
 
     /**
@@ -105,6 +105,6 @@ class Transaction extends Model
      **/
     public function accountBalances()
     {
-        return $this->hasMany(\App\Models\AccountBalance::class, 'transaction_id');
+        return $this->hasOne(\App\Models\AccountBalance::class, 'transaction_id');
     }
 }

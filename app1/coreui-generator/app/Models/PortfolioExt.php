@@ -9,6 +9,7 @@ use App\Models\AssetExt;
 use App\Models\Utils;
 use App\Repositories\PortfolioRepository;
 use App\Repositories\PortfolioAssetRepository;
+use DB;
 
 /**
  * Class PortfolioExt
@@ -29,14 +30,24 @@ class PortfolioExt extends Portfolio
     /**
      * @return money
      **/
-    public function assetsAsOf($now)
+    public function assetsAsOf($now, $verbose=false)
     {
+        if ($verbose) DB::enableQueryLog(); // Enable query log
+
         $portfolioAssetsRepo = \App::make(PortfolioAssetRepository::class);
         $query = $portfolioAssetsRepo->makeModel()->newQuery();
         $query->where('portfolio_id', $this->id);
         $query->whereDate('start_dt', '<=', $now);
         $query->whereDate('end_dt', '>', $now);
         $portfolioAssets = $query->get(['*']);
+        if ($verbose) {
+            // print_r(DB::getQueryLog());
+            foreach ($portfolioAssets as $portfolioAsset) {
+                print_r(json_encode($portfolioAsset->toArray()) . "\n");
+            }
+        }
+        
+
         return $portfolioAssets;
     }
 
@@ -49,25 +60,22 @@ class PortfolioExt extends Portfolio
 
         $totalValue = 0;
         foreach ($portfolioAssets as $pa) {
-            $shares = $pa->shares;
+            $position = $pa->position;
             $asset_id = $pa->asset_id;
-            if ($shares == 0) 
+            if ($position == 0) 
                 continue;
 
             $asset = AssetExt::findOrFail($asset_id);
-            $assetPrices = $asset->pricesAsOf($now);
+            $assetPrice = $asset->pricesAsOf($now);
             
-            if (count($assetPrices) == 1) {
-                $price = $assetPrices[0]['price'];
-                $value = $shares * $price;
+            if (count($assetPrice) == 1) {
+                $price = $assetPrice[0]['price'];
+                $value = $position * $price;
                 $totalValue += $value;
                 if ($verbose) {
-                    print($asset->id.', ');
-                    print($asset->name.', ');
-                    print($shares.', ');
-                    print($price.', ');
-                    print($value.', ');
-                    print("\n");
+                    // print_r(json_encode($pa->toArray())."\n");
+                    // print_r(json_encode($assetPrice[0]->toArray())."\n");
+                    print_r(json_encode([$asset_id, $position, $price, $value])."\n");
                 }
             } else {
                 # TODO printf("No price for $asset_id\n");

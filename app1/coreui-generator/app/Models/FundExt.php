@@ -47,7 +47,7 @@ class FundExt extends Fund
     {
         $portfolio = $this->portfolio();
         // print_r(['port',$portfolio->id,$this->id]);
-        return $portfolio->valueAsOf($now,$verbose);
+        return $portfolio->valueAsOf($now, $verbose);
     }
 
     public function shareValueAsOf($now)

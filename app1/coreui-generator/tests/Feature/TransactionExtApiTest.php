@@ -5,6 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Transaction;
+use App\Models\TransactionMatching;
 use App\Models\User;
 use App\Models\Fund;
 use App\Models\Portfolio;
@@ -13,10 +14,45 @@ use App\Models\AccountBalance;
 use App\Models\MatchingRule;
 use App\Models\AccountMatchingRule;
 use DB;
+use Tests\DataFactory;
 
 class TransactionExtApiTest extends TestCase
 {
     use ApiTestTrait, WithoutMiddleware, DatabaseTransactions;
+
+    public function test_basics()
+    {
+        $factory = new DataFactory();
+
+        $fund = $factory->createFund();
+        $user = $factory->createUser();
+        $matching = $factory->createMatching(150, 100);
+        $factory->createAccountMatching();
+
+        $transaction = $factory->createTransaction();
+        $account = $factory->userAccount;
+
+        $matchings = $account->accountMatchingRules()->first();
+        $input['source'] = 'MAT';
+        $input['value'] = $transaction->value/2;
+
+        $matchTran = $factory->createTransaction();
+        $match = TransactionMatching::factory()
+            ->for($matchings->matchingRule()->first())
+            ->create([
+                'transaction_id' => $matchTran->id,
+                'reference_transaction_id' => $transaction->id    
+            ])
+        ;
+        
+        $this->assertNotNull($match);
+        $this->assertNotNull($matchTran);
+        $this->assertNotNull($transaction);
+        $this->assertNotNull($match->transaction()->first());
+        $this->assertNotNull($match->referenceTransaction()->first());
+        $this->assertNotNull($matchTran->transactionMatching()->first());
+        $this->assertNotNull($transaction->referenceTransactionMatching()->first());
+    }
 
     public function postTransaction($transaction)
     {
@@ -37,17 +73,18 @@ class TransactionExtApiTest extends TestCase
         $this->assertEquals($tran->value, $transaction->value);
         $this->assertNull($tran->shares);
 
-        $this->assertEquals($tran->referredTransactionMatching()->count(), $hasMatching?1:0);
+        $this->assertEquals($tran->transactionMatching()->count(), $hasMatching?1:0);
+    }
 
+    public function validateBalance($tran, $transaction, $value, $balance)
+    {
         $balance = $tran->accountBalances()->first();
         $this->assertNotNull($balance);
         print_r($balance->toArray());
         $this->assertEquals($balance->shares, $balance);
     }
 
-    /**
-     * @test
-     */
+
     public function test_transactions()
     {
         $data = [
@@ -85,11 +122,11 @@ class TransactionExtApiTest extends TestCase
             $matching = $factory->createMatching($data['match']['limit'], $data['match']['match']);
             $factory->createAccountMatching();
         }
-        print_r($fund->toArray());
-        print_r($user->toArray());
-        print_r($factory->userAccount->toArray());
-        print_r($matching->toArray());
-        print_r($matching->accountMatchingRules()->first()->toArray());
+        print_r(json_encode($fund->toArray())."\n");
+        print_r(json_encode($user->toArray())."\n");
+        print_r(json_encode($factory->userAccount->toArray())."\n");
+        print_r(json_encode($matching->toArray())."\n");
+        print_r(json_encode($matching->accountMatchingRules()->first()->toArray())."\n");
 
         foreach($data['trans'] as $dtran) {
             $transaction = $factory->makeTransaction($dtran['value']);
@@ -101,14 +138,21 @@ class TransactionExtApiTest extends TestCase
             $this->assertNotNull($tran);
 
             print_r("\n");
-            print_r($tran->toArray());
+            print_r(json_encode($tran->toArray())."\n");
+            $hasMatching = array_key_exists('match', $dtran);
             $this->validateTransaction($tran, $transaction, $dtran['value'], $dtran['balance']);
 
-            if ($data['match']) {
-                $matchTran = $tran->transaction_matchings()->first();
-                print_r($matchTran->toArray());
-                $this->validateTransaction($matchTran, $transaction, $dtran['match']['value'], $dtran['match']['balance']);
+            if ($hasMatching) {
+                $tranMatch = $tran->referenceTransactionMatching()->first();
+                print_r(json_encode($tranMatch->toArray())."\n");
+                $matchTran = $tranMatch->transaction()->first();
+                print_r(json_encode($matchTran->toArray())."\n");
+                $this->validateTransaction($matchTran, $transaction, $dtran['match']['value'], $dtran['match']['balance'], $hasMatching);
             }
+
+            // calculate shares & balances
+            $this->validateBalance($tran, $transaction, $dtran['value'], $dtran['balance']);
+            $this->validateBalance($matchTran, $transaction, $dtran['match']['value'], $dtran['match']['balance']);
         }
     }
 

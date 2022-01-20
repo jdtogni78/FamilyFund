@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\APIv1;
 
 use App\Http\Requests\API\CreateTransactionAPIRequest;
 use App\Http\Requests\API\UpdateTransactionAPIRequest;
@@ -51,8 +51,10 @@ class TransactionAPIControllerExt extends TransactionAPIController
                 $matchTran = $this->transactionRepository->create($input);
                 $match = TransactionMatching::factory()
                     ->for($matchings->matchingRule()->first())
-                    ->for($matchTran, 'transaction')
+                    // ->forReferenceTransaction([$transaction]) // dont work??
+                    // ->for($transaction, 'referenceTransaction') // dont work??
                     ->create([
+                        'transaction_id' => $matchTran->id,
                         'reference_transaction_id' => $transaction->id
                     ]);
             }

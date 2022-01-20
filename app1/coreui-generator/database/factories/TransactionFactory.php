@@ -25,7 +25,7 @@ class TransactionFactory extends Factory
             'source' => $this->faker->randomElement(['SPO', 'DIR', 'MAT']),
             'type' => $this->faker->randomElement(['PUR','SAL','BOR','REP']),
             'value' => $this->faker->randomFloat(2, $min = 0.01, $max = 999999.99),
-        // 'shares' => $this->faker->word,
+            // 'shares' => null,
         // 'account_id' => $this->faker->numberBetween(1, 12),
         //'matching_rule_id' => $this->faker->word,
         //'updated_at' => $this->faker->date('Y-m-d H:i:s'),

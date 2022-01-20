@@ -1,4 +1,4 @@
-<?php namespace Tests\APIs;
+<?php namespace Tests;
 
 use App\Models\Transaction;
 use App\Models\User;
@@ -78,7 +78,13 @@ class DataFactory
             ->for($this->matching)
             ->create();
     }
-    
+
+    public function createTransaction($value=100, $account=null, $type='PUR', $source='DIR') {
+        $tran = $this->makeTransaction($value, $account, $type, $source);
+        $tran->save();
+        return $tran;
+    }
+
     public function makeTransaction($value=100, $account=null, $type='PUR', $source='DIR') {
         if ($account == null) {
             if ($this->userAccount != null) {

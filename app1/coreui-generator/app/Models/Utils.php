@@ -17,7 +17,7 @@ class Utils
     {
         return floor($value * 10000)/10000;
     }
-    public static function assetShares($value)
+    public static function position($value)
     {
         return floor($value * 100000000)/100000000;
     }

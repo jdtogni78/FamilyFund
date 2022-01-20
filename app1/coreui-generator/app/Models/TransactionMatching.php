@@ -64,19 +64,19 @@ class TransactionMatching extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function transaction()
     {
-        return $this->belongsTo(\App\Models\Transaction::class, 'transaction_id');
+        return $this->hasOne(\App\Models\TransactionExt::class, 'id', 'transaction_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function referenceTransaction()
     {
-        return $this->belongsTo(\App\Models\Transaction::class, 'reference_transaction_id', 'transaction_id');
+        return $this->hasOne(\App\Models\TransactionExt::class, 'id', 'reference_transaction_id');
     }
 
     /**

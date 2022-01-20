@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Portfolio;
 use App\Models\Fund;
+use Tests\DataFactory;
 
 class PortfolioExtApiTest extends TestCase
 {
@@ -28,10 +29,10 @@ class PortfolioExtApiTest extends TestCase
         $this->assertEquals($data->symbols->count(), $portfolio->portfolioAssets()->count());
     }
 
-    public function test_update_assets($data)
+    public function _test_update_assets($data)
     {
         $factory = new DataFactory();
-        $factory->setupFund();
+        $factory->createFund();
         $portfolio = $factory->portfolio;
         
         $preValidate = $data->preValidate;
@@ -111,7 +112,7 @@ class PortfolioExtApiTest extends TestCase
         ];
 
         foreach ($data as $d) {
-            $this->test_update_assets($d);
+            $this->_test_update_assets($d);
         }
     }
 }

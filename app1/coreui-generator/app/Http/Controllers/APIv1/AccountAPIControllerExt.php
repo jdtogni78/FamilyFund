@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\APIv1;
 
 use App\Models\Portfolio;
 use App\Models\PortfolioExt;
@@ -169,8 +169,11 @@ class AccountAPIControllerExt extends AccountAPIController
             $tran['type'] = $transaction->type;
             $tran['shares'] = Utils::shares($transaction->shares);
             $tran['value'] = Utils::currency($transaction->value);
-            if ($transaction->matching_rule_id)
-                $tran['matching_id'] = $transaction->matching_rule_id;
+
+            $matching = $transaction->transactionMatching()->first();
+            if ($matching) {
+                $tran['reference_transaction'] = $matching->referenceTransaction()->first()->id;
+            }
             $tran['current_value'] = Utils::currency($transaction->shares * $shareValue);
             $tran['created_at'] = $transaction->created_at;
             array_push($arr['transactions'], $tran);

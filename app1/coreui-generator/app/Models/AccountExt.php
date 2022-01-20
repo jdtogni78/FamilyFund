@@ -23,7 +23,8 @@ class AccountExt extends Account
     {
         return $this->hasMany(\App\Models\TransactionExt::class, 'account_id')
             ->orderBy('created_at')
-            ->orderBy('matching_rule_id');
+            // ->orderBy('matching_rule_id')
+            ;
     }
 
     /**

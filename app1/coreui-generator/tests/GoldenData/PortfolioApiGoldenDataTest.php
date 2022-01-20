@@ -14,6 +14,7 @@ class PortfolioApiGoldenDataTest extends TestCase
 
     public function _test_read_portfolio_as_of($id, $asOf, $assets)
     {
+        $verbose = false;
         $portfolio = Portfolio::find($id);
 
         $this->response = $this->json(
@@ -29,14 +30,19 @@ class PortfolioApiGoldenDataTest extends TestCase
             $a['asset_id'] = $asset_id;
             $a['name'] = $name;
             $a['price']  = Utils::currency($price);
-            $a['shares'] = Utils::assetShares($shares);
+            $a['position'] = Utils::position($shares);
             $a['value']  = Utils::currency($price * $shares);
             $total += $price * $shares;
             $as[] = $a;
+            if ($verbose) print_r(json_encode($a)."\n");
         }
         $arr = $portfolio->toArray();
         $arr['assets'] = $as;
         $arr['total_value'] = Utils::currency($total);
+
+        if ($verbose) print_r($arr);
+        if ($verbose) print_r($this->response->getContent());
+
         $this->assertApiResponse($arr);
     }
 
