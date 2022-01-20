@@ -22,7 +22,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::resource('funds', App\Http\Controllers\FundController::class);
+Route::resource('funds', App\Http\Controllers\WebV1\FundControllerExt::class);
 
 
 Route::resource('accountBalances', App\Http\Controllers\AccountBalanceController::class);
@@ -52,7 +52,7 @@ Route::resource('portfolios', App\Http\Controllers\PortfolioController::class);
 Route::resource('transactions', App\Http\Controllers\TransactionController::class);
 
 
-// Route::resource('users', App\Http\Controllers\UserController::class);
+Route::resource('users', App\Http\Controllers\UserController::class);
 
 
 Route::resource('assetChangeLogs', App\Http\Controllers\AssetChangeLogController::class);

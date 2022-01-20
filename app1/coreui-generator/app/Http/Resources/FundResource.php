@@ -18,9 +18,9 @@ class FundResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'goal' => $this->goal,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
-            'deleted_at' => $this->deleted_at
+            // 'updated_at' => $this->updated_at,
+            // 'created_at' => $this->created_at,
+            // 'deleted_at' => $this->deleted_at
         ];
     }
 }
