@@ -5,6 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Account;
+use App\Models\Utils;
 
 class AccountApiGoldenDataTest extends TestCase
 {
@@ -19,18 +20,19 @@ class AccountApiGoldenDataTest extends TestCase
         return $balance;
     }
 
-    public function create_transaction($account, $tran_id, $shares, $value, $currentValue, $ref_tran_id, $date)
+    public function create_transaction($account_id, $tran_id, $shares, $value, $currentValue, $ref_tran_id, $date)
     {
         $transaction = array();
         $transaction['id'] = $tran_id;
-        $transaction['shares'] = $shares;
-        $transaction['value'] = $value;
+        $transaction['shares'] = Utils::shares($shares);
+        $transaction['share_price'] = Utils::currency($shares ? $value / $shares : 0);
+        $transaction['value'] = Utils::currency($value);
         if ($ref_tran_id != null)
             $transaction['reference_transaction'] = $ref_tran_id;
-        $transaction['created_at'] = $date;
-        // $transaction['account_id'] = $account;
+        $transaction['timestamp'] = $date;
+        // $transaction['account_id'] = 1;//$account_id;
         $transaction['type'] = 'PUR';
-        $transaction['current_value'] = $currentValue;
+        $transaction['current_value'] = Utils::currency($currentValue);
         
         return $transaction;
     }

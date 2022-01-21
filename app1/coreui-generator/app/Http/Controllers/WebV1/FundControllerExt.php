@@ -10,6 +10,7 @@ use Response;
 use App\Http\Controllers\FundController;
 use App\Http\Resources\FundResource;
 use App\Models\Utils;
+use App\Http\Controllers\APIv1\FundAPIControllerExt;
 
 class FundControllerExt extends FundController
 {
@@ -25,7 +26,19 @@ class FundControllerExt extends FundController
      *
      * @return Response
      */
-    public function show($id, $asOf='2022-01-01')
+    public function show($id)
+    {
+        return $this->showAsOf($id, null);
+    }
+
+    /**
+     * Display the specified Fund.
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function showAsOf($id, $asOf=null)
     {
         /** @var Fund $fund */
         $fund = $this->fundRepository->find($id);
@@ -36,17 +49,17 @@ class FundControllerExt extends FundController
             return redirect(route('funds.index'));
         }
 
-        $arr = array();
+        if ($asOf == null) $asOf = date('Y-m-d');
 
-        $value = $arr['value']      = Utils::currency($fund->valueAsOf($asOf));
-        $shares = $arr['shares']    = Utils::shares($fund->sharesAsOf($asOf));
-        $arr['unallocated_shares']  = Utils::shares($fund->unallocatedShares($asOf));
-        $arr['share_value']         = Utils::currency($shares? $value/$shares : 0);
+        $arr = array();
+        $api = new FundAPIControllerExt($this->fundRepository);
+        $arr = $api->createFundResponse($fund, $asOf);
+        $arr['performance'] = $api->createPerformanceResponse($fund, $asOf);
+        $arr['balances'] = $api->createAccountBalancesResponse($fund, $asOf);
         $arr['as_of'] = $asOf;
 
-        return view('funds.show')
-            ->with('fund', $fund)
-            ->with('calculated', $arr);
+        return view('funds.show_ext')
+            ->with('api', $arr);
     }
 
 }

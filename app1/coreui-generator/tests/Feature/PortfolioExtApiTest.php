@@ -14,8 +14,8 @@ class PortfolioExtApiTest extends TestCase
 
     public function validateAssets($portfolio, $data)
     {
-        $asOf = $data->timestamp;
-        $mode = $data->mode;
+        $asOf = $data['timestamp'];
+        $mode = $data['mode'];
         $value = $portfolio->valueAsOf($asOf);
         foreach ($data->symbols as $symbol => $symbolData) {
             $price = $symbolData->price;
@@ -35,7 +35,7 @@ class PortfolioExtApiTest extends TestCase
         $factory->createFund();
         $portfolio = $factory->portfolio;
         
-        $preValidate = $data->preValidate;
+        $preValidate = $data['preValidate'];
         if ($preValidate) {
             $this->validateAssets($portfolio, $preValidate);
         }

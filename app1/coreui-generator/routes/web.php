@@ -21,6 +21,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('funds/{id}/as_of/{as_of}', 'App\Http\Controllers\WebV1\FundControllerExt@showAsOf');
+Route::get('accounts/{id}/as_of/{as_of}', 'App\Http\Controllers\WebV1\AccountsControllerExt@showAsOf');
 
 Route::resource('funds', App\Http\Controllers\WebV1\FundControllerExt::class);
 
@@ -31,7 +33,7 @@ Route::resource('accountBalances', App\Http\Controllers\AccountBalanceController
 Route::resource('accountMatchingRules', App\Http\Controllers\AccountMatchingRuleController::class);
 
 
-Route::resource('accounts', App\Http\Controllers\AccountController::class);
+Route::resource('accounts', App\Http\Controllers\WebV1\AccountControllerExt::class);
 
 
 Route::resource('assetPrices', App\Http\Controllers\AssetPriceController::class);

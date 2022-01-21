@@ -28,6 +28,114 @@ class AccountAPIControllerExt extends AccountAPIController
         parent::__construct($accountRepo);
     }
 
+    public function createAccountArray($account)
+    {
+        $arr = array();
+        $arr['nickname'] = $account->nickname;
+        $arr['id'] = $account->id;
+        return $arr;
+    }
+
+    public function createAccountResponse($account, $asOf)
+    {
+        $rss = new AccountResource($account);
+        $arr = $rss->toArray(NULL);
+
+        $fund = $account->fund()->first();
+        $arr['fund'] = [
+            'id' => $fund->id, 
+            'name' => $fund->name,
+        ];
+        $shareValue = $fund->shareValueAsOf($asOf);
+        $user = $account->user()->first();
+        if ($user) {
+            $arr['user'] = [
+                'id' => $user->id, 
+                'name' => $user->name,
+            ];
+        } else {
+            $arr['user'] = [
+                'id' => 0, 
+                'name' => 'N/A',
+            ];
+        }
+
+        $accountBalance = $account->allSharesAsOf($asOf);
+        $arr['balances'] = array();
+        foreach ($accountBalance as $ab) {
+            $balance = array();
+            $balance['type'] = $ab['type'];
+            $balance['shares'] = Utils::shares($ab['shares']);
+            $balance['market_value'] = Utils::currency($shareValue * $ab['shares']);
+            array_push($arr['balances'], $balance);
+        }
+
+        return $arr;
+    }
+
+    public function createTransactionsResponse($account, $asOf)
+    {
+        $arr = array();
+
+        // TODO: move this to a more appropriate place: model? AB controller?
+
+        $fund = $account->fund()->first();
+        $shareValue = $fund->shareValueAsOf($asOf);
+
+        $transactions = $account->transactions()->get();
+        $arr = array();
+        foreach ($transactions as $transaction) {
+            $tran = array();
+            if ($transaction->created_at->gte(Carbon::createFromFormat('Y-m-d', $asOf)))
+                continue;
+            $tran['id'] = $transaction->id;
+            $tran['type'] = $transaction->type;
+            $tran['shares'] = Utils::shares($transaction->shares);
+            $tran['value'] = Utils::currency($transaction->value);
+            $tran['share_price'] = Utils::currency($transaction->shares ? $transaction->value / $transaction->shares : 0);
+
+            $matching = $transaction->transactionMatching()->first();
+            if ($matching) {
+                $tran['reference_transaction'] = $matching->referenceTransaction()->first()->id;
+            }
+            $tran['current_value'] = Utils::currency($transaction->shares * $shareValue);
+            $tran['timestamp'] = $transaction->timestamp;
+            array_push($arr, $tran);
+        }
+
+        return $arr;
+    }
+
+    public function createPerformanceResponse($account, $asOf)
+    {
+        $arr = array();
+
+        $year = substr($asOf, 0, 4);
+        $yearStart = $year.'-01-01';
+
+        $arr = array();
+        if ($asOf != $yearStart) {
+            $yp = array();
+            $yp['value']        = Utils::currency($value = $account->valueAsOf($asOf));
+            $yp['shares']       = Utils::shares($shares = $account->ownedSharesAsOf($asOf));
+            $yp['share_value']  = Utils::currency($shares > 0 ? $value/$shares : 0);
+            $yp['performance']  = Utils::percent($account->periodPerformance($yearStart, $asOf));
+            $arr[$asOf] = $yp;
+        }
+
+        for ($year; $year >= 2021; $year--) {
+            $yearStart = $year.'-01-01';
+            $yp = array();
+            $yp['value']        = Utils::currency($value = $account->valueAsOf($yearStart));
+            $yp['shares']       = Utils::shares($shares = $account->ownedSharesAsOf($yearStart));
+            $yp['share_value']  = Utils::currency($shares > 0 ? $value/$shares : 0);
+            $yp['performance']  = Utils::percent($account->yearlyPerformance($year));
+            $arr[$year] = $yp;
+        }
+
+        return $arr;
+    }
+
     /**
      * Display the specified Accounts.
      * GET|HEAD /Accounts/{id}
@@ -59,33 +167,10 @@ class AccountAPIControllerExt extends AccountAPIController
             return $this->sendError('Account not found');
         }
 
-        $rss = new AccountResource($account);
-        $arr = $rss->toArray(NULL);
-
-        $fund = $account->fund()->first();
-        $shareValue = $fund->shareValueAsOf($asOf);
-
-        $accountBalance = $account->allSharesAsOf($asOf);
-        $arr['balances'] = array();
-        foreach ($accountBalance as $ab) {
-            $balance = array();
-            $balance['type'] = $ab['type'];
-            $balance['shares'] = Utils::shares($ab['shares']);
-            $balance['market_value'] = Utils::currency($shareValue * $ab['shares']);
-            array_push($arr['balances'], $balance);
-        }
-
+        $arr = $this->createAccountResponse($account, $asOf);
         $arr['as_of'] = $asOf;
 
         return $this->sendResponse($arr, 'Account retrieved successfully');
-    }
-
-    public function createAccountArray($account)
-    {
-        $arr = array();
-        $arr['nickname'] = $account->nickname;
-        $arr['id'] = $account->id;
-        return $arr;
     }
 
     /**
@@ -106,28 +191,7 @@ class AccountAPIControllerExt extends AccountAPIController
         }
 
         $arr = $this->createAccountArray($account);
-
-        $year = date('Y');
-        $yearStart = $year.'-01-01';
-
-
-        $perf = array();
-        if ($asOf != $yearStart) {
-            $yp = array();
-            $yp['value']        = Utils::currency($account->valueAsOf($asOf));
-            $yp['shares']       = Utils::shares($account->ownedSharesAsOf($asOf));
-            $perf[$asOf] = $yp;
-        }
-
-        for ($year; $year >= 2021; $year--) {
-            $yearStart = $year.'-01-01';
-            $yp = array();
-            $yp['value']        = Utils::currency($account->valueAsOf($yearStart));
-            $yp['shares']       = Utils::shares($account->ownedSharesAsOf($yearStart));
-            $yp['performance']  = Utils::percent($account->yearlyPerformance($year));
-            $perf[$year] = $yp;
-        }
-
+        $arr['performance'] = $this->createPerformanceResponse($account, $asOf);
         $arr['as_of'] = $asOf;
 
         return $this->sendResponse($arr, 'Account retrieved successfully');
@@ -150,35 +214,37 @@ class AccountAPIControllerExt extends AccountAPIController
             return $this->sendError('Account not found');
         }
 
-        $arr = array();
-        $arr['nickname'] = $account->nickname;
-        $arr['id'] = $account->id;
-
-        // TODO: move this to a more appropriate place: model? AB controller?
-
-        $fund = $account->fund()->first();
-        $shareValue = $fund->shareValueAsOf($asOf);
-
-        $transactions = $account->transactions()->get();
-        $arr['transactions'] = array();
-        foreach ($transactions as $transaction) {
-            $tran = array();
-            if ($transaction->created_at->gte(Carbon::createFromFormat('Y-m-d', $asOf)))
-                continue;
-            $tran['id'] = $transaction->id;
-            $tran['type'] = $transaction->type;
-            $tran['shares'] = Utils::shares($transaction->shares);
-            $tran['value'] = Utils::currency($transaction->value);
-
-            $matching = $transaction->transactionMatching()->first();
-            if ($matching) {
-                $tran['reference_transaction'] = $matching->referenceTransaction()->first()->id;
-            }
-            $tran['current_value'] = Utils::currency($transaction->shares * $shareValue);
-            $tran['created_at'] = $transaction->created_at;
-            array_push($arr['transactions'], $tran);
-        }
+        $arr = $this->createAccountArray($account);
+        $arr['transactions'] = $this->createTransactionsResponse($account, $asOf);
+        $arr['as_of'] = $asOf;
 
         return $this->sendResponse($arr, 'Account retrieved successfully');
     }
+
+   /**
+     * Display the specified Accounts.
+     * GET|HEAD /accounts/{id}/report_as_of/{date}
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function showReportAsOf($id, $asOf)
+    {
+        /** @var Accounts $account */
+        $account = $this->accountRepository->find($id);
+
+        if (empty($account)) {
+            return $this->sendError('Account not found');
+        }
+
+        $arr = $this->createAccountResponse($account, $asOf);
+        $arr['transactions'] = $this->createTransactionsResponse($account, $asOf);
+        $arr['performance'] = $this->createPerformanceResponse($account, $asOf);
+        $arr['as_of'] = $asOf;
+
+        return $this->sendResponse($arr, 'Account retrieved successfully');
+    }
+
+
 }

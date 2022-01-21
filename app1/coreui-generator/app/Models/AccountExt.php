@@ -62,7 +62,7 @@ class AccountExt extends Account
     }
 
     public function valueAsOf($now) {
-        $shareValue = $this->fund()->shareValueAsOf($now);
+        $shareValue = $this->fund()->first()->shareValueAsOf($now);
         $shares = $this->ownedSharesAsOf($now);
         $value = $shareValue * $shares;
         return $value;
@@ -74,8 +74,8 @@ class AccountExt extends Account
 
     public function periodPerformance($from, $to)
     {
-        $shareValueFrom = $this->fund()->shareValueAsOf($from);
-        $shareValueTo = $this->fund()->shareValueAsOf($to);
+        $shareValueFrom = $this->fund()->first()->shareValueAsOf($from);
+        $shareValueTo = $this->fund()->first()->shareValueAsOf($to);
         
         $sharesFrom = $this->ownedSharesAsOf($from);
         $sharesTo = $this->ownedSharesAsOf($to);
