@@ -11,7 +11,7 @@
           <div class="animated fadeIn">
                  @include('coreui-templates::common.errors')
                  <div class="row">
-                     <div class="col-lg-12">
+                     <div class="col">
                          <div class="card">
                              <div class="card-header">
                                  <strong>Details</strong>
@@ -22,7 +22,33 @@
                              </div>
                          </div>
                      </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Fund Allocation<strong>
+                            </div>
+                            <div class="card-body">
+                                @include('funds.allocation_graph')
+                            <div class="pull-right mr-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                  </div>
+                 <div class="row">
+                     <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Performance<strong>
+                            </div>
+                            <div class="card-body">
+                                @include('funds.performance_graph')
+                            <div class="pull-right mr-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                  <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -38,6 +64,20 @@
                         </div>
                     </div>
                  </div>
+                 <div class="row">
+                     <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Accounts Allocation<strong>
+                            </div>
+                            <div class="card-body">
+                                @include('funds.accounts_graph')
+                            <div class="pull-right mr-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                  <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
