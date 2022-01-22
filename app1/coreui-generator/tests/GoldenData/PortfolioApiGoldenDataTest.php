@@ -1,11 +1,11 @@
-<?php namespace Tests\APIs;
+<?php namespace Tests\GoldenData;
 
+use App\Http\Resources\PortfolioResource;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Portfolio;
-use App\Models\Fund;
 use App\Models\Utils;
 
 class PortfolioApiGoldenDataTest extends TestCase
@@ -19,7 +19,7 @@ class PortfolioApiGoldenDataTest extends TestCase
 
         $this->response = $this->json(
             'GET',
-            '/api/portfolios/'.$portfolio->id.'/as_of/'.$asOf
+            '/api/portfolios/' . $portfolio->id . '/as_of/' . $asOf
         );
 
         $as = array();
@@ -36,13 +36,16 @@ class PortfolioApiGoldenDataTest extends TestCase
             $as[] = $a;
             if ($verbose) print_r(json_encode($a)."\n");
         }
-        $arr = $portfolio->toArray();
+        $rss = new PortfolioResource($portfolio);
+        $arr = $rss->toArray(null);
         $arr['assets'] = $as;
+        $arr['as_of'] = $asOf;
         $arr['total_value'] = Utils::currency($total);
 
         if ($verbose) print_r($arr);
         if ($verbose) print_r($this->response->getContent());
 
+        // $this->verbose = true;
         $this->assertApiResponse($arr);
     }
 

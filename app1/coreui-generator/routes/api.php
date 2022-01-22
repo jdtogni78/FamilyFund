@@ -25,18 +25,17 @@ Route::get('portfolios/{code}/assets_update', 'App\Http\Controllers\APIv1\Portfo
 Route::get('funds/{id}/as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showAsOf');
 Route::get('funds/{id}/performance_as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showPerformanceAsOf');
 Route::get('funds/{id}/account_balances_as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showAccountBalancesAsOf');
+Route::get('funds/{id}/report_as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showReportAsOf');
 
 Route::get('accounts/{id}/as_of/{as_of}', 'App\Http\Controllers\APIv1\AccountAPIControllerExt@showAsOf');
 Route::get('accounts/{id}/transactions_as_of/{as_of}', 'App\Http\Controllers\APIv1\AccountAPIControllerExt@showTransactionsAsOf');
 Route::get('accounts/{id}/performance_as_of/{as_of}', 'App\Http\Controllers\APIv1\AccountAPIControllerExt@showPerformanceAsOf');
-
 Route::get('accounts/{id}/report_as_of/{as_of}', 'App\Http\Controllers\APIv1\AccountAPIControllerExt@showReportAsOf');
-Route::get('funds/{id}/report_as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showReportAsOf');
 
-Route::resource('funds', App\Http\Controllers\APIv1\FundAPIControllerExt::class);
-Route::resource('accounts', App\Http\Controllers\APIv1\AccountAPIControllerExt::class);
-Route::resource('portfolios', App\Http\Controllers\APIv1\PortfolioAPIControllerExt::class);
-Route::resource('transactions', App\Http\Controllers\APIv1\TransactionAPIControllerExt::class);
+Route::resource('funds', App\Http\Controllers\API\FundAPIController::class);
+Route::resource('accounts', App\Http\Controllers\API\AccountAPIController::class);
+Route::resource('portfolios', App\Http\Controllers\API\PortfolioAPIController::class);
+Route::resource('transactions', App\Http\Controllers\API\TransactionAPIController::class);
 
 Route::resource('asset_prices', App\Http\Controllers\API\AssetPriceAPIControllerExt::class);
 Route::resource('assets', App\Http\Controllers\API\AssetAPIControllerExt::class);

@@ -25,8 +25,8 @@ class AccountFactory extends Factory
             'code' => $this->faker->word,
         'nickname' => $this->faker->word,
         'email_cc' => $this->faker->word,
-        //'user_id' => $this->faker->word,
-        //'fund_id' => $this->faker->word,
+        // 'user_id' => $this->faker->word,
+        'fund_id' => $this->faker->word,
         //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
         //'created_at' => $this->faker->date('Y-m-d H:i:s'),
         //'deleted_at' => $this->faker->date('Y-m-d H:i:s')

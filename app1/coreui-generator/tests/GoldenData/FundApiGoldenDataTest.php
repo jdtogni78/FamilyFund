@@ -1,5 +1,6 @@
-<?php namespace Tests\APIs;
+<?php namespace Tests\GoldenData;
 
+use App\Http\Resources\FundResource;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -21,20 +22,23 @@ class FundApiGoldenDataTest extends TestCase
 
         $this->response = $this->json(
             'GET',
-            '/api/funds/'.$fund->id.'/as_of/'.$asOf
+            $url = '/api/funds/'.$fund->id.'/as_of/'.$asOf
         );
-
-        // print($this->response->getContent());
+        // print_r($url);
 
         $calc = array();
         $calc['value'] = Utils::currency($value);
         $calc['shares'] = Utils::shares($shares);
         $calc['share_value'] = Utils::currency($value/$shares);
         $calc['unallocated_shares'] = $unallocated;
-        $calc['as_of'] = $asOf;
-        $arr = $fund->toArray();
-        $arr['summary'] = $calc;
-        $this->assertApiResponse($arr);
+
+        $rss = new FundResource($fund);
+        $expected = $rss->toArray(null);
+        $expected['summary'] = $calc;
+        $expected['as_of'] = $asOf;
+
+        // $this->verbose = true;
+        $this->assertApiResponse($expected);
     }
     
     public static function fund2_values()
@@ -72,24 +76,24 @@ class FundApiGoldenDataTest extends TestCase
 
         // print($this->response->getContent());
 
-        $arr = array();
-        $arr['id'] = $id;
-        $arr['name'] = $fund->name;
-        $arr['as_of'] = $asOf;
+        $expected = array();
+        $expected['id'] = $id;
+        $expected['name'] = $fund->name;
+        $expected['as_of'] = $asOf;
 
         $perf = array();
         foreach ($performances as $performance) {
             [$year, $yp, $sv, $s, $v] = $performance;
             $p = array();
             $p['performance']   = Utils::percent($yp);
-            $p['shareValue']    = Utils::currency($sv);
+            $p['share_value']    = Utils::currency($sv);
             $p['shares']        = Utils::shares($s);
             $p['value']         = Utils::currency($v);
             $perf[$year] = $p;
         }
 
-        $arr['performance'] = $perf;
-        $this->assertApiResponse($arr);
+        $expected['performance'] = $perf;
+        $this->assertApiResponse($expected);
     }
 
     /**
@@ -123,10 +127,10 @@ class FundApiGoldenDataTest extends TestCase
 
         // print($this->response->getContent());
 
-        $arr = array();
-        $arr['id'] = $id;
-        $arr['name'] = $fund->name;
-        $arr['as_of'] = $asOf;
+        $expected = array();
+        $expected['id'] = $id;
+        $expected['name'] = $fund->name;
+        $expected['as_of'] = $asOf;
 
         $bals = array();
         foreach ($balances as $balance) {
@@ -144,8 +148,8 @@ class FundApiGoldenDataTest extends TestCase
             $bals[] = $b;
         }
 
-        $arr['balances'] = $bals;
-        $this->assertApiResponse($arr);
+        $expected['balances'] = $bals;
+        $this->assertApiResponse($expected);
     }
 
     /**

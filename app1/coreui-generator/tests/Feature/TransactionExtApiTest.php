@@ -6,13 +6,6 @@ use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Transaction;
 use App\Models\TransactionMatching;
-use App\Models\User;
-use App\Models\Fund;
-use App\Models\Portfolio;
-use App\Models\Account;
-use App\Models\AccountBalance;
-use App\Models\MatchingRule;
-use App\Models\AccountMatchingRule;
 use DB;
 use Tests\DataFactory;
 

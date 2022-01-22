@@ -2,17 +2,10 @@
 
 namespace App\Http\Controllers\APIv1;
 
-use App\Http\Requests\API\CreateFundAPIRequest;
-use App\Http\Requests\API\UpdateFundAPIRequest;
 use App\Models\Fund;
-use App\Models\FundAssets;
 use App\Models\Utils;
 use App\Repositories\FundRepository;
-use App\Repositories\FundAssetRepository;
-use App\Repositories\AssetPricesRepository;
-use App\Repositories\AssetRepository;
-use Illuminate\Http\Request;
-use App\Http\Controllers\API\FundAPIController;
+use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\FundResource;
 use Response;
 
@@ -21,11 +14,12 @@ use Response;
  * @package App\Http\Controllers\API
  */
 
-class FundAPIControllerExt extends FundAPIController
+class FundAPIControllerExt extends AppBaseController
 {
+    protected $fundRepository;
     public function __construct(FundRepository $fundRepo)
     {
-        parent::__construct($fundRepo);
+        $this->fundRepository = $fundRepo;
     }
 
     public function createFundResponse($fund, $asOf)

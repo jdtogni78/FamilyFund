@@ -8,14 +8,10 @@ use App\Http\Requests\API\AssetsUpdatePortfolioAPIRequest;
 
 use App\Models\Utils;
 use App\Models\Portfolio;
-use App\Models\PortfolioAsset;
 use App\Repositories\PortfolioRepository;
-use App\Repositories\PortfolioAssetRepository;
-use App\Repositories\AssetPricesRepository;
-use App\Repositories\AssetRepository;
-use Illuminate\Http\Request;
 use App\Http\Controllers\API\PortfolioAPIController;
 use App\Http\Resources\PortfolioResource;
+use App\Http\Controllers\AppBaseController;
 use Response;
 
 /**
@@ -23,11 +19,12 @@ use Response;
  * @package App\Http\Controllers\API
  */
 
-class PortfolioAPIControllerExt extends PortfolioAPIController
+class PortfolioAPIControllerExt extends AppBaseController
 {
+    protected $portfolioRepository;
     public function __construct(PortfolioRepository $portfolioRepo)
     {
-        parent::__construct($portfolioRepo);
+        $this->portfolioRepository = $portfolioRepo;
     }
 
     /**

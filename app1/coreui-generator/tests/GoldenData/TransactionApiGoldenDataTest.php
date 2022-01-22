@@ -1,4 +1,4 @@
-<?php namespace Tests\APIs;
+<?php namespace Tests\GoldenData;
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -48,7 +48,7 @@ class TransactionApiGoldenDataTest extends TestCase
                 $arr['type'] = $transaction->type;
                 $arr['value'] = $transaction->value;
                 $arr['shares'] = $transaction->shares;
-                $arr['shareValue'] = $shareValue;
+                $arr['share_value'] = $shareValue;
                 $arr['totalShares'] = $totalShares;
                 $arr['account_id'] = $account->id;
                 $arr['fund_id'] = $fund->id;

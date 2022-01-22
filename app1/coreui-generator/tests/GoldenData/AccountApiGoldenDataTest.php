@@ -1,5 +1,6 @@
-<?php namespace Tests\APIs;
+<?php namespace Tests\GoldenData;
 
+use App\Http\Resources\AccountResource;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -37,7 +38,7 @@ class AccountApiGoldenDataTest extends TestCase
         return $transaction;
     }
 
-    public function _test_account_balance_as_of($id, $asOf, $shares, $balance)
+    public function _test_account_balance_as_of($id, $asOf, $fund_name, $fund_id, $shares, $balance)
     {
         $account = Account::find(7);
 
@@ -46,8 +47,21 @@ class AccountApiGoldenDataTest extends TestCase
             '/api/accounts/'.$account->id.'/as_of/'.$asOf
         );
 
-        $arr = $account->toArray();
+        $rss = new AccountResource($account);
+        $arr = $rss->toArray(null);
+        $arr['as_of'] = $asOf;
         $arr['balances'][] = $this->create_own_balance($shares, $balance);
+        $arr['fund'] = [
+            'name' => $fund_name,
+            'id' => $fund_id,
+        ];
+        $user = $account->user()->first();
+        if ($user) {
+            $arr['user'] = [
+                'id' => $user->id,
+                'name' => $user->name,
+            ];
+        }
         $this->assertApiResponse($arr);
     }
 
@@ -63,6 +77,7 @@ class AccountApiGoldenDataTest extends TestCase
         $arr = array();
         $arr['nickname'] = $account->nickname;
         $arr['id'] = $id;
+        $arr['as_of'] = $asOf;
         $i = 0;
         foreach ($transactions as $transaction) {
             [$tran_id, $shares, $value, $ref_tran_id, $date] = $transaction;
@@ -89,11 +104,12 @@ class AccountApiGoldenDataTest extends TestCase
      */
     public function test_account_balance_as_of()
     {
+        // $this->verbose = true;
         $balance = $this->account7_balances();
-        $this->_test_account_balance_as_of(7, '2021-01-02', 2000, $balance[0]);
-        $this->_test_account_balance_as_of(7, '2021-07-02', 2264.6098, $balance[1]);
-        $this->_test_account_balance_as_of(7, '2022-01-02', 2264.6098, $balance[2]);
-        $this->_test_account_balance_as_of(7, '2022-01-16', 2561.0068, $balance[3]);
+        $this->_test_account_balance_as_of(7, '2021-01-02', "Fidelity Fund", 2, 2000, $balance[0]);
+        $this->_test_account_balance_as_of(7, '2021-07-02', "Fidelity Fund", 2, 2264.6098, $balance[1]);
+        $this->_test_account_balance_as_of(7, '2022-01-02', "Fidelity Fund", 2, 2264.6098, $balance[2]);
+        $this->_test_account_balance_as_of(7, '2022-01-16', "Fidelity Fund", 2, 2561.0068, $balance[3]);
     }
 
     /**
