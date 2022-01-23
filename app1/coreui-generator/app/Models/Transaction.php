@@ -105,6 +105,6 @@ class Transaction extends Model
      **/
     public function accountBalances()
     {
-        return $this->hasOne(\App\Models\AccountBalance::class, 'transaction_id');
+        return $this->hasMany(\App\Models\AccountBalance::class, 'transaction_id');
     }
 }

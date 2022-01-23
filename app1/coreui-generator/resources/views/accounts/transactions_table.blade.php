@@ -9,6 +9,8 @@
                 <th>Share Price</th>
                 <th>Shares</th>
                 <th>Current Value</th>
+                <th>Balance</th>
+                <th>Notes</th>
             </tr>
         </thead>
         <tbody>
@@ -17,10 +19,12 @@
                 <td>{{ $trans['id'] }}</td>
                 <td>{{ $trans['timestamp'] }}</td>
                 <td>{{ $trans['type'] }}</td>
-                <td>{{ $trans['value'] }}</td>
-                <td>{{ $trans['share_price'] }}</td>
+                <td>$ {{ $trans['value'] }}</td>
+                <td>$ {{ $trans['share_price'] }}</td>
                 <td>{{ $trans['shares'] }}</td>
-                <td>{{ $trans['current_value'] }}</td>
+                <td>$ {{ $trans['current_value'] }} ({{ $trans['current_performance'] }} %)</td>
+                <td>$ {{ $trans['balances']['OWN'] }}</td>
+                <td>@isset($trans['reference_transaction']) Matched by {{ $trans['reference_transaction'] }}@endisset</td>
             </tr>
         @endforeach
         </tbody>

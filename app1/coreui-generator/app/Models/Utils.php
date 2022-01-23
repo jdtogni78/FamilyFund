@@ -24,7 +24,7 @@ class Utils
 
     public static function percent($value)
     {
-        return round($value,2);
+        return round($value * 100,2);
     }
     
 }

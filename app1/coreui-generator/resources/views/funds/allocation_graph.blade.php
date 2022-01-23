@@ -12,7 +12,7 @@ const alloc_data = {
   ],
   datasets: [{
     label: 'My First Dataset',
-    data: [api.summary.shares - api.summary.unallocated_shares, api.summary.unallocated_shares],
+    data: [api.summary.allocated_shares_percent, api.summary.unallocated_shares_percent],
     // data: [40, 60],
     backgroundColor: [
       'green    ',

@@ -27,6 +27,47 @@ class PortfolioAPIControllerExt extends AppBaseController
         $this->portfolioRepository = $portfolioRepo;
     }
 
+    public function createPortfolioResponse($portfolio, $as_of)
+    {
+        $arr = [];
+        $arr['assets'] = $this->createAssetsResponse($portfolio, $as_of);
+        $arr['total_value'] = Utils::currency($this->totalValue);
+        return $arr;
+    }
+    
+    public function createAssetsResponse($portfolio, $as_of)
+    {
+        $arr = array();
+        $portfolioAssets = $portfolio->assetsAsOf($as_of);
+        $this->totalValue = 0;
+        foreach ($portfolioAssets as $pa) {
+            $asset = array();
+            $asset_id = $pa->asset_id;
+            $position = $pa->position;
+
+            if ($position == 0) 
+                continue;
+
+            $asset['id'] = $asset_id;
+            $asset['position'] = Utils::position($position);
+            $a = $pa->asset()->first();
+            $asset['name'] = $a->name;
+            $assetPrices = $a->pricesAsOf($as_of);
+            
+            if (count($assetPrices) == 1) {
+                $price = $assetPrices[0]['price'];
+                $value = $position * $price;
+                $this->totalValue += $value;
+                $asset['price'] = Utils::currency($price);
+                $asset['value'] = Utils::currency($value);
+            } else {
+                # TODO printf("No price for $asset_id\n");
+            }
+            $arr[] = $asset;
+        }
+        return $arr;
+    }
+
     /**
      * Display the specified Portfolio.
      * GET|HEAD /portfolios/{id}/as_of/{date}
@@ -44,39 +85,10 @@ class PortfolioAPIControllerExt extends AppBaseController
             return $this->sendError('Portfolio not found');
         }
 
-        $portfolioAssets = $portfolio->assetsAsOf($as_of);
-
         $rss = new PortfolioResource($portfolio);
         $arr = $rss->toArray(NULL);
-
-        $totalValue = 0;
-        $arr['assets'] = array();
-        foreach ($portfolioAssets as $pa) {
-            $asset = array();
-            $asset_id = $pa->asset_id;
-            $position = $pa->position;
-
-            if ($position == 0) 
-                continue;
-
-            $asset['asset_id'] = $asset_id;
-            $asset['position'] = Utils::position($position);
-            $a = $pa->asset()->first();
-            $asset['name'] = $a->name;
-            $assetPrices = $a->pricesAsOf($as_of);
-            
-            if (count($assetPrices) == 1) {
-                $price = $assetPrices[0]['price'];
-                $value = $position * $price;
-                $totalValue += $value;
-                $asset['price'] = Utils::currency($price);
-                $asset['value'] = Utils::currency($value);
-            } else {
-                # TODO printf("No price for $asset_id\n");
-            }
-            array_push($arr['assets'], $asset);
-        }
-        $arr['total_value'] = Utils::currency($totalValue);
+        $arr['assets'] = $this->createAssetsResponse($portfolio, $as_of);
+        $arr['total_value'] = Utils::currency($this->totalValue);
         $arr['as_of'] = $as_of;
         
         return $this->sendResponse($arr, 'Portfolio retrieved successfully');

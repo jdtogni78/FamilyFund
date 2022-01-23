@@ -11,6 +11,8 @@ use App\Http\Controllers\FundController;
 use App\Http\Resources\FundResource;
 use App\Models\Utils;
 use App\Http\Controllers\APIv1\FundAPIControllerExt;
+use App\Http\Controllers\APIv1\PortfolioAPIControllerExt;
+use App\Repositories\PortfolioRepository;
 
 class FundControllerExt extends FundController
 {
@@ -56,6 +58,11 @@ class FundControllerExt extends FundController
         $arr = $api->createFundResponse($fund, $asOf);
         $arr['performance'] = $api->createPerformanceResponse($fund, $asOf);
         $arr['balances'] = $api->createAccountBalancesResponse($fund, $asOf);
+
+        $portController = new PortfolioAPIControllerExt(\App::make(PortfolioRepository::class));
+        $portfolio = $fund->portfolios()->first();
+        $arr['portfolio'] = $portController->createPortfolioResponse($portfolio, $asOf);
+
         $arr['as_of'] = $asOf;
 
         return view('funds.show_ext')

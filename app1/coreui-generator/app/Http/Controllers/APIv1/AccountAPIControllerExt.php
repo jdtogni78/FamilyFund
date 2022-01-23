@@ -2,15 +2,8 @@
 
 namespace App\Http\Controllers\APIv1;
 
-use App\Models\Portfolio;
-use App\Models\PortfolioExt;
 use App\Models\Utils;
-// use App\Models\AccountAssets;
 use App\Repositories\AccountRepository;
-use App\Repositories\AccountBalanceRepository;
-use App\Repositories\FundRepository;
-// use App\Repositories\AssetRepository;
-use Illuminate\Http\Request;
 use App\Http\Controllers\API\AccountAPIController;
 use App\Http\Resources\AccountResource;
 use Response;
@@ -46,7 +39,6 @@ class AccountAPIControllerExt extends AccountAPIController
             'id' => $fund->id, 
             'name' => $fund->name,
         ];
-        $shareValue = $fund->shareValueAsOf($asOf);
         $user = $account->user()->first();
         if ($user) {
             $arr['user'] = [
@@ -60,6 +52,7 @@ class AccountAPIControllerExt extends AccountAPIController
             ];
         }
 
+        $shareValue = $fund->shareValueAsOf($asOf);
         $accountBalance = $account->allSharesAsOf($asOf);
         $arr['balances'] = array();
         foreach ($accountBalance as $ab) {
@@ -88,18 +81,26 @@ class AccountAPIControllerExt extends AccountAPIController
             $tran = array();
             if ($transaction->created_at->gte(Carbon::createFromFormat('Y-m-d', $asOf)))
                 continue;
-            $tran['id'] = $transaction->id;
-            $tran['type'] = $transaction->type;
+            $tran['id']     = $transaction->id;
+            $tran['type']   = $transaction->type;
             $tran['shares'] = Utils::shares($transaction->shares);
-            $tran['value'] = Utils::currency($transaction->value);
+            $tran['value']  = Utils::currency($value = $transaction->value);
             $tran['share_price'] = Utils::currency($transaction->shares ? $transaction->value / $transaction->shares : 0);
 
             $matching = $transaction->transactionMatching()->first();
             if ($matching) {
                 $tran['reference_transaction'] = $matching->referenceTransaction()->first()->id;
             }
-            $tran['current_value'] = Utils::currency($transaction->shares * $shareValue);
+            $tran['current_value'] = Utils::currency($current = $transaction->shares * $shareValue);
+            $tran['current_performance'] = Utils::percent($current/$value - 1);
             $tran['timestamp'] = $transaction->timestamp;
+
+            $bals = [];
+            foreach ($transaction->accountBalances()->get() as $balance) {
+                $bals[$balance->type] = $balance->shares;
+            }
+            $tran['balances'] = $bals;
+
             array_push($arr, $tran);
         }
 

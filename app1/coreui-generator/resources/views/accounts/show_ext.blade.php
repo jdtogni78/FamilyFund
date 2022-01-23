@@ -11,18 +11,34 @@
           <div class="animated fadeIn">
                  @include('coreui-templates::common.errors')
                  <div class="row">
-                     <div class="col-lg-12">
+                     <div class="col">
                          <div class="card">
                              <div class="card-header">
                                  <strong>Details</strong>
                                   <a href="{{ route('accounts.index') }}" class="btn btn-light">Back</a>
                              </div>
                              <div class="card-body">
-                                 @include('accounts.show_fields_ext')
+                             {!! Form::open(['route' => ['accounts.update', 1]]) !!}
+                             
+                             @include('accounts.show_fields_ext')
+
+                             {!! Form::close() !!}
                              </div>
                          </div>
                      </div>
-                 </div>
+                     <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Performance<strong>
+                            </div>
+                            <div class="card-body">
+                                @include('accounts.performance_graph')
+                            <div class="pull-right mr-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                  <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -37,7 +53,39 @@
                             </div>
                         </div>
                     </div>
-                 </div>
+                 </div>                 
+                 <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Account Value<strong>
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <canvas id="valuesGraph"></canvas>
+                                </div>
+                                <div class="pull-right mr-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Shares<strong>
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <canvas id="balancesGraph"></canvas>
+                                </div>
+                                @include('accounts.balances_graph')
+                                <div class="pull-right mr-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                  <div class="row">
                     <div class="col-lg-12">
                         <div class="card">

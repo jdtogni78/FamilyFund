@@ -86,7 +86,7 @@ class FundApiGoldenDataTest extends TestCase
             [$year, $yp, $sv, $s, $v] = $performance;
             $p = array();
             $p['performance']   = Utils::percent($yp);
-            $p['share_value']    = Utils::currency($sv);
+            $p['share_value']   = Utils::currency($sv);
             $p['shares']        = Utils::shares($s);
             $p['value']         = Utils::currency($v);
             $perf[$year] = $p;

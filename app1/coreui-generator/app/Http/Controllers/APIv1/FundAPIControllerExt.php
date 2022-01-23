@@ -7,6 +7,7 @@ use App\Models\Utils;
 use App\Repositories\FundRepository;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\FundResource;
+use App\Repositories\PortfolioRepository;
 use Response;
 
 /**
@@ -28,10 +29,13 @@ class FundAPIControllerExt extends AppBaseController
         $ret = $rss->toArray(NULL);
         
         $arr = array();
-        $value = $arr['value']      = Utils::currency($fund->valueAsOf($asOf));
-        $shares = $arr['shares']    = Utils::shares($fund->sharesAsOf($asOf));
-        $arr['unallocated_shares']  = Utils::shares($fund->unallocatedShares($asOf));
-        $arr['share_value']         = Utils::currency($shares? $value/$shares : 0);
+        $arr['value']                       = Utils::currency($value = $fund->valueAsOf($asOf));
+        $arr['shares']                      = Utils::shares($shares = $fund->sharesAsOf($asOf));
+        $arr['unallocated_shares']          = Utils::shares($unallocated = $fund->unallocatedShares($asOf));
+        $arr['unallocated_shares_percent']  = Utils::percent($unallocated/$shares);
+        $arr['allocated_shares']            = Utils::shares($allocated = $shares - $unallocated);
+        $arr['allocated_shares_percent']    = Utils::percent($allocated/$shares);
+        $arr['share_value']                 = Utils::currency($shares ? $value/$shares : 0);
         $ret['summary'] = $arr;
 
         return $ret;
@@ -55,7 +59,7 @@ class FundAPIControllerExt extends AppBaseController
             $yp = array();
             $yp['value']        = Utils::currency($fund->valueAsOf($asOf));
             $yp['shares']       = Utils::shares($fund->sharesAsOf($asOf));
-            $yp['share_value']   = Utils::currency($fund->shareValueAsOf($asOf));
+            $yp['share_value']  = Utils::currency($fund->shareValueAsOf($asOf));
             $yp['performance']  = Utils::percent($fund->periodPerformance($yearStart, $asOf));
             $arr[$asOf] = $yp;
         }
@@ -65,7 +69,7 @@ class FundAPIControllerExt extends AppBaseController
             $yp = array();
             $yp['value']        = Utils::currency($fund->valueAsOf($yearStart));
             $yp['shares']       = Utils::shares($fund->sharesAsOf($yearStart));
-            $yp['share_value']   = Utils::currency($fund->shareValueAsOf($yearStart));
+            $yp['share_value']  = Utils::currency($fund->shareValueAsOf($yearStart));
             $yp['performance']  = Utils::percent($fund->periodPerformance($year, min($yearStart, $asOf)));
             $arr[$year] = $yp;
         }
@@ -209,6 +213,10 @@ class FundAPIControllerExt extends AppBaseController
         $arr = $this->createFundResponse($fund, $asOf);
         $arr['performance'] = $this->createPerformanceResponse($fund, $asOf);
         $arr['balances'] = $this->createAccountBalancesResponse($fund, $asOf);
+        
+        $portController = new PortfolioAPIControllerExt(\App::make(PortfolioRepository::class));
+        $portfolio = $fund->portfolios()->first();
+        $arr['portfolio'] = $portController->createPortfolioResponse($portfolio, $asOf);
         $arr['as_of'] = $asOf;
 
         return $this->sendResponse($arr, 'Fund retrieved successfully');
