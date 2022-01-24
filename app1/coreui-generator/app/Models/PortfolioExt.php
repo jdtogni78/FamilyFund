@@ -96,7 +96,7 @@ class PortfolioExt extends Portfolio
         $valueTo = $this->valueAsOf($to);
         // var_dump(array($from, $to, $valueFrom, $valueTo));
         if ($valueFrom == 0) return 0;
-        return $valueTo/$valueFrom - 1;
+        return $valueTo / $valueFrom - 1;
     }
 
     public function yearlyPerformance($year)

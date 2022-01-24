@@ -5,8 +5,6 @@ namespace App\Http\Controllers\WebV1;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\APIv1\AccountAPIControllerExt;
 use App\Repositories\AccountRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
 use Response;
 
@@ -51,7 +49,7 @@ class AccountControllerExt extends AccountController
         $arr = array();
         $api = new AccountAPIControllerExt($this->accountRepository);
         $arr = $api->createAccountResponse($account, $asOf);
-        $arr['performance'] = $api->createPerformanceResponse($account, $asOf);
+        $arr['performance'] = $api->createPerformanceResponse($asOf);
         $arr['transactions'] = $api->createTransactionsResponse($account, $asOf);
         $arr['as_of'] = $asOf;
 

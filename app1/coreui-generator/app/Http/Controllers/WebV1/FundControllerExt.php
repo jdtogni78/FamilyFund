@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\WebV1;
 
 use App\Repositories\FundRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
 use Response;
 use App\Http\Controllers\FundController;
-use App\Http\Resources\FundResource;
-use App\Models\Utils;
 use App\Http\Controllers\APIv1\FundAPIControllerExt;
 use App\Http\Controllers\APIv1\PortfolioAPIControllerExt;
+use App\Models\PerformanceTrait;
 use App\Repositories\PortfolioRepository;
 
 class FundControllerExt extends FundController
 {
+    use PerformanceTrait;
+
     public function __construct(FundRepository $fundRepo)
     {
         parent::__construct($fundRepo);
@@ -56,7 +55,8 @@ class FundControllerExt extends FundController
         $arr = array();
         $api = new FundAPIControllerExt($this->fundRepository);
         $arr = $api->createFundResponse($fund, $asOf);
-        $arr['performance'] = $api->createPerformanceResponse($fund, $asOf);
+        $arr['monthly_performance'] = $api->createMonthlyPerformanceResponse($asOf);
+        $arr['yearly_performance'] = $api->createYearlyPerformanceResponse($asOf);
         $arr['balances'] = $api->createAccountBalancesResponse($fund, $asOf);
 
         $portController = new PortfolioAPIControllerExt(\App::make(PortfolioRepository::class));

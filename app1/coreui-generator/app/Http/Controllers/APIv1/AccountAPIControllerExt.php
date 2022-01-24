@@ -8,6 +8,7 @@ use App\Http\Controllers\API\AccountAPIController;
 use App\Http\Resources\AccountResource;
 use Response;
 use Carbon\Carbon;
+use App\Models\PerformanceTrait;
 
 /**
  * Class AccountsController
@@ -16,6 +17,7 @@ use Carbon\Carbon;
 
 class AccountAPIControllerExt extends AccountAPIController
 {
+    use PerformanceTrait;
     public function __construct(AccountRepository $accountRepo)
     {
         parent::__construct($accountRepo);
@@ -23,6 +25,8 @@ class AccountAPIControllerExt extends AccountAPIController
 
     public function createAccountArray($account)
     {
+        $this->perfObject = $account;
+
         $arr = array();
         $arr['nickname'] = $account->nickname;
         $arr['id'] = $account->id;
@@ -31,6 +35,8 @@ class AccountAPIControllerExt extends AccountAPIController
 
     public function createAccountResponse($account, $asOf)
     {
+        $this->perfObject = $account;
+
         $rss = new AccountResource($account);
         $arr = $rss->toArray(NULL);
 
@@ -107,36 +113,6 @@ class AccountAPIControllerExt extends AccountAPIController
         return $arr;
     }
 
-    public function createPerformanceResponse($account, $asOf)
-    {
-        $arr = array();
-
-        $year = substr($asOf, 0, 4);
-        $yearStart = $year.'-01-01';
-
-        $arr = array();
-        if ($asOf != $yearStart) {
-            $yp = array();
-            $yp['value']        = Utils::currency($value = $account->valueAsOf($asOf));
-            $yp['shares']       = Utils::shares($shares = $account->ownedSharesAsOf($asOf));
-            $yp['share_value']  = Utils::currency($shares > 0 ? $value/$shares : 0);
-            $yp['performance']  = Utils::percent($account->periodPerformance($yearStart, $asOf));
-            $arr[$asOf] = $yp;
-        }
-
-        for ($year; $year >= 2021; $year--) {
-            $yearStart = $year.'-01-01';
-            $yp = array();
-            $yp['value']        = Utils::currency($value = $account->valueAsOf($yearStart));
-            $yp['shares']       = Utils::shares($shares = $account->ownedSharesAsOf($yearStart));
-            $yp['share_value']  = Utils::currency($shares > 0 ? $value/$shares : 0);
-            $yp['performance']  = Utils::percent($account->yearlyPerformance($year));
-            $arr[$year] = $yp;
-        }
-
-        return $arr;
-    }
-
     /**
      * Display the specified Accounts.
      * GET|HEAD /Accounts/{id}
@@ -192,7 +168,8 @@ class AccountAPIControllerExt extends AccountAPIController
         }
 
         $arr = $this->createAccountArray($account);
-        $arr['performance'] = $this->createPerformanceResponse($account, $asOf);
+        $this->perfObject = $account;
+        $arr['performance'] = $this->createPerformanceResponse($asOf);
         $arr['as_of'] = $asOf;
 
         return $this->sendResponse($arr, 'Account retrieved successfully');
@@ -241,7 +218,7 @@ class AccountAPIControllerExt extends AccountAPIController
 
         $arr = $this->createAccountResponse($account, $asOf);
         $arr['transactions'] = $this->createTransactionsResponse($account, $asOf);
-        $arr['performance'] = $this->createPerformanceResponse($account, $asOf);
+        $arr['performance'] = $this->createPerformanceResponse($asOf);
         $arr['as_of'] = $asOf;
 
         return $this->sendResponse($arr, 'Account retrieved successfully');

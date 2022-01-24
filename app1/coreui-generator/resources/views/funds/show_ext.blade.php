@@ -31,7 +31,19 @@
                      <div class="col">
                         <div class="card">
                             <div class="card-header">
-                                <strong>Performance<strong>
+                                <strong>Monthly Performance<strong>
+                            </div>
+                            <div class="card-body">
+                                @include('funds.performance_line_graph')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                     <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Yearly Performance<strong>
                             </div>
                             <div class="card-body">
                                 @include('funds.performance_graph')

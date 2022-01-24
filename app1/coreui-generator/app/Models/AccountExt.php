@@ -51,19 +51,20 @@ class AccountExt extends Account
         return $accountBalances;
     }
 
-    public function ownedSharesAsOf($now) {
+    public function sharesAsOf($now) {
         $accountBalances = $this->allSharesAsOf($now);
         foreach ($accountBalances as $balance) {
             if ($balance->type == 'OWN') {
                 return $balance->shares;
             }
+            // TODO: discount BORROW!!
         }
         return 0;
     }
 
     public function valueAsOf($now) {
         $shareValue = $this->fund()->first()->shareValueAsOf($now);
-        $shares = $this->ownedSharesAsOf($now);
+        $shares = $this->sharesAsOf($now);
         $value = $shareValue * $shares;
         return $value;
     }
@@ -77,8 +78,8 @@ class AccountExt extends Account
         $shareValueFrom = $this->fund()->first()->shareValueAsOf($from);
         $shareValueTo = $this->fund()->first()->shareValueAsOf($to);
         
-        $sharesFrom = $this->ownedSharesAsOf($from);
-        $sharesTo = $this->ownedSharesAsOf($to);
+        $sharesFrom = $this->sharesAsOf($from);
+        $sharesTo = $this->sharesAsOf($to);
         
         $valueFrom = $shareValueFrom * $sharesFrom;
         $valueTo = $shareValueTo * $sharesTo;

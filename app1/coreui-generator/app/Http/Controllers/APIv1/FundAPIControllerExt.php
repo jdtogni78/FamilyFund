@@ -9,6 +9,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\FundResource;
 use App\Repositories\PortfolioRepository;
 use Response;
+use App\Models\PerformanceTrait;
 
 /**
  * Class FundControllerExt
@@ -17,7 +18,10 @@ use Response;
 
 class FundAPIControllerExt extends AppBaseController
 {
+    use PerformanceTrait;
+
     protected $fundRepository;
+    
     public function __construct(FundRepository $fundRepo)
     {
         $this->fundRepository = $fundRepo;
@@ -25,9 +29,10 @@ class FundAPIControllerExt extends AppBaseController
 
     public function createFundResponse($fund, $asOf)
     {
+        $this->perfObject = $fund;
         $rss = new FundResource($fund);
         $ret = $rss->toArray(NULL);
-        
+
         $arr = array();
         $arr['value']                       = Utils::currency($value = $fund->valueAsOf($asOf));
         $arr['shares']                      = Utils::shares($shares = $fund->sharesAsOf($asOf));
@@ -42,38 +47,11 @@ class FundAPIControllerExt extends AppBaseController
     }
 
     public function createFundArray($fund, $asOf) {
+        $this->perfObject = $fund;
+
         $arr = array();
         $arr['id'] = $fund->id;
         $arr['name'] = $fund->name;
-        return $arr;       
-    }
-
-    public function createPerformanceResponse($fund, $asOf)
-    {
-        $arr = array();
-
-        $year = substr($asOf,0,4);
-        $yearStart = $year.'-01-01';
-
-        if ($asOf != $yearStart) {
-            $yp = array();
-            $yp['value']        = Utils::currency($fund->valueAsOf($asOf));
-            $yp['shares']       = Utils::shares($fund->sharesAsOf($asOf));
-            $yp['share_value']  = Utils::currency($fund->shareValueAsOf($asOf));
-            $yp['performance']  = Utils::percent($fund->periodPerformance($yearStart, $asOf));
-            $arr[$asOf] = $yp;
-        }
-
-        for ($year; $year >= 2021; $year--) {
-            $yearStart = $year.'-01-01';
-            $yp = array();
-            $yp['value']        = Utils::currency($fund->valueAsOf($yearStart));
-            $yp['shares']       = Utils::shares($fund->sharesAsOf($yearStart));
-            $yp['share_value']  = Utils::currency($fund->shareValueAsOf($yearStart));
-            $yp['performance']  = Utils::percent($fund->periodPerformance($year, min($yearStart, $asOf)));
-            $arr[$year] = $yp;
-        }
-
         return $arr;
     }
 
@@ -84,17 +62,17 @@ class FundAPIControllerExt extends AppBaseController
         foreach ($fund->accountBalancesAsOf($asOf) as $balance) {
             $account = $balance->account()->first();
             $user = $account->user()->first();
-            
+
             $bal = array();
             if ($user) {
                 $bal['user'] = [
-                    'id' => $user->id, 
+                    'id' => $user->id,
                     'name' => $user->name,
                 ];
             } else {
                 continue;
                 // $bal['user'] = [
-                //     'id' => 0, 
+                //     'id' => 0,
                 //     'name' => 'N/A',
                 // ];
             }
@@ -163,7 +141,8 @@ class FundAPIControllerExt extends AppBaseController
         }
 
         $arr = $this->createFundArray($fund, $asOf);
-        $arr['performance'] = $this->createPerformanceResponse($fund, $asOf);
+        $this->perfObject = $fund;
+        $arr['performance'] = $this->createPerformanceResponse($asOf);
         $arr['as_of'] = $asOf;
 
         return $this->sendResponse($arr, 'Fund retrieved successfully');
@@ -211,9 +190,9 @@ class FundAPIControllerExt extends AppBaseController
         }
 
         $arr = $this->createFundResponse($fund, $asOf);
-        $arr['performance'] = $this->createPerformanceResponse($fund, $asOf);
+        $arr['performance'] = $this->createPerformanceResponse($asOf);
         $arr['balances'] = $this->createAccountBalancesResponse($fund, $asOf);
-        
+
         $portController = new PortfolioAPIControllerExt(\App::make(PortfolioRepository::class));
         $portfolio = $fund->portfolios()->first();
         $arr['portfolio'] = $portController->createPortfolioResponse($portfolio, $asOf);
