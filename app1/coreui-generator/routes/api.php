@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('portfolios/{id}/as_of/{as_of}', 'App\Http\Controllers\APIv1\PortfolioAPIControllerExt@showAsOf');
-Route::get('portfolios/{code}/assets_update', 'App\Http\Controllers\APIv1\PortfolioAPIControllerExt@assetsUpdate');
+Route::post('portfolios/{code}/assets_update', 'App\Http\Controllers\APIv1\PortfolioAPIControllerExt@assetsUpdate');
 
 Route::get('funds/{id}/as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showAsOf');
 Route::get('funds/{id}/performance_as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showPerformanceAsOf');

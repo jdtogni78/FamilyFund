@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\APIv1;
 
-use App\Http\Requests\API\CreatePortfolioAPIRequest;
-use App\Http\Requests\API\UpdatePortfolioAPIRequest;
 use App\Http\Requests\API\AssetsUpdatePortfolioAPIRequest;
 
 use App\Models\Utils;
 use App\Models\Portfolio;
 use App\Repositories\PortfolioRepository;
-use App\Http\Controllers\API\PortfolioAPIController;
 use App\Http\Resources\PortfolioResource;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use DB;
 
 /**
  * Class PortfolioControllerExt
@@ -110,7 +108,7 @@ class PortfolioAPIControllerExt extends AppBaseController
     
     /**
      * Update the specified Portfolio in storage.
-     * PUT/PATCH /portfolios/{code}/bulk_update
+     * PUT/PATCH /portfolios/{code}/update_assets
      *
      * @param int $code
      * @param AssetsUpdatePortfolioAPIRequest $request
@@ -121,28 +119,33 @@ class PortfolioAPIControllerExt extends AppBaseController
     {
         $input = $request->all();
 
-        // /** @var Portfolio $portfolio */
-        $portfolio = Portfolio::where('code', '=', $code)->first();
+        print_r($input);
+        $data=array('code' => $code, 'content' => json_encode($input));
+        DB::table('asset_update_log')->insert($data);
 
-        if (empty($portfolio)) {
-            return $this->sendError('Portfolio not found');
-        }
+        // // /** @var Portfolio $portfolio */
+        // $portfolio = Portfolio::where('code', '=', $code)->first();
 
-        // print_r($portfolio->toArray());
-        // print_r($input);
-        foreach($input as $symbol => $values) {
-            $price = $values['price'];
-            $position = $values['position'];
+        // if (empty($portfolio)) {
+        //     return $this->sendError('Portfolio not found');
+        // }
 
-            $asset = Asset::
-                where('feed_id', '=', $symbol)
-                ->where('source_feed', '=', $code)
-                ->first();
-            if ($asset == null) {
+        // // print_r($portfolio->toArray());
+        // // print_r($input);
+        // foreach($input as $symbol => $values) {
+        //     $price = $values['price'];
+        //     $position = $values['position'];
+
+        //     $asset = Asset::
+        //         where('feed_id', '=', $symbol)
+        //         ->where('source_feed', '=', $code)
+        //         ->first();
+        //     if ($asset == null) {
                 
-            }
-        }
+        //     }
+        // }
 
-        return $this->sendResponse(new PortfolioResource($portfolio), 'Portfolio updated successfully');
+        // return $this->sendResponse(new PortfolioResource($portfolio), 'Portfolio updated successfully');
+        return $this->sendResponse(['ok'], 'updated');
     }
 }
