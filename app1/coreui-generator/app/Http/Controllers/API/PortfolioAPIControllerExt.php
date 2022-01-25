@@ -124,7 +124,6 @@ class PortfolioAPIControllerExt extends PortfolioAPIController
         foreach($input as $symbol => $values) {
             $price = $values['price'];
             $position = $values['position'];
-
             $asset = Asset::
                 where('feed_id', '=', $symbol)
                 ->where('source_feed', '=', $code)
