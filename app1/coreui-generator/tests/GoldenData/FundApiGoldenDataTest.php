@@ -1,5 +1,6 @@
-<?php namespace Tests\APIs;
+<?php namespace Tests\GoldenData;
 
+use App\Http\Resources\FundResource;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -21,20 +22,23 @@ class FundApiGoldenDataTest extends TestCase
 
         $this->response = $this->json(
             'GET',
-            '/api/funds/'.$fund->id.'/as_of/'.$asOf
+            $url = '/api/funds/'.$fund->id.'/as_of/'.$asOf
         );
-
-        // print($this->response->getContent());
+        // print_r($url);
 
         $calc = array();
-        $calc['value'] = $value;
-        $calc['shares'] = $shares;
+        $calc['value'] = Utils::currency($value);
+        $calc['shares'] = Utils::shares($shares);
         $calc['share_value'] = Utils::currency($value/$shares);
         $calc['unallocated_shares'] = $unallocated;
-        $calc['as_of'] = $asOf;
-        $arr = $fund->toArray();
-        $arr['calculated'] = $calc;
-        $this->assertApiResponse($arr);
+
+        $rss = new FundResource($fund);
+        $expected = $rss->toArray(null);
+        $expected['summary'] = $calc;
+        $expected['as_of'] = $asOf;
+
+        // $this->verbose = true;
+        $this->assertApiResponse($expected);
     }
     
     public static function fund2_values()
@@ -72,24 +76,24 @@ class FundApiGoldenDataTest extends TestCase
 
         // print($this->response->getContent());
 
-        $arr = array();
-        $arr['id'] = $id;
-        $arr['name'] = $fund->name;
-        $arr['as_of'] = $asOf;
+        $expected = array();
+        $expected['id'] = $id;
+        $expected['name'] = $fund->name;
+        $expected['as_of'] = $asOf;
 
         $perf = array();
         foreach ($performances as $performance) {
             [$year, $yp, $sv, $s, $v] = $performance;
             $p = array();
             $p['performance']   = Utils::percent($yp);
-            $p['shareValue']    = Utils::currency($sv);
+            $p['share_value']   = Utils::currency($sv);
             $p['shares']        = Utils::shares($s);
             $p['value']         = Utils::currency($v);
             $perf[$year] = $p;
         }
 
-        $arr['performance'] = $perf;
-        $this->assertApiResponse($arr);
+        $expected['performance'] = $perf;
+        $this->assertApiResponse($expected);
     }
 
     /**
@@ -112,7 +116,7 @@ class FundApiGoldenDataTest extends TestCase
     }
 
 
-    private function _test_fund_balances_as_of($id, $asOf, $balances)
+    private function _test_fund_balances_as_of($id, $asOf, $sharePrice, $balances)
     {
         $fund = Fund::find($id);
 
@@ -123,24 +127,29 @@ class FundApiGoldenDataTest extends TestCase
 
         // print($this->response->getContent());
 
-        $arr = array();
-        $arr['id'] = $id;
-        $arr['name'] = $fund->name;
-        $arr['as_of'] = $asOf;
+        $expected = array();
+        $expected['id'] = $id;
+        $expected['name'] = $fund->name;
+        $expected['as_of'] = $asOf;
 
         $bals = array();
         foreach ($balances as $balance) {
-            [$user_id, $nickname, $shares] = $balance;
+            [$account_id, $user_id, $nickname, $name, $shares] = $balance;
             $b = array();
             $b['nickname'] = $nickname;
             $b['shares'] = $shares;
-            $b['user_id'] = $user_id;
+            $b['user'] = [
+                'id' => $user_id,
+                'name' => $name ? $name : "N/A", 
+            ];
             $b['type'] = 'OWN';
+            $b['account_id'] = $account_id;
+            $b['value'] = Utils::currency($shares * $sharePrice);
             $bals[] = $b;
         }
 
-        $arr['balances'] = $bals;
-        $this->assertApiResponse($arr);
+        $expected['balances'] = $bals;
+        $this->assertApiResponse($expected);
     }
 
     /**
@@ -150,35 +159,35 @@ class FundApiGoldenDataTest extends TestCase
     {
         $shares = $this->fund2_shares();
         $b21     = [
-            [1, "LT", 2000],
-            [2, "GT", 2000],
-            [3, "GG", 2000],
-            [4, "PG", 2000],
-            [5, "NB", 5000],
-            [8, "VT", 2000],
-            [null, "F2", $shares[0]],
+            [7,  1, "LT", "NieceA1", 2000],
+            [8,  2, "GT", "NieceA2", 2000],
+            [9,  3, "GG", "NieceB1", 2000],
+            [10, 4, "PG", "NieceB2", 2000],
+            [11, 5, "NB", "NephewC1", 5000],
+            [12, 8, "VT", "Sister2", 2000],
+            // [14, null, "F2", null, $shares[0]],
         ];
         $b2107     = [
-            [1, "LT", 2264.6098],
-            [2, "GT", 2264.6098],
-            [3, "GG", 2000],
-            [4, "PG", 2000],
-            [5, "NB", 5000],
-            [8, "VT", 2000],
-            [null, "F2", $shares[1]],
+            [7,  1, "LT", "NieceA1", 2264.6098],
+            [8,  2, "GT", "NieceA2", 2264.6098],
+            [9,  3, "GG", "NieceB1", 2000],
+            [10, 4, "PG", "NieceB2", 2000],
+            [11, 5, "NB", "NephewC1", 5000],
+            [12, 8, "VT", "Sister2", 2000],
+            // [14, null, "F2", null, $shares[1]],
         ];
         $b2201     = [
-            [1, "LT", 2561.0068],
-            [2, "GT", 2561.0068],
-            [3, "GG", 2444.5954],
-            [4, "PG", 2296.397],
-            [5, "NB", 5000],
-            [8, "VT", 3556.0847],
-            [null, "F2", $shares[1]],
+            [7,  1, "LT", "NieceA1", 2561.0068],
+            [8,  2, "GT", "NieceA2", 2561.0068],
+            [9,  3, "GG", "NieceB1", 2444.5954],
+            [10, 4, "PG", "NieceB2", 2296.397],
+            [11, 5, "NB", "NephewC1", 5000],
+            [12, 8, "VT", "Sister2", 3556.0847],
+            // [14, null, "F2", null, $shares[1]],
         ];
 
-        $this->_test_fund_balances_as_of(2, '2021-01-02', $b21);
-        $this->_test_fund_balances_as_of(2, '2021-07-02', $b2107);
-        $this->_test_fund_balances_as_of(2, '2022-01-02', $b2107);
-        $this->_test_fund_balances_as_of(2, '2022-01-16', $b2201);
+        $this->_test_fund_balances_as_of(2, '2021-01-02', 1, $b21);
+        $this->_test_fund_balances_as_of(2, '2021-07-02', 1.1337448, $b2107);
+        $this->_test_fund_balances_as_of(2, '2022-01-02', 1.56046133, $b2107);
+        $this->_test_fund_balances_as_of(2, '2022-01-16', 1.34954066, $b2201);
     }}

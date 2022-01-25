@@ -39,7 +39,7 @@ class FundExt extends Fund
 
     public function sharesAsOf($now)
     {
-        $balance = $this->account()->ownedSharesAsOf($now);
+        $balance = $this->account()->sharesAsOf($now);
         return $balance;
     }
 
@@ -47,7 +47,7 @@ class FundExt extends Fund
     {
         $portfolio = $this->portfolio();
         // print_r(['port',$portfolio->id,$this->id]);
-        return $portfolio->valueAsOf($now,$verbose);
+        return $portfolio->valueAsOf($now, $verbose);
     }
 
     public function shareValueAsOf($now)
@@ -68,7 +68,7 @@ class FundExt extends Fund
         $used = 0;
         $total = 0;
         foreach ($accounts as $account) {
-            $balance = $account->ownedSharesAsOf($now);
+            $balance = $account->sharesAsOf($now);
             if ($account->user_id) {
                 $used += $balance;
             } else {

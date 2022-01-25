@@ -1,4 +1,4 @@
-<?php namespace Tests\APIs;
+<?php namespace Tests\GoldenData;
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -18,16 +18,21 @@ class TransactionApiGoldenDataTest extends TestCase
     public function test_transaction_share_value()
     {
         $verbose = false;
+        $fixValues = false;
+
         $transactions = Transaction::
             orderBy('created_at')
             ->orderBy('account_id')
-            ->orderBy('matching_rule_id')->get();
+            // ->orderBy('matching_rule_id')
+            ->get();
 
         $accts = array();
         foreach($transactions as $transaction) {
             if (!array_key_exists($transaction->account_id, $accts))
                 $accts[$transaction->account_id] = 0;
             $accts[$transaction->account_id] += $transaction->shares;
+
+            if ($verbose) print_r(json_encode($transaction->toArray()) . "\n");
 
             $account = $transaction->account()->first();
             $fund = $account->fund()->first();
@@ -43,7 +48,7 @@ class TransactionApiGoldenDataTest extends TestCase
                 $arr['type'] = $transaction->type;
                 $arr['value'] = $transaction->value;
                 $arr['shares'] = $transaction->shares;
-                $arr['shareValue'] = $shareValue;
+                $arr['share_value'] = $shareValue;
                 $arr['totalShares'] = $totalShares;
                 $arr['account_id'] = $account->id;
                 $arr['fund_id'] = $fund->id;
@@ -54,9 +59,21 @@ class TransactionApiGoldenDataTest extends TestCase
             $portfolio = $fund->portfolio();
             $assets = $portfolio->valueAsOf($asOf, $verbose);
             if ($transaction->type != 'INI') {
-                if ($shareValue > 0) 
-                    $this->assertEquals(Utils::shares($transaction->value / $shareValue), $transaction->shares);
-                $this->assertEquals($transaction->value, Utils::currency($shareValue * $transaction->shares));
+                if ($fixValues) {
+                    if ($shareValue > 0) {
+                        if (Utils::shares($transaction->value / $shareValue) != $transaction->shares) {
+                            print_r(json_encode([$transaction->id, Utils::shares($transaction->value / $shareValue)])."\n");
+                        }
+                    }
+                    if ($transaction->value != Utils::currency($shareValue * $transaction->shares)) {
+                        print_r(json_encode([$transaction->id, Utils::shares($transaction->value / $shareValue)])."\n");
+                    }
+                } else {
+                    if ($shareValue > 0) {
+                        $this->assertEquals(Utils::shares($transaction->value / $shareValue), $transaction->shares);
+                    }
+                    $this->assertEquals($transaction->value, Utils::currency($shareValue * $transaction->shares));
+                }
             }
         }
     }
@@ -67,6 +84,8 @@ class TransactionApiGoldenDataTest extends TestCase
     public function test_balance_share_value()
     {
         $verbose = false;
+        $fixValues = false;
+
         $balances = AccountBalance::
             orderBy('account_id')
             ->orderBy('start_dt')
@@ -95,17 +114,20 @@ class TransactionApiGoldenDataTest extends TestCase
                 }
                 $old_shares = $bals[$key][4];
                 if ($bal_type == 'OWN') {
-                    if ($tran_type == 'PUR' || $tran_type == 'REP') {
-                        $this->assertEquals($shares, $old_shares + $tran_shares);
-                    } else {
-                        $this->assertEquals($shares, $old_shares - $tran_shares);
+                    if (! ($tran_type == 'PUR' || $tran_type == 'REP')) {
+                        $tran_shares *= -1;
                     }
                 } elseif ($bal_type == 'BOR') {
                     if ($tran_type == 'PUR' || $tran_type == 'REP') {
-                        $this->assertEquals($shares, $old_shares - $tran_shares);
-                    } else {
-                        $this->assertEquals($shares, $old_shares + $tran_shares);
+                        $tran_shares *= -1;
                     }
+                }
+                if ($fixValues) {
+                    if ($shares != $old_shares + $tran_shares) {
+                        print_r(json_encode([$balance->id, $old_shares + $tran_shares])."\n");
+                    }
+                } else {
+                    $this->assertTrue(abs($old_shares + $tran_shares - $shares) < 0.001);
                 }
             }
             $bals[$key] = $a;

@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Portfolio;
 use App\Models\Fund;
+use App\Http\Resources\PortfolioResource;
 
 class PortfolioApiTest extends TestCase
 {
@@ -37,7 +38,7 @@ class PortfolioApiTest extends TestCase
             '/api/portfolios', $portfolio
         );
 
-        $this->assertApiResponse($portfolio);
+        $this->assertApiResponse($portfolio, ['id']);
     }
 
     /**
@@ -52,7 +53,7 @@ class PortfolioApiTest extends TestCase
             '/api/portfolios/'.$portfolio->id
         );
 
-        $this->assertApiResponse($portfolio->toArray());
+        $this->assertApiResponse((new PortfolioResource($portfolio))->toArray(null));
     }
 
     /**
@@ -70,6 +71,7 @@ class PortfolioApiTest extends TestCase
             '/api/portfolios/'.$portfolio->id,
             $editedPortfolio
         );
+        $editedPortfolio['id'] = $portfolio->id;
 
         $this->assertApiResponse($editedPortfolio);
     }

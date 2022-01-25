@@ -3,15 +3,25 @@
 trait ApiTestTrait
 {
     private $response;
-    public function assertApiResponse(Array $actualData)
+    private $verbose = false;
+
+    public function assertApiResponse(Array $expectedData, Array $ignoredKeys = [])
     {
+        if ($this->verbose) {
+            print_r(json_encode($ignoredKeys)."\n");
+            print_r(json_encode($expectedData)."\n");
+        }
+
         $this->assertApiSuccess();
 
         $response = json_decode($this->response->getContent(), true);
-        $responseData = $response['data'];
+        $actualData = $response['data'];
 
-        $this->assertNotEmpty($responseData['id']);
-        $this->assertModelData($actualData, $responseData);
+        if ($this->verbose)
+            print_r(json_encode($actualData)."\n");
+
+        $this->assertNotEmpty($actualData['id']);
+        $this->assertModelData($actualData, $expectedData, $ignoredKeys, 'data');
     }
 
     public function assertApiSuccess()
@@ -28,13 +38,33 @@ trait ApiTestTrait
         $this->assertNotNull($response['errors']);
     }
 
-    public function assertModelData(Array $actualData, Array $expectedData)
+    public function assertModelData(Array $actualData, Array $expectedData, Array $ignoredKeys, $path)
     {
-        foreach ($actualData as $key => $value) {
+        $all_keys = array_diff(
+            array_merge(array_keys($actualData), array_keys($expectedData)),
+            $ignoredKeys);
+
+        foreach ($all_keys as $key) {
+            $p = $path.'.'.$key;
+            if (!array_key_exists($key, $actualData)) {
+                $this->fail("Key missing on actual response: $p");
+            }
+            if (!array_key_exists($key, $expectedData)) {
+                $this->fail("Unnexpected key on actual response: $p");
+            }
+        $value = $actualData[$key];
             if (in_array($key, ['created_at', 'updated_at', 'deleted_at'])) {
                 continue;
             }
-            $this->assertEquals($actualData[$key], $expectedData[$key], $key);
+            if (is_array($actualData[$key])) {
+                $ignored = [];
+                if (array_key_exists($key, $ignoredKeys)) {
+                    $ignored = $ignoredKeys[$key];
+                }
+                $this->assertModelData($actualData[$key], $expectedData[$key], $ignored, $p);
+            } else {
+                $this->assertEquals($actualData[$key], $expectedData[$key], $p);
+            }
         }
     }
 }

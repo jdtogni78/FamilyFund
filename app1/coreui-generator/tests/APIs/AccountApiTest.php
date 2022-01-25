@@ -6,6 +6,8 @@ use Tests\TestCase;
 use Tests\ApiTestTrait;
 use App\Models\Account;
 use App\Models\Fund;
+use Tests\DataFactory;
+use App\Http\Resources\AccountResource;
 
 class AccountApiTest extends TestCase
 {
@@ -25,13 +27,13 @@ class AccountApiTest extends TestCase
             '/api/accounts', $account
         );
 
-        $this->assertApiResponse($account);
+        $this->assertApiResponse($account, ['id']);
     }
 
     public function createAccount()
     {
         $factory = new DataFactory();
-        $factory->setupFund();
+        $factory->createFund();
         $account = $factory->fundAccount;
         return $account;
     }
@@ -47,7 +49,7 @@ class AccountApiTest extends TestCase
             '/api/accounts/'.$account->id
         );
 
-        $this->assertApiResponse($account->toArray());
+        $this->assertApiResponse((new AccountResource($account))->toArray(null));
     }
 
     /**
@@ -65,7 +67,8 @@ class AccountApiTest extends TestCase
             '/api/accounts/'.$account->id,
             $editedAccount
         );
-
+        
+        $editedAccount['id'] = $account->id;
         $this->assertApiResponse($editedAccount);
     }
 

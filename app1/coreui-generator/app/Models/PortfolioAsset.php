@@ -52,7 +52,7 @@ class PortfolioAsset extends Model
         'id' => 'integer',
         'portfolio_id' => 'integer',
         'asset_id' => 'integer',
-        'position' => 'decimal:2',
+        'position' => 'decimal:8',
         'start_dt' => 'date',
         'end_dt' => 'date'
     ];

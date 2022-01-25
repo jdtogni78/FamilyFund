@@ -4,11 +4,9 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use Tests\ApiTestTrait;
-use App\Models\Account;
+use Tests\DataFactory;
 use App\Models\Fund;
-use App\Models\Portfolio;
-use App\Models\AccountExt;
-use App\Models\PortfolioExt;
+use App\Http\Resources\FundResource;
 
 class FundApiTest extends TestCase
 {
@@ -26,7 +24,7 @@ class FundApiTest extends TestCase
             '/api/funds', $fund
         );
 
-        $this->assertApiResponse($fund);
+        $this->assertApiResponse($fund, ['id']);
     }
 
     /**
@@ -34,14 +32,14 @@ class FundApiTest extends TestCase
      */
     public function test_read_fund()
     {
-        $fund = (new DataFactory())->setupFund();
+        $fund = (new DataFactory())->createFund();
 
         $this->response = $this->json(
             'GET',
             '/api/funds/'.$fund->id
         );
 
-        $this->assertApiResponse($fund->toArray());
+        $this->assertApiResponse((new FundResource($fund))->toArray(null));
     }
 
     /**
@@ -58,7 +56,7 @@ class FundApiTest extends TestCase
             $editedFund
         );
 
-        $this->assertApiResponse($editedFund);
+        $this->assertApiResponse($editedFund, ['id']);
     }
 
     /**

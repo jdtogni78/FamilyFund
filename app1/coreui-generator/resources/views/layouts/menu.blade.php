@@ -64,12 +64,6 @@
         <span>Users</span>
     </a>
 </li>
-<li class="nav-item {{ Request::is('samples*') ? 'active' : '' }}">
-    <a class="nav-link" href="{{ route('samples.index') }}">
-        <i class="nav-icon icon-cursor"></i>
-        <span>Samples</span>
-    </a>
-</li>
 <li class="nav-item {{ Request::is('assetChangeLogs*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('assetChangeLogs.index') }}">
         <i class="nav-icon icon-cursor"></i>
