@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AssetPricesAPIControllerExt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PortfolioAPIControllerExt;
@@ -37,14 +38,12 @@ Route::resource('accounts', App\Http\Controllers\API\AccountAPIController::class
 Route::resource('portfolios', App\Http\Controllers\API\PortfolioAPIController::class);
 Route::resource('transactions', App\Http\Controllers\API\TransactionAPIController::class);
 
-Route::resource('asset_prices', App\Http\Controllers\API\AssetPriceAPIControllerExt::class);
+Route::resource('asset_prices',AssetPricesAPIControllerExt::class);
 Route::resource('assets', App\Http\Controllers\API\AssetAPIControllerExt::class);
-
 Route::resource('account_balances', App\Http\Controllers\API\AccountBalanceAPIController::class);
 Route::resource('account_matching_rules', App\Http\Controllers\API\AccountMatchingRuleAPIController::class);
 Route::resource('matching_rules', App\Http\Controllers\API\MatchingRuleAPIController::class);
 Route::resource('portfolio_assets', App\Http\Controllers\API\PortfolioAssetAPIController::class);
-
 // Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
 Route::resource('asset_change_logs', App\Http\Controllers\API\AssetChangeLogAPIController::class);
 Route::resource('transaction_matchings', App\Http\Controllers\API\TransactionMatchingAPIController::class);

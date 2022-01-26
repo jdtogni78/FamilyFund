@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\API\AssetPricesAPIControllerExt;
+use App\Http\Requests\API\CreateAssetPriceAPIRequest;
 use Illuminate\Http\Request;
 use App\Models\AssetPrices;
 use App\Repositories\AssetPricesRepository;
 use App\Http\Requests\API\CreateAssetPricesAPIRequest;
 use App\Models\Asset;
+use App\Repositories\AssetPriceRepository;
 
-class AssetPricesAPIControllerExt extends AssetPricesAPIController
+class AssetPricesAPIControllerExt extends AssetPriceAPIController
 {
-    public function __construct(AssetPricesRepository $assetPricesRepo)
+    public function __construct(AssetPriceRepository $assetPricesRepo)
     {
         parent::__construct($assetPricesRepo);
     }
@@ -22,7 +23,7 @@ class AssetPricesAPIControllerExt extends AssetPricesAPIController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateAssetPricesAPIRequest $request)
+    public function store(CreateAssetPriceAPIRequest $request)
     {
         // TODO: end date previous price if needed
         // find record that overlaps provided start date
