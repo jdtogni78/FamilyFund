@@ -37,9 +37,9 @@ class FundAPIControllerExt extends AppBaseController
         $arr['value']                       = Utils::currency($value = $fund->valueAsOf($asOf));
         $arr['shares']                      = Utils::shares($shares = $fund->sharesAsOf($asOf));
         $arr['unallocated_shares']          = Utils::shares($unallocated = $fund->unallocatedShares($asOf));
-        $arr['unallocated_shares_percent']  = Utils::percent($unallocated/$shares);
+        $arr['unallocated_shares_percent']  = Utils::percent($shares ? $unallocated/$shares : 0);
         $arr['allocated_shares']            = Utils::shares($allocated = $shares - $unallocated);
-        $arr['allocated_shares_percent']    = Utils::percent($allocated/$shares);
+        $arr['allocated_shares_percent']    = Utils::percent($shares ? $allocated/$shares : 0);
         $arr['share_value']                 = Utils::currency($shares ? $value/$shares : 0);
         $ret['summary'] = $arr;
 
