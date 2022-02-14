@@ -221,7 +221,7 @@ class PortfolioAssetsUpdateBaseTest extends ExternalAPITest
     /**
      * @return void
      */
-    public function validateNoChangeCash(): void
+    public function validateNoChangeCash($ts): void
     {
         print_r("\nVALIDATE: no new price is created for cash\n");
         $this->_get("assets/" . $this->cashId, true);
@@ -231,7 +231,7 @@ class PortfolioAssetsUpdateBaseTest extends ExternalAPITest
 
         print_r("\nVALIDATE: no new position is created for cash\n");
         $pas = $this->getPortfolioAssets($this->cashId);
-        $this->validateUniqueHistorical($pas, 'CASH', 'portfolio_assets', 'position');
+        $this->validateUniqueHistorical($pas, 'CASH', 'portfolio_assets', 'position', $ts);
     }
 
     protected function validateAssetExists(string $symbol, string $source_feed)

@@ -55,7 +55,7 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
         $this->validate3Historical($pas, $symbol, $ts1, $position1, $ts2, $position2, 'portfolio_assets', 'position');
 
         print_r("\nVALIDATE: no new position is created for cash\n");
-        $this->validateNoChangeCash();
+        $this->validateNoChangeCash($ts1);
     }
 
     /**
@@ -85,7 +85,7 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
         $pas = $this->getPortfolioAssets($max_id);
         $this->validate2Historical($pas, $symbol, $oldTimestamp, $oldPosition, 'portfolio_assets', 'position');
 
-        $this->validateNoChangeCash();
+        $this->validateNoChangeCash($oldTimestamp);
     }
 
     /**
@@ -108,7 +108,7 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
         $pas = $this->getPortfolioAssets($max_id);
         $this->validateUniqueHistorical($pas, $symbol, 'portfolio_assets', 'position', $prevTs);
 
-        $this->validateNoChangeCash();
+        $this->validateNoChangeCash($prevTs);
     }
 
 
@@ -150,7 +150,7 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
         $this->validateUniqueHistorical($pas, $symbol, 'portfolio_assets', 'position');
 
         print_r("\nVALIDATE: new portfolio assets is created with start date = timestamp and correct position (using cash.id 10)\n");
-        $this->validateNoChangeCash();
+        $this->validateNoChangeCash($this->timestamp());
     }
 
 }
