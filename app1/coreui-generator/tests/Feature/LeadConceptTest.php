@@ -42,6 +42,7 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
         $this->prevDay();
         print_r("\n** TEST3 * change price of symbol\n\n");
         $this->post['symbols'][$symbol]['price'] = 55.55;
+        $this->post['symbols'][$symbol]['position'] = 155.55;
         $this->postAssetUpdates();
 
         print_r("\nVALIDATE: new price is created with timestamp & enddate as next day\n");
@@ -66,8 +67,7 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
     public function _test2DaysAhead($max_id, string $symbol, $oldTimestamp, $oldPrice, $oldPosition): void
     {
         print_r("\n** TEST2 * add 2 days to timestamp\n");
-        $this->nextDay(1);
-        $this->nextDay(1);
+        $this->nextDay(2);
 
         print_r("** TEST2 * change price & position of symbol\n");
         $this->post['symbols'][$symbol]['price'] = 123.45;
