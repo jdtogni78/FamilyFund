@@ -99,16 +99,17 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
     public function _testNoPricePositionChange($max_id, $symbol): void
     {
         print_r("\n** TEST1 * add one day to timestamp (from sample call)\n\n");
+        $prevTs = $this->timestamp();
         $this->nextDay(1);
         $this->postAssetUpdates();
 
         print_r("\nVALIDATE: no new price or position records are created for either symbol or cash\n");
         $this->_get("assets/" . $max_id, true);
         $aps = $this->data['asset_prices'];
-        $this->validateUniqueHistorical($aps, $symbol, 'asset_prices', 'price');
+        $this->validateUniqueHistorical($aps, $symbol, 'asset_prices', 'price', $prevTs);
 
         $pas = $this->getPortfolioAssets($max_id);
-        $this->validateUniqueHistorical($pas, $symbol, 'portfolio_assets', 'position');
+        $this->validateUniqueHistorical($pas, $symbol, 'portfolio_assets', 'position', $prevTs);
 
         $this->validateNoChangeCash();
     }
