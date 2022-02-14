@@ -76,7 +76,7 @@ class PortfolioAssetsUpdateBaseTest extends ExternalAPITest
      * @param $table
      * @return int|mixed
      */
-    public function getMaxId($table): mixed
+    public function getNextId($table): mixed
     {
         $max_id = 0;
         $this->_get($table);
@@ -105,10 +105,10 @@ class PortfolioAssetsUpdateBaseTest extends ExternalAPITest
 
     /**
      * @param mixed $max_id
-     * @param $days
+     * @param int $days
      * @return string
      */
-    protected function getSampleRequestAt($days, mixed $max_id=null): string
+    protected function getSampleRequestAt(int $days=1, mixed $max_id=null): string
     {
         if ($max_id == null) $max_id = $this->max_id;
         $symbol = "Symbol_" . $max_id;
@@ -206,15 +206,16 @@ class PortfolioAssetsUpdateBaseTest extends ExternalAPITest
     }
 
 
-
     /**
+     * @param bool $validate
+     * @param $code
      * @return void
      */
-    public function postAssetUpdates($validate=true): void
+    public function postAssetUpdates($validate=true, $code=404): void
     {
         $this->_post('portfolios/'.$this->code.'/assets_update', $this->post);
         if ($validate) $this->assertApiSuccess();
-        else $this->assertApiError();
+        else $this->assertApiError($code);
     }
 
     /**
@@ -245,16 +246,17 @@ class PortfolioAssetsUpdateBaseTest extends ExternalAPITest
     }
 
     protected function createFund() {
-        $fundId = $this->getMaxId('funds') + 1;
-        $this->_post("funds", json_decode('{"name":"Fund_"'.$fundId.',"goal":"Test"}'));
+        $fundId = $this->getNextId('funds');
+        $json = '{"name":"Fund_' . $fundId . '","goal":"Test"}';
+        $this->_post("funds", json_decode($json, true));
         $this->assertApiSuccess();
         $this->fundId = $fundId;
     }
 
     protected function createPortfolio($fundId=null) {
         if ($fundId == null) $fundId = $this->fundId;
-        $pId = $this->getMaxId('portfolios') + 1;
-        $this->_post("portfolios", json_decode('{"fund_id": '.$fundId.',"code":"P'.$pId.'"}'));
+        $pId = $this->getNextId('portfolios') + 1;
+        $this->_post("portfolios", json_decode('{"fund_id": '.$fundId.',"code":"P'.$pId.'"}', true));
         $this->portfolioId = $pId;
         $this->code = "P".$pId;
         $this->assertApiSuccess();

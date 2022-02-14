@@ -30,9 +30,10 @@ class ExternalAPITest extends TestCase
         $this->deleteCreatedEntities();
     }
 
-    public function assertApiError()
+    public function assertApiError($code=404)
     {
-        $this->assertAPIbasics(404, false);
+        if ($code != null)
+            $this->assertAPIbasics($code, false);
     }
     public function assertApiSuccess()
     {

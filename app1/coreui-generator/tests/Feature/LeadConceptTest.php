@@ -9,7 +9,7 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
     {
         $this->cashId = 158;
         $this->date = new DateTime("2022-01-09");
-        $max_id = $this->getMaxId('assets');
+        $max_id = $this->getNextId('assets');
         $symbol = "Symbol_" . $max_id;
 
         $this->reviewAndResetPortfolio();
