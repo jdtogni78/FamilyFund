@@ -2,7 +2,6 @@
 namespace Tests\Feature;
 
 use DateTime;
-use phpDocumentor\Reflection\Utils;
 
 class LeadConceptTest2 extends PortfolioAssetsUpdateBaseTest
 {
@@ -34,7 +33,7 @@ class LeadConceptTest2 extends PortfolioAssetsUpdateBaseTest
         print_r("\n** TEST * remove type\n\n");
         unset($this->post['symbols'][$this->symbol]['type']);
         print_r("\n** TEST * use non-existent symbol\n\n");
-        $this->postAssetUpdates(404);
+        $this->postAssetUpdates();
 
         print_r("\nVALIDATE: new asset is created with UNDEFINED type\n");
         $this->_get("assets/" . $this->max_id);
@@ -60,14 +59,18 @@ class LeadConceptTest2 extends PortfolioAssetsUpdateBaseTest
      * @param string $symbol
      * @return void
      */
-    protected function testSameSymbolOtherSource(string $symbol): void
+    protected function testSameSymbolOtherSource(): void
     {
         $this->nextDay(3);
         print_r("\n** TEST * existing symbol with mismatched source\n\n");
-        $this->createAsset($symbol, 'test');
-        $this->postAssetUpdates(404);
+        $this->max_id++;
+        $this->symbol = "Symbol_" . $this->max_id;
+        $this->getSampleRequestAt();
+        $this->createAsset($this->symbol, 'test');
+
+        $this->postAssetUpdates();
         print_r("\nVALIDATE: new asset is created\n");
-        $this->validateAssetExists($symbol, $this->code);
+        $this->validateAssetExists($this->symbol, $this->code);
     }
 
     protected function testUndefinedPosition() {
@@ -165,13 +168,25 @@ class LeadConceptTest2 extends PortfolioAssetsUpdateBaseTest
     protected function testSymbolRemoved(): void
     {
         $this->nextDay(14);
-        unset($this->post['symbols'][$this->symbol]);
-
         $pas = $this->getPortfolioAssets($this->maxId);
-        $this->assertGreaterThan(0, count($pas));
+        $this->assertCount(1, $pas);
         $count = 0;
         foreach ($pas as $pa) {
             if ($this->isInfinity($pa['end_dt'])) {
+                $count++;
+            }
+        }
+        $this->assertEquals(0, $count);
+
+        unset($this->post['symbols'][$this->symbol]);
+        $this->postAssetUpdates();
+
+        $pas = $this->getPortfolioAssets($this->maxId);
+        $this->assertCount(1, $pas);
+
+        $count = 0;
+        foreach ($pas as $pa) {
+            if ($this->compareTimestamp($pa['end_dt'], $this->post['timestamp'])) {
                 $count++;
             }
         }
