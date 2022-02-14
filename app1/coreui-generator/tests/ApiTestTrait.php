@@ -3,6 +3,10 @@
 trait ApiTestTrait
 {
     private $response;
+    protected $success;
+    protected $message;
+    protected $data;
+
     private $verbose = false;
 
     public function assertApiResponse(Array $expectedData, Array $ignoredKeys = [])
@@ -66,5 +70,38 @@ trait ApiTestTrait
                 $this->assertEquals($actualData[$key], $expectedData[$key], $p);
             }
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param mixed $response
+     * @param $verbose
+     */
+    public function setResponse($response, $verbose=false): void
+    {
+        $this->response = $response;
+
+        $response = json_decode($this->getResponse()->body(), true);
+        $this->data = null;
+        $this->success = null;
+        if (array_key_exists('success', $response)) {
+            $this->success = $response['success'];
+            print_r("SUCCESS: " . $this->success . "\n");
+        }
+        if (array_key_exists('message', $response)) {
+            $this->message = $response['message'];
+            print_r("MESSAGE: " . $this->message . "\n");
+        }
+        if (array_key_exists('data', $response)) {
+            $this->data = $response['data'];
+        }
+        if ($verbose) $this->p($response);
     }
 }
