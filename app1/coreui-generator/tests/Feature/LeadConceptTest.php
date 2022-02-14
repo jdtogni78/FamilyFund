@@ -18,14 +18,14 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
 
         $this->_testSampleCall($max_id, $symbol);
 
-        print_r("\n** TEST Next 3 tests are about historical record creation in mode=positions ***\n\n");
-        $this->_testNoPricePositionChange($max_id, $symbol);
-
         $oldTimestamp = $this->post['timestamp'];
         $oldPrice = $this->post['symbols'][$symbol]['price'];
         $oldPosition = $this->post['symbols'][$symbol]['position'];
 
-        $this->_test2DaysAhead($max_id, $symbol);
+        print_r("\n** TEST Next 3 tests are about historical record creation in mode=positions ***\n\n");
+        $this->_testNoPricePositionChange($max_id, $symbol);
+
+        $this->_test2DaysAhead($max_id, $symbol, $oldTimestamp, $oldPrice, $oldPosition);
         $this->_test1DayBack($max_id, $symbol, $oldTimestamp, $oldPrice, $oldPosition);
     }
 
@@ -63,18 +63,15 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
      * @param $max_id
      * @return void
      */
-    public function _test2DaysAhead($max_id, string $symbol): void
+    public function _test2DaysAhead($max_id, string $symbol, $oldTimestamp, $oldPrice, $oldPosition): void
     {
-        $oldTimestamp = $this->post['timestamp'];
-        $oldPrice = $this->post['symbols'][$symbol]['price'];
-        $oldPosition = $this->post['symbols'][$symbol]['position'];
-
         print_r("\n** TEST2 * add 2 days to timestamp\n");
         $this->nextDay(1);
         $this->nextDay(1);
 
-        print_r("** TEST2 * change price of symbol\n");
+        print_r("** TEST2 * change price & position of symbol\n");
         $this->post['symbols'][$symbol]['price'] = 123.45;
+        $this->post['symbols'][$symbol]['position'] = 33.22;
         $this->postAssetUpdates();
 
         $this->_get("assets/" . $max_id, true);
