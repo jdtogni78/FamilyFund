@@ -12,8 +12,8 @@
         @foreach($api['portfolio']['assets'] as $assets)
             <tr>
                 <th scope="row">
-                    {{ $assets['name'] }}</a>
-                </td>
+                    {{ $assets['name'] }}
+                </th>
                 <td>{{ $assets['position'] }}</td>
                 <td>$ {{ $assets['price'] }}</td>
                 <td>$ {{ $assets['value'] }}</td>

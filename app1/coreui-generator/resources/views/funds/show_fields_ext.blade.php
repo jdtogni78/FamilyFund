@@ -1,6 +1,7 @@
-@php 
+@php
     $field_props = ['class' => 'form-control', 'readonly']
 @endphp
+<div class="row">
 <div class="form-group col-sm-6">
     @php $field = 'name'; @endphp
     {!! Form::label($field, 'Name:') !!}
@@ -15,7 +16,7 @@
     @php $field = 'allocated_shares'; @endphp
     {!! Form::label($field, 'Allocated Shares:') !!}
     <div class="input-group">
-        {!! Form::number($field, $api['summary'][$field],  $field_props) !!} 
+        {!! Form::number($field, $api['summary'][$field],  $field_props) !!}
         {!! Form::number($field . '_percent', $api['summary'][$field . '_percent'],  $field_props) !!}
         <div class="input-group-text">%</div>
     </div>
@@ -50,4 +51,4 @@
     {!! Form::label($field, 'As Of:') !!}
     {!! Form::text($field, $api[$field],  $field_props) !!}
 </div>
-
+</div>
