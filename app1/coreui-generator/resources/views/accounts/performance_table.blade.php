@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($api['performance'] as $period => $perf)
+        @foreach($api['monthly_performance'] as $period => $perf)
             <tr>
                 <td>{{ $period }}</td>
                 <td>{{ $perf['performance'] }} %</td>

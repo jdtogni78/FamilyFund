@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\APIv1;
 
 use App\Models\Fund;
+use App\Models\FundExt;
 use App\Models\Utils;
 use App\Repositories\FundRepository;
 use App\Http\Controllers\AppBaseController;
@@ -21,7 +22,7 @@ class FundAPIControllerExt extends AppBaseController
     use PerformanceTrait;
 
     protected $fundRepository;
-    
+
     public function __construct(FundRepository $fundRepo)
     {
         $this->fundRepository = $fundRepo;
@@ -55,7 +56,7 @@ class FundAPIControllerExt extends AppBaseController
         return $arr;
     }
 
-    public function createAccountBalancesResponse($fund, $asOf)
+    public function createAccountBalancesResponse(FundExt $fund, $asOf)
     {
         $bals = array();
         $sharePrice = $fund->shareValueAsOf($asOf);
@@ -77,7 +78,7 @@ class FundAPIControllerExt extends AppBaseController
                 // ];
             }
             $bal['account_id'] = $account->id;
-            $bal['nickname'] = $balance->nickname;
+            $bal['nickname'] = $account->nickname;
             $bal['type'] = $balance->type;
             $bal['shares'] = Utils::shares($balance->shares);
             $bal['value'] = Utils::currency($sharePrice * $balance->shares);
@@ -142,7 +143,7 @@ class FundAPIControllerExt extends AppBaseController
 
         $arr = $this->createFundArray($fund, $asOf);
         $this->perfObject = $fund;
-        $arr['performance'] = $this->createPerformanceResponse($asOf);
+        $arr['performance'] = $this->createMonthlyPerformanceResponse($asOf);
         $arr['as_of'] = $asOf;
 
         return $this->sendResponse($arr, 'Fund retrieved successfully');
@@ -190,7 +191,7 @@ class FundAPIControllerExt extends AppBaseController
         }
 
         $arr = $this->createFundResponse($fund, $asOf);
-        $arr['performance'] = $this->createPerformanceResponse($asOf);
+        $arr['performance'] = $this->createMonthlyPerformanceResponse($asOf);
         $arr['balances'] = $this->createAccountBalancesResponse($fund, $asOf);
 
         $portController = new PortfolioAPIControllerExt(\App::make(PortfolioRepository::class));

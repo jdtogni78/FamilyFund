@@ -1,7 +1,6 @@
 @extends('layouts.pdf')
 
 @section('content')
-{{--     <div class="container-fluid" style="background-color: blue">--}}
                  <div class="row" style="margin-top: 30px">
                      <div class="col">
                          <div class="card">
@@ -20,7 +19,7 @@
                             <div class="card-header">
                                 <strong>Monthly Performance</strong>
                             </div>
-                            <div class="card-body graph">
+                            <div class="card-body">
                                 <img src="{{$files['monthly_performance.png']}}" alt="Monthly Performance"/>
                             </div>
                         </div>
@@ -32,7 +31,7 @@
                             <div class="card-header">
                                 <strong>Yearly Performance</strong>
                             </div>
-                            <div class="card-body graph">
+                            <div class="card-body">
                                 <img src="{{$files['yearly_performance.png']}}" alt="Yearly Performance"/>
                             </div>
                         </div>
@@ -44,7 +43,7 @@
                             <div class="card-header">
                                 <strong>Assets</strong>
                             </div>
-                            <div class="card-body graph">
+                            <div class="card-body">
                                 <img src="{{$files['assets_allocation.png']}}" alt="Accounts Allocation"/>
                             </div>
                         </div>
@@ -55,8 +54,8 @@
                             <div class="card-header">
                                 <strong>Fund Allocation</strong>
                             </div>
-                            <div class="card-body graph" style="width:600px;height:400px;">
-                                <img src="{{$files['allocated_shares.png']}}" alt="Fund Allocation"/>
+                            <div class="card-body">
+                                <img src="{{$files['shares_allocation.png']}}" alt="Fund Allocation"/>
                             </div>
                         </div>
                     </div>
@@ -65,7 +64,7 @@
                             <div class="card-header">
                                 <strong>Accounts Allocation</strong>
                             </div>
-                            <div class="card-body graph" style="width:600px;height:400px;">
+                            <div class="card-body">
                                 <img src="{{$files['accounts_allocation.png']}}" alt="Accounts Allocation"/>
                             </div>
                         </div>
@@ -110,5 +109,4 @@
                     </div>
                  </div>
                  @endisset
-{{--    </div>--}}
 @endsection

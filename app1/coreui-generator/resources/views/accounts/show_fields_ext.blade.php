@@ -1,6 +1,7 @@
-@php 
+@php
     $field_props = ['class' => 'form-control', 'readonly']
 @endphp
+<div class="row">
 <div class="form-group col-sm-6">
     @php $field = 'nickname'; @endphp
     {!! Form::label($field, 'Nickname:') !!}
@@ -28,4 +29,5 @@
     @php $field = 'as_of'; @endphp
     {!! Form::label($field, 'As Of:') !!}
     {!! Form::text($field, $api[$field], $field_props) !!}
+</div>
 </div>

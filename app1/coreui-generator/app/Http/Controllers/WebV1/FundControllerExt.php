@@ -22,6 +22,7 @@ use Spatie\TemporaryDirectory\TemporaryDirectory;
 class FundControllerExt extends FundController
 {
     use PerformanceTrait;
+    use ChartBaseControllerTrait;
 
     public function __construct(FundRepository $fundRepo)
     {
@@ -56,7 +57,7 @@ class FundControllerExt extends FundController
             return redirect(route('funds.index'));
         }
 
-        $arr = $this->createViewData($fund, $asOf);
+        $arr = $this->createFundViewData($fund, $asOf);
 
         return view('funds.show_ext')
             ->with('api', $arr);
@@ -77,7 +78,7 @@ class FundControllerExt extends FundController
             return redirect(route('funds.index'));
         }
 
-        $arr = $this->createViewData($fund, $asOf);
+        $arr = $this->createFundViewData($fund, $asOf);
 
         $pdf = App::make('snappy.pdf.wrapper')
 //            ->setOption("javascript-delay", 2000)
@@ -95,7 +96,7 @@ class FundControllerExt extends FundController
         } catch (Exception $e) {
             print_r($e);
         }
-        $this->createAllocatedSharesGraph($arr, $tempDir, $files);
+        $this->createSharesAllocationGraph($arr, $tempDir, $files);
         $this->createAccountsAllocationGraph($arr, $tempDir, $files);
         $this->createAssetsAllocationGraph($arr, $tempDir, $files);
         $this->createYearlyPerformanceGraph($arr, $tempDir, $files);
@@ -117,7 +118,7 @@ class FundControllerExt extends FundController
         return $pdf->inline('fund.pdf');
     }
 
-    protected function createViewData($fund, $asOf) {
+    protected function createFundViewData($fund, $asOf) {
         set_time_limit(0);
         if ($asOf == null) $asOf = date('Y-m-d');
 
@@ -142,9 +143,9 @@ class FundControllerExt extends FundController
      * @param array $files
      * @return void
      */
-    protected function createAllocatedSharesGraph(array $api, TemporaryDirectory $tempDir, array &$files): void
+    protected function createSharesAllocationGraph(array $api, TemporaryDirectory $tempDir, array &$files): void
     {
-        $name = 'allocated_shares.png';
+        $name = 'shares_allocation.png';
         $values = [$api['summary']['allocated_shares_percent'], $api['summary']['unallocated_shares_percent']];
         $labels = ['Allocated', 'Unallocated'];
 
@@ -156,6 +157,7 @@ class FundControllerExt extends FundController
     {
         $name = 'accounts_allocation.png';
         $arr = $api['balances'];
+        Log::debug($arr);
         $labels = array_map(function ($v) {return $v['nickname'];}, $arr);
         $values = array_map(function ($v) {return $v['shares'];}, $arr);
 
@@ -177,29 +179,6 @@ class FundControllerExt extends FundController
         $this->createDoughnutChart($values, $labels, $file);
     }
 
-
-    private function createYearlyPerformanceGraph(array $api, TemporaryDirectory $tempDir, array &$files)
-    {
-        $name = 'yearly_performance.png';
-        $arr = $api['yearly_performance'];
-        $labels = array_keys($arr);
-        $values = array_map(function ($v) {return $v['value'];}, $arr);
-
-        $files[$name] = $file = $tempDir->path($name);
-        $this->createBarChart($values, $labels, $file);
-    }
-
-    private function createMonthlyPerformanceGraph(array $api, TemporaryDirectory $tempDir, array &$files)
-    {
-        $name = 'monthly_performance.png';
-        $arr = $api['monthly_performance'];
-        $labels = array_keys($arr);
-        $values = array_map(function ($v) {return $v['value'];}, $arr);
-
-        $files[$name] = $file = $tempDir->path($name);
-        $this->createLineChart($values, $labels, $file);
-    }
-
     /**
      * @param array $values
      * @param array $labels
@@ -214,28 +193,4 @@ class FundControllerExt extends FundController
         $chart->createChart();
         $chart->saveAs($file);
     }
-
-    private function createLineChart(array $values, array $labels, string $file)
-    {
-        $chart = new LineChart();
-        $chart->values = $values;
-        $chart->labels = $labels;
-        $chart->titleValues = "Performance";
-        $chart->titleLabels = "Date";
-        $chart->createChart();
-        $chart->saveAs($file);
-    }
-
-    private function createBarChart(array $values, array $labels, string $file)
-    {
-        $chart = new BarChart();
-        $chart->values = $values;
-        $chart->labels = $labels;
-        $chart->titleValues = "Performance";
-        $chart->titleLabels = "Date";
-        $chart->createChart();
-        $chart->saveAs($file);
-    }
-
-
 }

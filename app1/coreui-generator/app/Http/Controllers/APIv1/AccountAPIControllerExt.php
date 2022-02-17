@@ -42,18 +42,18 @@ class AccountAPIControllerExt extends AccountAPIController
 
         $fund = $account->fund()->first();
         $arr['fund'] = [
-            'id' => $fund->id, 
+            'id' => $fund->id,
             'name' => $fund->name,
         ];
         $user = $account->user()->first();
         if ($user) {
             $arr['user'] = [
-                'id' => $user->id, 
+                'id' => $user->id,
                 'name' => $user->name,
             ];
         } else {
             $arr['user'] = [
-                'id' => 0, 
+                'id' => 0,
                 'name' => 'N/A',
             ];
         }
@@ -169,7 +169,7 @@ class AccountAPIControllerExt extends AccountAPIController
 
         $arr = $this->createAccountArray($account);
         $this->perfObject = $account;
-        $arr['performance'] = $this->createPerformanceResponse($asOf);
+        $arr['performance'] = $this->createMonthlyPerformanceResponse($asOf);
         $arr['as_of'] = $asOf;
 
         return $this->sendResponse($arr, 'Account retrieved successfully');
@@ -218,7 +218,7 @@ class AccountAPIControllerExt extends AccountAPIController
 
         $arr = $this->createAccountResponse($account, $asOf);
         $arr['transactions'] = $this->createTransactionsResponse($account, $asOf);
-        $arr['performance'] = $this->createPerformanceResponse($asOf);
+        $arr['performance'] = $this->createMonthlyPerformanceResponse($asOf);
         $arr['as_of'] = $asOf;
 
         return $this->sendResponse($arr, 'Account retrieved successfully');

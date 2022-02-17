@@ -22,11 +22,6 @@
             page-break-after: always;
             page-break-inside: avoid;
         }
-        .grid-container {
-            /*display: grid;*/
-            /*grid-template-columns: 1fr 1fr;*/
-            /*grid-gap: 20px;*/
-        }
         label {
             min-width: 400px;
         }
@@ -46,9 +41,13 @@
             margin-left: auto;
             margin-right: auto;
         }
-        .graph {
-            width:600px;
-            height:430px;
+        .col-left {
+            width: 50%;
+            float: left
+        }
+        .col-right {
+            width: 50%;
+            float: right
         }
     </style>
 

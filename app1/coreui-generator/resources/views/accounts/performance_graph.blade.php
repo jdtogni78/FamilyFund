@@ -11,10 +11,10 @@ var myChart = new Chart(
     {
       type: 'line',
       data: {
-        labels: Object.keys(api.performance),
+        labels: Object.keys(api.monthly_performance),
         datasets: [{
           label: 'Performance',
-          data: Object.values(api.performance).map(function(e) {return e.value;}),
+          data: Object.values(api.monthly_performance).map(function(e) {return e.value;}),
           backgroundColor: [
             'gray',
             'gray',

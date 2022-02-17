@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Utils;
 
-trait PerformanceTrait 
+trait PerformanceTrait
 {
     protected $perfObject;
 
@@ -17,10 +17,6 @@ trait PerformanceTrait
         $yp['share_value']  = Utils::currency($shares > 0 ? $value/$shares : 0);
         $yp['performance']  = Utils::percent($this->perfObject->periodPerformance($start, $asOf));
         return $yp;
-    }
-
-    public function createPerformanceResponse($asOf) {
-        return $this->createMonthlyPerformanceResponse($asOf);
     }
 
     public function createMonthlyPerformanceResponse($asOf)
