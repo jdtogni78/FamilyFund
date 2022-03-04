@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\MatchingRule;
 use InfyOm\Generator\Request\APIRequest;
 
-class CreateMatchingRuleAPIRequest extends APIRequest
+class CreateMatchingRuleAPIRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.

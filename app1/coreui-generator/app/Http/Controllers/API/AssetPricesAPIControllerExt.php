@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\API\AssetPricesAPIControllerExt;
+use App\Http\Controllers\API\AssetPricesAPIController;
 use Illuminate\Http\Request;
 use App\Models\AssetPrices;
 use App\Repositories\AssetPricesRepository;
@@ -15,7 +15,7 @@ class AssetPricesAPIControllerExt extends AssetPricesAPIController
     {
         parent::__construct($assetPricesRepo);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *

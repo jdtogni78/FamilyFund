@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\AssetChangeLog;
 use InfyOm\Generator\Request\APIRequest;
 
-class UpdateAssetChangeLogAPIRequest extends APIRequest
+class UpdateAssetChangeLogAPIRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateAssetChangeLogAPIRequest extends APIRequest
     public function rules()
     {
         $rules = AssetChangeLog::$rules;
-        
+
         return $rules;
     }
 }

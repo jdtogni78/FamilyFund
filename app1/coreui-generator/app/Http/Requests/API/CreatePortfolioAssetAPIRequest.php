@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\PortfolioAsset;
 use InfyOm\Generator\Request\APIRequest;
 
-class CreatePortfolioAssetAPIRequest extends APIRequest
+class CreatePortfolioAssetAPIRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.

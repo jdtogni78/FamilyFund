@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\Transaction;
 use InfyOm\Generator\Request\APIRequest;
 
-class UpdateTransactionAPIRequest extends APIRequest
+class UpdateTransactionAPIRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateTransactionAPIRequest extends APIRequest
     public function rules()
     {
         $rules = Transaction::$rules;
-        
+
         return $rules;
     }
 }

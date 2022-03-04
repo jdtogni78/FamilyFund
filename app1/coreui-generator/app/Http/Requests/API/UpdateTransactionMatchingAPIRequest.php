@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\TransactionMatching;
 use InfyOm\Generator\Request\APIRequest;
 
-class UpdateTransactionMatchingAPIRequest extends APIRequest
+class UpdateTransactionMatchingAPIRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateTransactionMatchingAPIRequest extends APIRequest
     public function rules()
     {
         $rules = TransactionMatching::$rules;
-        
+
         return $rules;
     }
 }

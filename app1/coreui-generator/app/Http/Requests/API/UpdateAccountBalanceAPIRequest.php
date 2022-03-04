@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\AccountBalance;
 use InfyOm\Generator\Request\APIRequest;
 
-class UpdateAccountBalanceAPIRequest extends APIRequest
+class UpdateAccountBalanceAPIRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateAccountBalanceAPIRequest extends APIRequest
     public function rules()
     {
         $rules = AccountBalance::$rules;
-        
+
         return $rules;
     }
 }

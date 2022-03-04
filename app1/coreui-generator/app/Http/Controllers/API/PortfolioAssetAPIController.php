@@ -40,6 +40,7 @@ class PortfolioAssetAPIController extends AppBaseController
             $request->get('skip'),
             $request->get('limit')
         );
+//         $portfolioAssets = $this->portfolioAssetRepository->with(['asset'])->get();
 
         return $this->sendResponse(PortfolioAssetResource::collection($portfolioAssets), 'Portfolio Assets retrieved successfully');
     }

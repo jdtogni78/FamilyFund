@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\MatchingRule;
 use InfyOm\Generator\Request\APIRequest;
 
-class UpdateMatchingRuleAPIRequest extends APIRequest
+class UpdateMatchingRuleAPIRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateMatchingRuleAPIRequest extends APIRequest
     public function rules()
     {
         $rules = MatchingRule::$rules;
-        
+
         return $rules;
     }
 }

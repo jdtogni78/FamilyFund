@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\Fund;
 use InfyOm\Generator\Request\APIRequest;
 
-class CreateFundAPIRequest extends APIRequest
+class CreateFundAPIRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.

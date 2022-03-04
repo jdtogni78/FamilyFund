@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\Fund;
 use InfyOm\Generator\Request\APIRequest;
 
-class UpdateFundAPIRequest extends APIRequest
+class UpdateFundAPIRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateFundAPIRequest extends APIRequest
     public function rules()
     {
         $rules = Fund::$rules;
-        
+
         return $rules;
     }
 }

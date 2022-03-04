@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\Portfolio;
 use InfyOm\Generator\Request\APIRequest;
 
-class AssetsUpdatePortfolioAPIRequest extends APIRequest
+class AssetsUpdatePortfolioAPIRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class AssetsUpdatePortfolioAPIRequest extends APIRequest
     public function rules()
     {
         $rules = array();
-        
+
         return $rules;
     }
 }

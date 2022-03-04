@@ -185,7 +185,7 @@ class PortfolioAssetsUpdateBaseTest extends ExternalAPITest
         }
     }
 
-    protected function validate3Historical($values, $symbol, $ts1, $value1, $ts2, $value2, string $table, string $field)
+    protected function  validate3Historical($values, $symbol, $ts1, $value1, $ts2, $value2, string $table, string $field)
     {
         print_r(json_encode([$symbol, $ts1, $value1, $ts2, $value2])."\s");
         $this->assertEquals(3, count($values));
