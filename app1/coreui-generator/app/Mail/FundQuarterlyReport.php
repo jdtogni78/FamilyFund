@@ -11,6 +11,8 @@ class FundQuarterlyReport extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $fund;
+
     /**
      * Create a new message instance.
      *
@@ -28,6 +30,13 @@ class FundQuarterlyReport extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        $arr = $this->fund->toArray();
+
+        return $this->view('emails.reports.fund_quarterly')
+            ->with("api", $arr)
+            ->attach($this->pdf, [
+                'as' => 'name.pdf',
+                'mime' => 'application/pdf',
+            ]);
     }
 }

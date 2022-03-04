@@ -8,10 +8,11 @@ use App\Charts\LineChart;
 use Illuminate\Support\Facades\Log;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
-trait ChartBaseControllerTrait
+trait ChartBaseTrait
 {
+    private $files = [];
 
-    public function createYearlyPerformanceGraph(array $api, TemporaryDirectory $tempDir, array &$files)
+    public function createYearlyPerformanceGraph(array $api, TemporaryDirectory $tempDir)
     {
         $name = 'yearly_performance.png';
         $arr = $api['yearly_performance'];
@@ -20,8 +21,21 @@ trait ChartBaseControllerTrait
             return $v['value'];
         }, $arr);
 
-        $files[$name] = $file = $tempDir->path($name);
+        $this->files[$name] = $file = $tempDir->path($name);
         $this->createBarChart($values, $labels, $file);
+    }
+
+    public function createMonthlyPerformanceGraph(array $api, TemporaryDirectory $tempDir)
+    {
+        $name = 'monthly_performance.png';
+        $arr = $api['monthly_performance'];
+        $labels = array_keys($arr);
+        $values = array_map(function ($v) {
+            return $v['value'];
+        }, $arr);
+
+        $this->files[$name] = $file = $tempDir->path($name);
+        $this->createLineChart($values, $labels, $file, "Performance");
     }
 
     public function createLineChart(array $values, array $labels, string $file, $title)
@@ -34,19 +48,6 @@ trait ChartBaseControllerTrait
         $chart->titleLabels = "Date";
         $chart->createChart();
         $chart->saveAs($file);
-    }
-
-    public function createMonthlyPerformanceGraph(array $api, TemporaryDirectory $tempDir, array &$files)
-    {
-        $name = 'monthly_performance.png';
-        $arr = $api['monthly_performance'];
-        $labels = array_keys($arr);
-        $values = array_map(function ($v) {
-            return $v['value'];
-        }, $arr);
-
-        $files[$name] = $file = $tempDir->path($name);
-        $this->createLineChart($values, $labels, $file, "Performance");
     }
 
     public function createBarChart(array $values, array $labels, string $file)
