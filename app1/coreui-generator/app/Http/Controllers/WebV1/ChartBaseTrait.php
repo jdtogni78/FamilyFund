@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WebV1;
 
 use App\Charts\BarChart;
+use App\Charts\DoughnutChart;
 use App\Charts\LineChart;
 use Illuminate\Support\Facades\Log;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
@@ -55,6 +56,21 @@ trait ChartBaseControllerTrait
         $chart->labels = $labels;
         $chart->titleValues = "Performance";
         $chart->titleLabels = "Date";
+        $chart->createChart();
+        $chart->saveAs($file);
+    }
+
+    /**
+     * @param array $values
+     * @param array $labels
+     * @param string $file
+     * @return void
+     */
+    protected function createDoughnutChart(array $values, array $labels, string $file): void
+    {
+        $chart = new DoughnutChart();
+        $chart->values = $values;
+        $chart->labels = $labels;
         $chart->createChart();
         $chart->saveAs($file);
     }
