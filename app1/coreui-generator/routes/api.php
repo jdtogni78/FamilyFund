@@ -2,8 +2,19 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\PortfolioAPIControllerExt;
-
+use App\Http\Controllers\API\AssetPricesAPIControllerExt;
+use App\Http\Controllers\API\AssetsAPIControllerExt;
+use App\Http\Controllers\API\PortfolioAssetAPIController;
+use App\Http\Controllers\APIv1\AccountAPIControllerExt;
+use App\Http\Controllers\APIv1\PortfolioAPIControllerExt;
+use Illuminate\Support\Facades\Artisan;
+Route::get('/clear', function () {
+    Artisan::call('route:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    return 'clear done';
+});
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,9 +29,10 @@ use App\Http\Controllers\API\PortfolioAPIControllerExt;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('account_matching/{account_id}', [AccountAPIControllerExt::class, 'accountMatching']);
 
 Route::get('portfolios/{id}/as_of/{as_of}', 'App\Http\Controllers\APIv1\PortfolioAPIControllerExt@showAsOf');
-Route::post('portfolios/{code}/assets_update', 'App\Http\Controllers\APIv1\PortfolioAPIControllerExt@assetsUpdate');
+Route::post('portfolios/{code}/assets_update', [PortfolioAPIControllerExt::class, 'assetsUpdate']);
 
 Route::get('funds/{id}/as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showAsOf');
 Route::get('funds/{id}/performance_as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showPerformanceAsOf');
@@ -37,14 +49,18 @@ Route::resource('accounts', App\Http\Controllers\API\AccountAPIController::class
 Route::resource('portfolios', App\Http\Controllers\API\PortfolioAPIController::class);
 Route::resource('transactions', App\Http\Controllers\API\TransactionAPIController::class);
 
-Route::resource('asset_prices', App\Http\Controllers\API\AssetPriceAPIControllerExt::class);
-Route::resource('assets', App\Http\Controllers\API\AssetAPIControllerExt::class);
-
+Route::resource('asset_prices', AssetPricesAPIControllerExt::class);
+Route::resource('assets', AssetsAPIControllerExt::class);
 Route::resource('account_balances', App\Http\Controllers\API\AccountBalanceAPIController::class);
 Route::resource('account_matching_rules', App\Http\Controllers\API\AccountMatchingRuleAPIController::class);
 Route::resource('matching_rules', App\Http\Controllers\API\MatchingRuleAPIController::class);
-Route::resource('portfolio_assets', App\Http\Controllers\API\PortfolioAssetAPIController::class);
-
+Route::resource('portfolio_assets', PortfolioAssetAPIController::class);
 // Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
 Route::resource('asset_change_logs', App\Http\Controllers\API\AssetChangeLogAPIController::class);
 Route::resource('transaction_matchings', App\Http\Controllers\API\TransactionMatchingAPIController::class);
+
+
+Route::resource('fund_reports', App\Http\Controllers\API\FundReportAPIController::class);
+
+
+Route::resource('account_reports', App\Http\Controllers\API\AccountReportAPIController::class);

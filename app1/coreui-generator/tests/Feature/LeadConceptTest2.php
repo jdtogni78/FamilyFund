@@ -152,6 +152,7 @@ class LeadConceptTest2 extends PortfolioAssetsUpdateBaseTest
         $this->nextDay(13);
         $this->post['symbols'][$this->symbol]['position'] = 0;
 
+        $this->postAssetUpdates();
         print_r("\nVALIDATE: new position=0 portfolio_asset created\n");
         print_r("\nVALIDATE: no updates for position on symbol2\n");
         $pas = $this->getPortfolioAssets($this->maxId);
@@ -205,11 +206,6 @@ class LeadConceptTest2 extends PortfolioAssetsUpdateBaseTest
         // print_r("\nVALIDATE: asset is NOT created\n");
 
 
-        print_r("\n** TEST7 * add 1 day to timestamp\n\n");
-        print_r("\n** TEST7 * change price of symbol\n\n");
-        print_r("\nVALIDATE: no new position created\n");
-        print_r("\nVALIDATE: new price created\n");
-        print_r("\nVALIDATE: no updates for position on symbol2\n");
 
         print_r("\n** TEST8 * add 1 day to timestamp\n\n");
         print_r("\n** TEST8 * change price=0\n\n");

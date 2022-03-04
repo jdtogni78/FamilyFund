@@ -190,4 +190,9 @@ abstract class BaseRepository
 
         return $model->delete();
     }
+
+    public function with($array = [])
+    {
+        return $this->model->newQuery()->with($array);
+    }
 }

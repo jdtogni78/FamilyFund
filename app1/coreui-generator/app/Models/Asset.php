@@ -62,7 +62,7 @@ class Asset extends Model
      */
     public static $rules = [
         'name' => 'required|string|max:128',
-        'type' => 'required|string|max:3',
+        'type' => 'regex:/[a-zA-Z][a-zA-Z]+/|max:7',
         'source_feed' => 'required|string|max:50',
         'feed_id' => 'required|string|max:128',
         'updated_at' => 'nullable',

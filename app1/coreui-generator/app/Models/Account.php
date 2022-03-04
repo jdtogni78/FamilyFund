@@ -115,4 +115,15 @@ class Account extends Model
     {
         return $this->hasMany(\App\Models\TransactionExt::class, 'account_id');
     }
+    public function matchingRule()
+    {
+        return $this->belongsTo(MatchingRule::class, 'matching_rule_id');
+    }
+    public function fetchRepository($query)
+    {
+        return $query->with('accountMatchingRules')->with('matchingRule');
+}
+    // public function accountMatchings(){
+    //     return $this->hasOneThrough(MatchingRule::class,AccountMatchingRule::class);
+    // }
 }

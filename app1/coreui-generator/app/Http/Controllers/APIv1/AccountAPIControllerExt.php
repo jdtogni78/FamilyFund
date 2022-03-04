@@ -5,7 +5,10 @@ namespace App\Http\Controllers\APIv1;
 use App\Models\Utils;
 use App\Repositories\AccountRepository;
 use App\Http\Controllers\API\AccountAPIController;
+use App\Http\Resources\AccountMatchingResource;
 use App\Http\Resources\AccountResource;
+use App\Models\Account;
+use App\Models\AccountBalance;
 use Response;
 use Carbon\Carbon;
 use App\Models\PerformanceTrait;
@@ -224,5 +227,25 @@ class AccountAPIControllerExt extends AccountAPIController
         return $this->sendResponse($arr, 'Account retrieved successfully');
     }
 
+    public function accountMatching($id)
+    {
+        // $data = Account::with('accountMatchingRules.matchingRule', 'transactions')->first();
+        $data =  $this->accountRepository->with(['accountMatchingRules.matchingRule', 'transactions'])->find($id);
+        // $arr['accountMatchings'] = $this->createAccountMatchingResponse($data);
+        $sum = 0;
+        foreach ($data->transactions as $transaction) {
+            $sum += $transaction->value;
+        }
+        $result = new AccountMatchingResource($data);
+        $arr = $result->toArray(null);
+        $arr['nickname'] = $data->nickname;
+        $arr['account_matching_rule'] = $data->accountMatchingRules;
+        $arr['used'] = $sum;
 
+        return $this->sendResponse($arr, 'Record fetched successfully');
+    }
+
+    public function createAccountMatchingResponse($data)
+    {
+    }
 }

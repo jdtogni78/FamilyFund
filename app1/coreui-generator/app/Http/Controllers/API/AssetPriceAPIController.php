@@ -40,6 +40,7 @@ class AssetPriceAPIController extends AppBaseController
             $request->get('skip'),
             $request->get('limit')
         );
+//         $assetPrices = $this->assetPricesRepository->with(['asset'])->get();
 
         return $this->sendResponse(AssetPriceResource::collection($assetPrices), 'Asset Prices retrieved successfully');
     }
@@ -55,6 +56,17 @@ class AssetPriceAPIController extends AppBaseController
     public function store(CreateAssetPriceAPIRequest $request)
     {
         $input = $request->all();
+        if ($input['end_dt'] == null) {
+            $input['end_dt'] = '9999-12-31';
+        }
+        if ($input['start_dt'] == null) {
+            $input['start_dt'] = date('Y-m-d');
+        }
+        /*
+        TODO: This code must:
+        1 - find any record that overlaps the start_dt (start_dt is inclusive, end_dt is exclusive)
+            * if one record found: old_record.end_dt = start_dt
+        */
 
         $assetPrice = $this->assetPriceRepository->create($input);
 

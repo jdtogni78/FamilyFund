@@ -7,7 +7,7 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
 {
     public function test_portfolio_assets_update()
     {
-        $this->cashId = 158;
+        $this->cashId = 10;
         $this->date = new DateTime("2022-01-09");
         $max_id = $this->getNextId('assets');
         $symbol = "Symbol_" . $max_id;
@@ -25,20 +25,50 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
         print_r("\n** TEST Next 3 tests are about historical record creation in mode=positions ***\n\n");
         $this->_testNoPricePositionChange($max_id, $symbol);
 
-        $this->_test2DaysAhead($max_id, $symbol, $oldTimestamp, $oldPrice, $oldPosition);
-        $this->_test1DayBack($max_id, $symbol, $oldTimestamp, $oldPrice, $oldPosition);
+        $this->_test4DaysAhead($max_id, $symbol, $oldTimestamp, $oldPrice, $oldPosition);
+        $this->_test3DayBack($max_id, $symbol, $oldTimestamp, $oldPrice, $oldPosition);
+        $this->_testChangePriceOnly($max_id, $symbol, $oldTimestamp, $oldPrice, $oldPosition);
+
+    }
+
+    public function _testChangePriceOnly($max_id, $symbol, $ts1, $price1, $position1): void
+    {
+        $ts2 = $this->post['timestamp'];
+        $price2 = $this->post['symbols'][$symbol]['price'];
+        $position2 = $this->post['symbols'][$symbol]['position'];
+
+        print_r("\n** TEST7 * add 1 day to timestamp\n\n");
+        print_r("\n** TEST7 * change price of symbol\n\n");
+        $this->nextDay();
+        $this->post['symbols'][$symbol]['price'] = 66.66;
+        $this->postAssetUpdates();
+
+        print_r("\nVALIDATE: no new position created\n");
+        print_r("\nVALIDATE: new price created\n");
+        print_r("\nVALIDATE: no updates for position on symbol2\n");
+        $this->_get("assets/" . $max_id, true);
+        $aps = $this->data['asset_prices'];
+        $this->validate3Historical($aps, $symbol, $ts1, $price1, $ts2, $price2, 'asset_prices', 'price');
+
+        $pas = $this->getPortfolioAssets($max_id);
+        $this->validate3Historical($pas, $symbol, $ts1, $position1, $ts2, $position2, 'portfolio_assets', 'position');
+
+        print_r("\nVALIDATE: no new position is created for cash\n");
+        $this->validateNoChangeCash($ts1);
     }
 
     /**
      * @return void
      */
-    public function _test1DayBack($max_id, $symbol, $ts1, $price1, $position1): void
+    public function _test3DayBack($max_id, $symbol, $ts1, $price1, $position1): void
     {
         $ts2 = $this->post['timestamp'];
         $price2 = $this->post['symbols'][$symbol]['price'];
         $position2 = $this->post['symbols'][$symbol]['position'];
 
         print_r("\n** TEST3 * subtract 1 day from timestamp\n\n");
+        $this->prevDay();
+        $this->prevDay();
         $this->prevDay();
         print_r("\n** TEST3 * change price of symbol\n\n");
         $this->post['symbols'][$symbol]['price'] = 55.55;
@@ -64,10 +94,10 @@ class LeadConceptTest extends PortfolioAssetsUpdateBaseTest
      * @param $max_id
      * @return void
      */
-    public function _test2DaysAhead($max_id, string $symbol, $oldTimestamp, $oldPrice, $oldPosition): void
+    public function _test4DaysAhead($max_id, string $symbol, $oldTimestamp, $oldPrice, $oldPosition): void
     {
         print_r("\n** TEST2 * add 2 days to timestamp\n");
-        $this->nextDay(2);
+        $this->nextDay(4);
 
         print_r("** TEST2 * change price & position of symbol\n");
         $this->post['symbols'][$symbol]['price'] = 123.45;
