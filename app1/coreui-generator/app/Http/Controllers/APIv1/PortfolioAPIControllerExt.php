@@ -14,6 +14,7 @@ use App\Models\AssetPrice;
 use App\Models\PortfolioAsset;
 use Response;
 use DB;
+use const null;
 
 /**
  * Class PortfolioControllerExt
@@ -136,9 +137,9 @@ class PortfolioAPIControllerExt extends AppBaseController
             }
             if ($key == 'mode') {
                 if ($value == 'positions') {
-                } else {
+        } else {
                     $this->mode = false;
-                }
+        }
             }
             if ($key == 'symbols') {
 
@@ -165,10 +166,12 @@ class PortfolioAPIControllerExt extends AppBaseController
                                             } else {
                                                 return $this->sendError('Code not Found');
                                             }
-                                            $portfolioAssetsData = PortfolioAsset::where('asset_id', $assetId)->where('portfolio_id', $portfolioId)->where(function ($q) use ($timestamp) {
-                                                $q->where('start_dt', '>=', $timestamp);
-                                                $q->orWhere('end_dt', '<=', $timestamp);
-                                            })->get();
+                                            $portfolioAssetsData = PortfolioAsset::where('asset_id', $assetId)
+                                                ->where('portfolio_id', $portfolioId)
+                                                ->where(function ($q) use ($timestamp) {
+                                                    $q->where('start_dt', '>=', $timestamp);
+                                                    $q->orWhere('end_dt', '<=', $timestamp);
+                                                })->get();
                                             if ($portfolioAssetsData->isEmpty()) {
                                                 $portfolioAsset = PortfolioAsset::create([
                                                     'portfolio_id' => $portfolioId,
@@ -496,5 +499,15 @@ class PortfolioAPIControllerExt extends AppBaseController
 
 
         return $this->sendResponse($data, 'Request completed successfully');
+    }
+
+    protected function getValue(array $input, $key, $default = null): mixed
+    {
+        if (array_key_exists($key, $input)) {
+            $value = $input[$key];
+        } else {
+            $value = $default;
+        }
+        return $value;
     }
 }

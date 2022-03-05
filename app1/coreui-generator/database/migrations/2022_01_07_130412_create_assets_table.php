@@ -16,12 +16,9 @@ class CreateAssetsTable extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->bigInteger('id', true, true);
-            $table->string('name', 128);
-            $table->string('type', 3);
             $table->string('source_feed', 50);
-            $table->string('feed_id', 128);
-            // $table->decimal('last_price', 19, 2);
-            // $table->date('last_price_date');
+            $table->string('source_name', 128);
+            $table->string('type', 7)->default("UNKNOWN");
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();

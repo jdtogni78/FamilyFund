@@ -24,7 +24,11 @@ class AssetsUpdatePortfolioAPIRequest extends BaseAPIRequest
      */
     public function rules()
     {
-        $rules = array();
+        $rules = [
+            'code' => 'required|string|max:50',
+            'mode' => 'required|in:positions,prices',
+            'symbols' => 'required_with|symbols.*.price'
+        ];
 
         return $rules;
     }
