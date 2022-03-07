@@ -15,6 +15,8 @@ use function PHPUnit\Framework\isEmpty;
 
 class AssetPriceAPIControllerExt extends AssetPriceAPIController
 {
+    use BulkStore;
+
     public function __construct(AssetPriceRepository $assetPricesRepo)
     {
         parent::__construct($assetPricesRepo);
@@ -30,18 +32,7 @@ class AssetPriceAPIControllerExt extends AssetPriceAPIController
      */
     public function bulkStore(CreatePriceUpdateAPIRequest $request)
     {
-        $input = $request->all();
-        $symbols = $request->collect('symbols')->toArray();
-        $timestamp = $input['timestamp'];
-        $source = $input['source'];
-
-        foreach ($symbols as $symbol) {
-            $symbol['source'] = $source;
-            $input = array_intersect_key($symbol, array_flip((new AssetExt())->fillable));
-            $asset = AssetExt::firstOrCreate($input);
-            $this->insertHistoricalPrice($asset->id, $timestamp, $symbol['price']);
-        }
-        return $this->sendResponse([], 'Bulk price update successful!');
+        return $this->genericBulkStore($request, 'price');
     }
 
     /**
@@ -59,47 +50,15 @@ class AssetPriceAPIControllerExt extends AssetPriceAPIController
         return $this->sendResponse(new AssetPriceResource($assetPrice), 'Asset Price saved successfully');
     }
 
-    protected function createAP($asset, mixed $newPrice, mixed $timestamp, $endDt)
+    protected function createChild($data, $source)
     {
-        $data = [
-            'asset_id' => $asset->id,
-            'price'    => $newPrice,
-            'start_dt' => $timestamp,
-        ];
-        if ($endDt) $data['end_dt'] = $endDt;
         $ap = AssetPrice::create($data);
         return $ap;
     }
 
-    protected function insertHistoricalPrice($assetId, $timestamp, $newPrice): AssetPrice
+    protected function getQuery($source, $asset, $timestamp)
     {
-        $asset = AssetExt::find($assetId);
-        if ($asset == null) {
-            throw new ValidationException("Invalid asset provided: ". $assetId);
-        }
-        $apQuery = $asset->pricesAsOf($timestamp);
-
-        $ret = null;
-        $create = true;
-        $newEnd = null;
-        if (!$apQuery->isEmpty()) {
-            $create = false;
-            foreach ($apQuery as $ap) {
-                // price changed, lets end & create new
-                if ($ap->price != $newPrice) {
-                    $newEnd = $ap->end_dt; // in case thats not the last record
-                    $ap->end_dt = $timestamp;
-                    $ap->save();
-                    $create = true;
-                } else {
-                    $ret = $ap;
-                }
-            }
-        }
-        if ($create) {
-            $ret = $this->createAP($asset, $newPrice, $timestamp, $newEnd);
-        }
-        return $ret;
+        $query = $asset->pricesAsOf($timestamp);
+        return $query;
     }
-
 }

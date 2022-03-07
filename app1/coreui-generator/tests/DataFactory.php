@@ -16,6 +16,11 @@ class DataFactory
     public $funds = array();
     public $users = array();
     public $matchings = array();
+    public $portfolio;
+    public $fundAccount;
+    public $fundTransaction;
+    public $fundBalance;
+    public $cashPosition;
 
     public function createFund($shares=1000, $value=1000)
     {
@@ -27,7 +32,7 @@ class DataFactory
 
         $this->fundAccount = $this->fund->account();
         $this->portfolio = $this->fund->portfolio();
-        
+
         $this->fundTransaction = Transaction::factory()
             ->for($this->fundAccount, 'account')
             ->create();
@@ -41,7 +46,7 @@ class DataFactory
 
         $cash = Asset::where('name', '=', 'CASH')->first();
 
-        PortfolioAsset::factory()
+        $this->cashPosition = PortfolioAsset::factory()
             ->for($this->portfolio, 'portfolio')
             ->for($cash)
             ->create([

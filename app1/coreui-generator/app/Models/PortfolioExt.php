@@ -10,6 +10,7 @@ use App\Models\Utils;
 use App\Repositories\PortfolioRepository;
 use App\Repositories\PortfolioAssetRepository;
 use DB;
+use phpDocumentor\Reflection\Types\Collection;
 
 /**
  * Class PortfolioExt
@@ -18,36 +19,30 @@ use DB;
 class PortfolioExt extends Portfolio
 {
     /**
-     * Validation rules (GET)
-     *
-     * @var array
-     */
-    public static $get_rules = [
-        // 'id' => 'required',
-        // 'as_of' => 'nullable|string|max:10'
-    ];
-
-    /**
      * @return money
      **/
-    public function assetsAsOf($now, $verbose=false)
+    public function assetsAsOf($now, $assetId=null)
     {
-        if ($verbose) DB::enableQueryLog(); // Enable query log
-
         $portfolioAssetsRepo = \App::make(PortfolioAssetRepository::class);
-        $query = $portfolioAssetsRepo->makeModel()->newQuery();
-        $query->where('portfolio_id', $this->id);
-        $query->whereDate('start_dt', '<=', $now);
-        $query->whereDate('end_dt', '>', $now);
-        $portfolioAssets = $query->get(['*']);
-        if ($verbose) {
-            // print_r(DB::getQueryLog());
-            foreach ($portfolioAssets as $portfolioAsset) {
-                print_r(json_encode($portfolioAsset->toArray()) . "\n");
-            }
-        }
-        
+        $query = $portfolioAssetsRepo->makeModel()->newQuery()
+            ->where('portfolio_id', $this->id)
+            ->whereDate('start_dt', '<=', $now)
+            ->whereDate('end_dt', '>', $now);
+        if ($assetId) $query = $query->where('asset_id', $assetId);
+        $portfolioAssets = $query->get();
+        return $portfolioAssets;
+    }
 
+    /**
+     * @return Collection
+     **/
+    public function positionHistory($assetId)
+    {
+        $portfolioAssetsRepo = \App::make(PortfolioAssetRepository::class);
+        $query = $portfolioAssetsRepo->makeModel()->newQuery()
+            ->where('portfolio_id', $this->id)
+            ->where('asset_id', $assetId);
+        $portfolioAssets = $query->get();
         return $portfolioAssets;
     }
 
@@ -62,12 +57,12 @@ class PortfolioExt extends Portfolio
         foreach ($portfolioAssets as $pa) {
             $position = $pa->position;
             $asset_id = $pa->asset_id;
-            if ($position == 0) 
+            if ($position == 0)
                 continue;
 
             $asset = AssetExt::findOrFail($asset_id);
             $assetPrice = $asset->pricesAsOf($now);
-            
+
             if (count($assetPrice) == 1) {
                 $price = $assetPrice[0]['price'];
                 $value = $position * $price;

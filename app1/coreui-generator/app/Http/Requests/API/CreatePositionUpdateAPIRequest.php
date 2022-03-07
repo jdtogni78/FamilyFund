@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\PositionUpdate;
+use App\Models\PositionUpdateExt;
 use InfyOm\Generator\Request\APIRequest;
 
 class CreatePositionUpdateAPIRequest extends APIRequest
@@ -24,6 +24,6 @@ class CreatePositionUpdateAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return PositionUpdate::$rules;
+        return PositionUpdateExt::$rules;
     }
 }

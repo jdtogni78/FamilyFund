@@ -3,11 +3,11 @@
 namespace App\Models;
 
 /**
- * Class PriceUpdateExt
+ * Class PositionUpdateExt
  * @package App\Models
  * @version March 5, 2022, 8:26 pm UTC
  */
-class PriceUpdateExt extends PriceUpdate
+class PositionUpdateExt extends PositionUpdate
 {
     /**
      * Validation rules
@@ -18,8 +18,8 @@ class PriceUpdateExt extends PriceUpdate
         'source' => 'required|string|max:30|exists:portfolios,source',
         'timestamp' => 'required',
         'symbols' => 'required|array',
-        'symbols.*.name' => 'required|string|not_in:CASH',
-        'symbols.*.price' => 'required|numeric',
-        'symbols.*.type' => 'string|not_in:CSH',
+        'symbols.*.name' => 'required|string',
+        'symbols.*.position' => 'required|numeric',
+        'symbols.*.type' => 'string',
     ];
 }
