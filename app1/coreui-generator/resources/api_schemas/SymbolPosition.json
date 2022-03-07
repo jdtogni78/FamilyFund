@@ -5,8 +5,17 @@
         "validations": "required|string|max:128"
     },
     {
+        "name": "type",
+        "dbType": "string,3",
+        "validations": "required|string|max:3"
+    },
+    {
         "name": "position",
-        "dbType": "decimal,21,8",
+        "dbType": "float",
         "validations": "required|numeric"
+    },
+    {
+        "type": "relation",
+        "relation": "mt1,PositionUpdate"
     }
 ]
