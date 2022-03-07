@@ -16,7 +16,7 @@ class CreateAssetsTable extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->bigInteger('id', true, true);
-            $table->string('source', 50);
+            $table->string('source', 30);
             $table->string('name', 128);
             $table->string('type', 20)->default("UNKNOWN");
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();

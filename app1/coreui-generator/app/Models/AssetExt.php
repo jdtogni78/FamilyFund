@@ -10,6 +10,19 @@ use App\Repositories\AssetPriceRepository;
  */
 class AssetExt extends Asset
 {
+    public static $rules = [
+        'name' => 'required|string|max:128',
+        'type' => 'required|[a-zA-Z][a-zA-Z]+|max:20',
+        'source' => 'required|[a-zA-Z][a-zA-Z]+|max:30',
+        'updated_at' => 'nullable',
+        'created_at' => 'nullable',
+        'deleted_at' => 'nullable'
+    ];
+
+    public function isCash():bool {
+        return $this->name == 'CASH' || $this->type == 'CSH';
+    }
+
     /**
      **/
     public function pricesAsOf($now)

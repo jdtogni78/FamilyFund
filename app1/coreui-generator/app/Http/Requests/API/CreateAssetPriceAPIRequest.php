@@ -7,6 +7,8 @@ use InfyOm\Generator\Request\APIRequest;
 
 class CreateAssetPriceAPIRequest extends BaseAPIRequest
 {
+    use CashValidator;
+
     /**
      * Determine if the user is authorized to make this request.
      *
