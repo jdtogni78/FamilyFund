@@ -2,11 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\AssetPricesAPIControllerExt;
-use App\Http\Controllers\API\AssetsAPIControllerExt;
+use App\Http\Controllers\APIv1\AssetPriceAPIControllerExt;
+use App\Http\Controllers\APIv1\AssetAPIControllerExt;
 use App\Http\Controllers\API\PortfolioAssetAPIController;
 use App\Http\Controllers\APIv1\AccountAPIControllerExt;
 use App\Http\Controllers\APIv1\PortfolioAPIControllerExt;
+
 use Illuminate\Support\Facades\Artisan;
 Route::get('/clear', function () {
     Artisan::call('route:clear');
@@ -33,6 +34,7 @@ Route::get('account_matching/{account_id}', [AccountAPIControllerExt::class, 'ac
 
 Route::get('portfolios/{id}/as_of/{as_of}', 'App\Http\Controllers\APIv1\PortfolioAPIControllerExt@showAsOf');
 Route::post('portfolios/{code}/assets_update', [PortfolioAPIControllerExt::class, 'assetsUpdate']);
+Route::post('asset_prices_bulk_update', [AssetPriceAPIControllerExt::class, 'bulkStore']);
 
 Route::get('funds/{id}/as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showAsOf');
 Route::get('funds/{id}/performance_as_of/{as_of}', 'App\Http\Controllers\APIv1\FundAPIControllerExt@showPerformanceAsOf');
@@ -59,8 +61,5 @@ Route::resource('portfolio_assets', PortfolioAssetAPIController::class);
 Route::resource('asset_change_logs', App\Http\Controllers\API\AssetChangeLogAPIController::class);
 Route::resource('transaction_matchings', App\Http\Controllers\API\TransactionMatchingAPIController::class);
 
-
 Route::resource('fund_reports', App\Http\Controllers\API\FundReportAPIController::class);
-
-
 Route::resource('account_reports', App\Http\Controllers\API\AccountReportAPIController::class);

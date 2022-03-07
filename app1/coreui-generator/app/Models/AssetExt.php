@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Asset;
 use App\Repositories\AssetPriceRepository;
 
 /**
@@ -20,7 +19,7 @@ class AssetExt extends Asset
         $query->where('asset_id', $this->id)
             ->whereDate('start_dt', '<=', $now)
             ->whereDate('end_dt', '>', $now);
-        $assetPrices = $query->get(['*']);
+        $assetPrices = $query->get();
         if ($assetPrices->count() > 1) {
             print_r($assetPrices->toArray());
             throw new \Exception("There should only be one asset price (found " . $assetPrices->count() . ") for asset " . $this->id . ' at ' . $now);

@@ -54,17 +54,6 @@ class AssetAPIController extends AppBaseController
      */
     public function store(CreateAssetAPIRequest $request)
     {
-        $records = $this->assetRepository->all();
-        /*
-         *Fetch all assets records and verify if any field record is duplicating
-         */
-        foreach ($records as $record) {
-            if ($record->feed_id == $request->feed_id &&
-                $record->source_feed == $request->source_feed) {
-                return $this->sendError('Asset source feed already exist');
-            }
-        }
-
         $input = $request->all();
 
         $asset = $this->assetRepository->create($input);

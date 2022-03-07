@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Asset;
+use App\Models\SymbolPrice;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class AssetFactory extends Factory
+class SymbolPriceFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Asset::class;
+    protected $model = SymbolPrice::class;
 
     /**
      * Define the model's default state.
@@ -24,10 +24,7 @@ class AssetFactory extends Factory
         return [
             'name' => $this->faker->word,
         'type' => $this->faker->word,
-        'source' => $this->faker->word,
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+        'price' => $this->faker->randomDigitNotNull
         ];
     }
 }

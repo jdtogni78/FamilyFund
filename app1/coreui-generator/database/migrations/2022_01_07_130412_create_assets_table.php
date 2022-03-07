@@ -16,12 +16,18 @@ class CreateAssetsTable extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->bigInteger('id', true, true);
-            $table->string('source_feed', 50);
-            $table->string('source_name', 128);
-            $table->string('type', 7)->default("UNKNOWN");
+            $table->string('source', 50);
+            $table->string('name', 128);
+            $table->string('type', 20)->default("UNKNOWN");
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();
+
+            $table->unique([
+                'source',
+                'name',
+                'type',
+            ], 'unique_asset');
         });
     }
 

@@ -9,15 +9,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Asset
  * @package App\Models
- * @version January 14, 2022, 4:54 am UTC
+ * @version March 5, 2022, 9:25 pm UTC
  *
  * @property \Illuminate\Database\Eloquent\Collection $assetChangeLogs
  * @property \Illuminate\Database\Eloquent\Collection $assetPrices
  * @property \Illuminate\Database\Eloquent\Collection $portfolioAssets
  * @property string $name
  * @property string $type
- * @property string $source_feed
- * @property string $feed_id
+ * @property string $source
  */
 class Asset extends Model
 {
@@ -38,8 +37,7 @@ class Asset extends Model
     public $fillable = [
         'name',
         'type',
-        'source_feed',
-        'feed_id'
+        'source'
     ];
 
     /**
@@ -51,8 +49,7 @@ class Asset extends Model
         'id' => 'integer',
         'name' => 'string',
         'type' => 'string',
-        'source_feed' => 'string',
-        'feed_id' => 'string'
+        'source' => 'string'
     ];
 
     /**
@@ -62,9 +59,8 @@ class Asset extends Model
      */
     public static $rules = [
         'name' => 'required|string|max:128',
-        'type' => 'regex:/[a-zA-Z][a-zA-Z]+/|max:7',
-        'source_feed' => 'required|string|max:50',
-        'feed_id' => 'required|string|max:128',
+        'type' => 'required|[a-zA-Z][a-zA-Z]+|max:20',
+        'source' => 'required|[a-zA-Z][a-zA-Z]+|max:50',
         'updated_at' => 'nullable',
         'created_at' => 'nullable',
         'deleted_at' => 'nullable'

@@ -4,8 +4,7 @@
             <tr>
                 <th>Name</th>
         <th>Type</th>
-        <th>Source Feed</th>
-        <th>Feed Id</th>
+        <th>Source</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>
@@ -14,8 +13,7 @@
             <tr>
                 <td>{{ $asset->name }}</td>
             <td>{{ $asset->type }}</td>
-            <td>{{ $asset->source_feed }}</td>
-            <td>{{ $asset->feed_id }}</td>
+            <td>{{ $asset->source }}</td>
                 <td>
                     {!! Form::open(['route' => ['assets.destroy', $asset->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

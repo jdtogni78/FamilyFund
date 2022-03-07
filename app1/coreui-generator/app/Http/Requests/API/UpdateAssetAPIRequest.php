@@ -5,7 +5,7 @@ namespace App\Http\Requests\API;
 use App\Models\Asset;
 use InfyOm\Generator\Request\APIRequest;
 
-class UpdateAssetAPIRequest extends BaseAPIRequest
+class UpdateAssetAPIRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateAssetAPIRequest extends BaseAPIRequest
     public function rules()
     {
         $rules = Asset::$rules;
-
+        
         return $rules;
     }
 }

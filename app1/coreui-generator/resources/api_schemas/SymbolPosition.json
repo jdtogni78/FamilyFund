@@ -1,0 +1,12 @@
+[
+    {
+        "name": "name",
+        "dbType": "string,128",
+        "validations": "required|string|max:128"
+    },
+    {
+        "name": "position",
+        "dbType": "decimal,21,8",
+        "validations": "required|numeric"
+    }
+]

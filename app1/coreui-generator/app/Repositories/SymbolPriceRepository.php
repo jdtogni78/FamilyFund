@@ -2,24 +2,22 @@
 
 namespace App\Repositories;
 
-use App\Models\AssetExt;
+use App\Models\SymbolPrice;
 use App\Repositories\BaseRepository;
 
 /**
- * Class AssetRepository
+ * Class SymbolPriceRepository
  * @package App\Repositories
- * @version March 5, 2022, 9:25 pm UTC
+ * @version March 5, 2022, 8:29 pm UTC
 */
 
-class AssetRepository extends BaseRepository
+class SymbolPriceRepository extends BaseRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name',
-        'type',
-        'source'
+        
     ];
 
     /**
@@ -37,6 +35,6 @@ class AssetRepository extends BaseRepository
      **/
     public function model()
     {
-        return AssetExt::class;
+        return SymbolPrice::class;
     }
 }
