@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePortfoliosTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -17,10 +16,11 @@ class CreatePortfoliosTable extends Migration
         Schema::create('portfolios', function (Blueprint $table) {
             $table->bigInteger('id', true, true);
             $table->foreignId('fund_id')->constrained();
-            $table->string('code', 30);
+            $table->string('source', 30)->unique();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->timestamp('created_at')->useCurrent();
             $table->softDeletes();
+
         });
     }
 
