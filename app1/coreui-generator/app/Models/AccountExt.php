@@ -32,11 +32,11 @@ class AccountExt extends Account
     public function allSharesAsOf($now)
     {
         $accountBalanceRepo = \App::make(AccountBalanceRepository::class);
-        $query = $accountBalanceRepo->makeModel()->newQuery();
-        $query->where('account_id', $this->id);
-        $query->whereDate('start_dt', '<=', $now);
-        $query->whereDate('end_dt', '>', $now);
-        $accountBalances = $query->get(['*']);
+        $query = $accountBalanceRepo->makeModel()->newQuery()
+            ->where('account_id', $this->id)
+            ->whereDate('start_dt', '<=', $now)
+            ->whereDate('end_dt', '>', $now);
+        $accountBalances = $query->get();
         $typeCount = array();
         $typeCount['OWN'] = 0;
         $typeCount['BOR'] = 0;
@@ -69,18 +69,18 @@ class AccountExt extends Account
         return $value;
     }
 
-    public function remainingMatchings() { 
-        return NULL; 
+    public function remainingMatchings() {
+        return NULL;
     }
 
     public function periodPerformance($from, $to)
     {
         $shareValueFrom = $this->fund()->first()->shareValueAsOf($from);
         $shareValueTo = $this->fund()->first()->shareValueAsOf($to);
-        
+
         $sharesFrom = $this->sharesAsOf($from);
         $sharesTo = $this->sharesAsOf($to);
-        
+
         $valueFrom = $shareValueFrom * $sharesFrom;
         $valueTo = $shareValueTo * $sharesTo;
 
