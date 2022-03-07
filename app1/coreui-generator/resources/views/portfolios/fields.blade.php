@@ -4,10 +4,10 @@
     {!! Form::number('fund_id', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Code Field -->
+<!-- Source Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('code', 'Code:') !!}
-    {!! Form::text('code', null, ['class' => 'form-control','maxlength' => 30,'maxlength' => 30]) !!}
+    {!! Form::label('source', 'Source:') !!}
+    {!! Form::text('source', null, ['class' => 'form-control','maxlength' => 30,'maxlength' => 30]) !!}
 </div>
 
 <!-- Submit Field -->

@@ -12,7 +12,7 @@ use Response;
 
 class PortfolioController extends AppBaseController
 {
-    /** @var  PortfolioRepository */
+    /** @var PortfolioRepository $portfolioRepository*/
     protected $portfolioRepository;
 
     public function __construct(PortfolioRepository $portfolioRepo)

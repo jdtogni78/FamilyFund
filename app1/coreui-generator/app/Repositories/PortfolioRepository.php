@@ -8,7 +8,7 @@ use App\Repositories\BaseRepository;
 /**
  * Class PortfolioRepository
  * @package App\Repositories
- * @version January 14, 2022, 4:54 am UTC
+ * @version March 7, 2022, 7:17 am UTC
 */
 
 class PortfolioRepository extends BaseRepository
@@ -18,7 +18,7 @@ class PortfolioRepository extends BaseRepository
      */
     protected $fieldSearchable = [
         'fund_id',
-        'code'
+        'source'
     ];
 
     /**

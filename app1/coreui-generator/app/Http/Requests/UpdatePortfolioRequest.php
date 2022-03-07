@@ -3,11 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Portfolio;
+use App\Models\PortfolioExt;
 
 class UpdatePortfolioRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -25,8 +24,8 @@ class UpdatePortfolioRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = Portfolio::$rules;
-        
+        $rules = PortfolioExt::$rules;
+
         return $rules;
     }
 }

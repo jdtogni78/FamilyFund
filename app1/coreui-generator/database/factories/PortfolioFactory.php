@@ -23,7 +23,7 @@ class PortfolioFactory extends Factory
     {
         return [
             //'fund_id' => $this->faker->word,
-        'code' => $this->faker->word,
+        'source' => $this->faker->word,
         //'updated_at' => $this->faker->date('Y-m-d H:i:s'),
         //'created_at' => $this->faker->date('Y-m-d H:i:s'),
         //'deleted_at' => $this->faker->date('Y-m-d H:i:s')

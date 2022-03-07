@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \App\Models\Fund $fund
  * @property \Illuminate\Database\Eloquent\Collection $portfolioAssets
  * @property integer $fund_id
- * @property string $code
+ * @property string $source
  */
 class Portfolio extends Model
 {
@@ -34,7 +34,7 @@ class Portfolio extends Model
 
     public $fillable = [
         'fund_id',
-        'code'
+        'source'
     ];
 
     /**
@@ -45,7 +45,7 @@ class Portfolio extends Model
     protected $casts = [
         'id' => 'integer',
         'fund_id' => 'integer',
-        'code' => 'string'
+        'source' => 'string'
     ];
 
     /**
@@ -55,7 +55,7 @@ class Portfolio extends Model
      */
     public static $rules = [
         'fund_id' => 'required',
-        'code' => 'required|string|max:30',
+        'source' => 'required|string|max:30',
         'updated_at' => 'nullable',
         'created_at' => 'nullable',
         'deleted_at' => 'nullable'

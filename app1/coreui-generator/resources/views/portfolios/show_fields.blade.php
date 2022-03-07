@@ -4,9 +4,9 @@
     <p>{{ $portfolio->fund_id }}</p>
 </div>
 
-<!-- Code Field -->
+<!-- Source Field -->
 <div class="form-group">
-    {!! Form::label('code', 'Code:') !!}
-    <p>{{ $portfolio->code }}</p>
+    {!! Form::label('source', 'Source:') !!}
+    <p>{{ $portfolio->source }}</p>
 </div>
 

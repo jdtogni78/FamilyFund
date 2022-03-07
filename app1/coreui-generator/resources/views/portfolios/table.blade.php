@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th>Fund Id</th>
-        <th>Code</th>
+        <th>Source</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>
@@ -11,7 +11,7 @@
         @foreach($portfolios as $portfolio)
             <tr>
                 <td>{{ $portfolio->fund_id }}</td>
-            <td>{{ $portfolio->code }}</td>
+            <td>{{ $portfolio->source }}</td>
                 <td>
                     {!! Form::open(['route' => ['portfolios.destroy', $portfolio->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
