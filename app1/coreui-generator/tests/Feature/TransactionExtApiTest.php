@@ -15,33 +15,18 @@ class TransactionExtApiTest extends TestCase
 {
     use ApiTestTrait, WithoutMiddleware, DatabaseTransactions;
 
-    public function test_basics()
+    public function testBasics()
     {
         $factory = new DataFactory();
 
-        $fund = $factory->createFund();
-        $user = $factory->createUser();
-        $matching = $factory->createMatching(150, 100);
-        $factory->createAccountMatching();
+        $factory->createFundWithMatching();
 
-        $transaction = $factory->createTransaction();
-        $account = $factory->userAccount;
-
-        $matchings = $account->accountMatchingRules()->first();
-        $input['source'] = 'MAT';
-        $input['value'] = $transaction->value/2;
-
-        $matchTran = $factory->createTransaction();
-        $match = TransactionMatching::factory()
-            ->for($matchings->matchingRule()->first())
-            ->create([
-                'transaction_id' => $matchTran->id,
-                'reference_transaction_id' => $transaction->id
-            ])
-        ;
+        $match = $factory->matchingRule;
+        $matchTran = $factory->matchTransaction;
+        $transaction = $factory->transaction;
 
         $this->assertNotNull($match);
-        $this->assertNotNull($matchTran);
+        $this->assertNotNull($match);
         $this->assertNotNull($transaction);
         $this->assertNotNull($match->transaction()->first());
         $this->assertNotNull($match->referenceTransaction()->first());

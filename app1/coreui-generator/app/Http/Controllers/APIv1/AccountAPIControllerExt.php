@@ -9,6 +9,7 @@ use App\Http\Resources\AccountMatchingResource;
 use App\Http\Resources\AccountResource;
 use App\Models\Account;
 use App\Models\AccountBalance;
+use Carbon\Traits\Date;
 use Response;
 use Carbon\Carbon;
 use App\Models\PerformanceTrait;
@@ -227,20 +228,38 @@ class AccountAPIControllerExt extends AccountAPIController
         return $this->sendResponse($arr, 'Account retrieved successfully');
     }
 
-    public function accountMatching($id)
+    /**
+     * Generate Account Matching Report (use of matchings).
+     * GET|HEAD /account_matching/{id}/report_as_of/{date}
+     *
+     * @param int $id
+     * @param Date $asOf
+     *
+     * @return Response
+     */
+    public function accountMatching($id, $asOf)
     {
-        // $data = Account::with('accountMatchingRules.matchingRule', 'transactions')->first();
-        $data =  $this->accountRepository->with(['accountMatchingRules.matchingRule', 'transactions'])->find($id);
-        // $arr['accountMatchings'] = $this->createAccountMatchingResponse($data);
+        $account = $this->accountRepository->with(['accountMatchingRules.matchingRule.transactionMatchings.transaction'])->find($id);
+//        print_r("data: " . json_encode($account) . "\n");
+//        print_r($account);
         $sum = 0;
-        foreach ($data->transactions as $transaction) {
-            $sum += $transaction->value;
+        $mrs = [];
+        foreach ($account->accountMatchingRules()->get() as $amr) {
+            foreach ($amr->matchingRule()->get() as $mr) {
+                foreach ($mr->transactionMatchings()->get() as $tm) {
+                    foreach ($tm->transaction()->get() as $transaction) {
+                        $sum += $transaction->value;
+                    }
+                }
+                $mr['used'] = $sum;
+                $mrA = $mr->toArray();
+                unset($mrA['transaction_matchings']);
+                $mrs[] = $mrA;
+            }
         }
-        $result = new AccountMatchingResource($data);
-        $arr = $result->toArray(null);
-        $arr['nickname'] = $data->nickname;
-        $arr['account_matching_rule'] = $data->accountMatchingRules;
-        $arr['used'] = $sum;
+        $arr = [];
+        $arr['nickname'] = $account->nickname;
+        $arr['matching_rules'] = $mrs;
 
         return $this->sendResponse($arr, 'Record fetched successfully');
     }

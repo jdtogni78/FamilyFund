@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class TransactionMatching
  * @package App\Models
- * @version January 19, 2022, 1:19 am UTC
+ * @version March 10, 2022, 7:09 am UTC
  *
- * @property \App\Models\Transaction $transaction
- * @property \App\Models\Transaction $transaction1
  * @property \App\Models\MatchingRule $matchingRule
+ * @property \App\Models\Transaction $referenceTransaction
+ * @property \App\Models\Transaction $transaction
  * @property integer $matching_rule_id
  * @property integer $transaction_id
  * @property integer $reference_transaction_id
@@ -25,6 +25,9 @@ class TransactionMatching extends Model
     use HasFactory;
 
     public $table = 'transaction_matchings';
+
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
 
 
     protected $dates = ['deleted_at'];
@@ -55,7 +58,7 @@ class TransactionMatching extends Model
      * @var array
      */
     public static $rules = [
-        'matching_rule_id' => 'nullable',
+        'matching_rule_id' => 'required',
         'transaction_id' => 'required',
         'reference_transaction_id' => 'required',
         'updated_at' => 'nullable',
@@ -66,9 +69,9 @@ class TransactionMatching extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function transaction()
+    public function matchingRule()
     {
-        return $this->hasOne(\App\Models\TransactionExt::class, 'id', 'transaction_id');
+        return $this->belongsTo(\App\Models\MatchingRule::class, 'matching_rule_id');
     }
 
     /**
@@ -76,14 +79,14 @@ class TransactionMatching extends Model
      **/
     public function referenceTransaction()
     {
-        return $this->hasOne(\App\Models\TransactionExt::class, 'id', 'reference_transaction_id');
+        return $this->belongsTo(\App\Models\Transaction::class, 'reference_transaction_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function matchingRule()
+    public function transaction()
     {
-        return $this->belongsTo(\App\Models\MatchingRule::class, 'matching_rule_id');
+        return $this->belongsTo(\App\Models\Transaction::class, 'transaction_id');
     }
 }

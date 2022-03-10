@@ -14,11 +14,9 @@ class AccountMatchingResource extends JsonResource
      */
     public function toArray($request)
     {
-        // dd($this);
         return [
             'nickname' => $this->nickname,
-            'account_matching_rule' => $this->matching_rule,
-            'used' => $this->used,
+            'matching_rule' => $this->matching_rule,
         ];
     }
 }

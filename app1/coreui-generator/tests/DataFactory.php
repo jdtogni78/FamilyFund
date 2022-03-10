@@ -2,6 +2,7 @@
 
 use App\Models\AssetExt;
 use App\Models\Transaction;
+use App\Models\TransactionMatching;
 use App\Models\User;
 use App\Models\Fund;
 use App\Models\Portfolio;
@@ -15,14 +16,24 @@ use App\Models\AccountMatchingRule;
 class DataFactory
 {
     public $funds = array();
+    public $userNum = 0;
+    public $user;
     public $users = array();
-    public $matchings = array();
+    public $userAccount;
+    public $userAccounts = array();
+    public $matchingRules = array();
+    public $accountMatching = array();
+    public $transactionMatchings = array();
+    public $transactions = array();
     public $portfolio;
     public $fundAccount;
     public $fundTransaction;
     public $fundBalance;
     public $cashPosition;
     public $cash;
+    public $transaction;
+    public $matchTransaction;
+    public $matchingRule;
 
     public function createFund($shares=1000, $value=1000, $timestamp='2022-01-01')
     {
@@ -64,26 +75,25 @@ class DataFactory
                 ->for($this->fund, 'fund')
                 ->count(1), 'accounts')
             ->create();
-        $this->userAccount = $this->user->accounts()->first();
+        $this->userAccounts[] = $this->userAccount = $this->user->accounts()->first();
         $this->users[] = $this->user;
-        $this->userAccounts[] = $this->userAccount;
         return $this->user;
     }
 
     public function createMatching($limit=100, $match=100) {
-        $this->matching = MatchingRule::factory()->create([
+        $this->matchingRule = MatchingRule::factory()->create([
             'dollar_range_start' => 0,
             'dollar_range_end' => $limit,
             'match_percent' => $match
         ]);
-        $this->matchings[] = $this->matching;
-        return $this->matching;
+        $this->matchingRules[] = $this->matchingRule;
+        return $this->matchingRule;
     }
 
     public function createAccountMatching() {
-        return AccountMatchingRule::factory()
-            ->for($this->userAccount, 'account')
-            ->for($this->matching)
+        return $this->accountMatching[] = AccountMatchingRule::factory()
+            ->for($this->userAccounts[$this->userNum], 'account')
+            ->for($this->matchingRule)
             ->create();
     }
 
@@ -95,8 +105,8 @@ class DataFactory
 
     public function makeTransaction($value=100, $account=null, $type='PUR', $source='DIR') {
         if ($account == null) {
-            if ($this->userAccount != null) {
-                $account = $this->userAccount;
+            if (count($this->userAccounts) > $this->userNum) {
+                $account = $this->userAccounts[$this->userNum];
             } else {
                 $account = $this->fundAccount;
             }
@@ -108,6 +118,7 @@ class DataFactory
                 'source' => $source,
                 'value' => $value
             ]);
+        $this->transactions[] = $this->transaction;
         return $this->transaction;
     }
 
@@ -116,5 +127,32 @@ class DataFactory
         return Asset::factory()->create([
             'source' => $source,
         ]);
+    }
+
+    public function createFundWithMatching()
+    {
+        $factory = $this;
+        $factory->createFund();
+        $factory->createUser();
+        $factory->createMatching(150, 100);
+        $factory->createAccountMatching();
+
+        $transaction = $factory->createTransaction();
+        $matching = $factory->userAccounts[$this->userNum]->accountMatchingRules()->first();
+
+        $this->matchTransaction = $factory->createTransaction($transaction->value/2, null, 'DIR', 'MAT');
+        $match = $this->createTransactionMatching($matching, $this->matchTransaction, $transaction)
+        ;
+    }
+
+    protected function createTransactionMatching($matching, $matchTran, $transaction)
+    {
+        $this->transactionMatchings[] = $tm = TransactionMatching::factory()
+            ->for($matching->matchingRule()->first())
+            ->create([
+                'transaction_id' => $matchTran->id,
+                'reference_transaction_id' => $transaction->id
+            ]);
+        return $tm;
     }
 }

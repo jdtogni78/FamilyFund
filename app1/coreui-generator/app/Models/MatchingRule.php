@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class MatchingRule
  * @package App\Models
- * @version January 14, 2022, 4:54 am UTC
+ * @version March 10, 2022, 7:09 am UTC
  *
  * @property \Illuminate\Database\Eloquent\Collection $accountMatchingRules
- * @property \Illuminate\Database\Eloquent\Collection $transactions
+ * @property \Illuminate\Database\Eloquent\Collection $transactionMatchings
  * @property string $name
  * @property number $dollar_range_start
  * @property number $dollar_range_end
@@ -87,8 +87,8 @@ class MatchingRule extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function transactions()
+    public function transactionMatchings()
     {
-        return $this->hasMany(\App\Models\TransactionExt::class, 'matching_rule_id');
+        return $this->hasMany(\App\Models\TransactionMatching::class, 'matching_rule_id');
     }
 }
