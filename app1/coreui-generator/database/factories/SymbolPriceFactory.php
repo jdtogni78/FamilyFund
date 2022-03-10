@@ -24,7 +24,7 @@ class SymbolPriceFactory extends Factory
         return [
             'name' => $this->faker->word,
         'type' => $this->faker->word,
-        'price' => $this->faker->randomDigitNotNull
+        'price' => $this->faker->randomFloat(2, 0.01),
         ];
     }
 }

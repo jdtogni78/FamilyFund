@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Tests\Feature;
 
@@ -36,10 +36,10 @@ class TransactionExtApiTest extends TestCase
             ->for($matchings->matchingRule()->first())
             ->create([
                 'transaction_id' => $matchTran->id,
-                'reference_transaction_id' => $transaction->id    
+                'reference_transaction_id' => $transaction->id
             ])
         ;
-        
+
         $this->assertNotNull($match);
         $this->assertNotNull($matchTran);
         $this->assertNotNull($transaction);

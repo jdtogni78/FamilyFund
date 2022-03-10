@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -37,7 +37,7 @@ class PortfolioExtApiTest extends TestCase
         $factory = new DataFactory();
         $factory->createFund();
         $portfolio = $factory->portfolio;
-        
+
         $preValidate = $data['preValidate'];
         if ($preValidate) {
             // $this->validateAssets($portfolio, $preValidate);
@@ -52,14 +52,14 @@ class PortfolioExtApiTest extends TestCase
         $this->assertApiResponse($portfolio);
         $this->validateAssets($portfolio, $data['post']);
     }
-    
+
     /**
      * @test
      */
     // Bulk Update Samples
     public function test_portfolio_assets_update()
     {
-        $data = 
+        $data =
         [
             [
                 'preValidate' => [

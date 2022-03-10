@@ -36,7 +36,7 @@ class PortfolioExt extends Portfolio
     /**
      * @return Collection
      **/
-    public function positionHistory($assetId)
+    public function assetHistory($assetId)
     {
         $portfolioAssetsRepo = \App::make(PortfolioAssetRepository::class);
         $query = $portfolioAssetsRepo->makeModel()->newQuery()
@@ -67,11 +67,8 @@ class PortfolioExt extends Portfolio
                 $price = $assetPrice[0]['price'];
                 $value = $position * $price;
                 $totalValue += $value;
-                if ($verbose) {
-                    // print_r(json_encode($pa->toArray())."\n");
-                    // print_r(json_encode($assetPrice[0]->toArray())."\n");
-                    print_r(json_encode([$asset_id, $position, $price, $value])."\n");
-                }
+                if ($verbose)
+                    print_r("values: ".json_encode([$asset_id, $position, $price, $value])."\n");
             } else {
                 # TODO printf("No price for $asset_id\n");
             }

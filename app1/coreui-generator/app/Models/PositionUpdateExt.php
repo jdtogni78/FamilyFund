@@ -17,9 +17,10 @@ class PositionUpdateExt extends PositionUpdate
     public static $rules = [
         'source' => 'required|string|max:30|exists:portfolios,source',
         'timestamp' => 'required',
-        'symbols' => 'required|array',
+        'symbols' => 'required|array|min:1',
         'symbols.*.name' => 'required|string',
-        'symbols.*.position' => 'required|numeric',
-        'symbols.*.type' => 'string',
+        'symbols.*.type' => 'required|string',
+        'symbols.*.position' => 'required|numeric|gt:0|lt:9999999999999.9991',
+        'symbols.*.price' => 'prohibited',
     ];
 }

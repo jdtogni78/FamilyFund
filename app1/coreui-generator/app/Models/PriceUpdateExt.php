@@ -17,9 +17,10 @@ class PriceUpdateExt extends PriceUpdate
     public static $rules = [
         'source' => 'required|string|max:30|exists:portfolios,source',
         'timestamp' => 'required',
-        'symbols' => 'required|array',
+        'symbols' => 'required|array|min:1',
         'symbols.*.name' => 'required|string|not_in:CASH',
-        'symbols.*.price' => 'required|numeric',
-        'symbols.*.type' => 'string|not_in:CSH',
+        'symbols.*.type' => 'required|string|not_in:CSH',
+        'symbols.*.price' => 'required|numeric|gt:0|lt:99999999999.99', // 13.2
+        'symbols.*.position' => 'prohibited',
     ];
 }

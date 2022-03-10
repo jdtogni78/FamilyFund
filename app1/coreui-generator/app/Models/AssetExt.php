@@ -19,6 +19,17 @@ class AssetExt extends Asset
         'deleted_at' => 'nullable'
     ];
 
+    public static function isCashInput($input):bool {
+        return $input['name'] == 'CASH' || $input['type'] == 'CSH';
+    }
+
+    public static function getCashAsset()
+    {
+        return AssetExt::
+            where('name', 'CASH')
+            ->orWhere('type', 'CSH')->get();
+    }
+
     public function isCash():bool {
         return $this->name == 'CASH' || $this->type == 'CSH';
     }

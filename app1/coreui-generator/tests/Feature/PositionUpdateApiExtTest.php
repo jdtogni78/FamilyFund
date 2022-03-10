@@ -28,25 +28,45 @@ class PositionUpdateApiExtTest extends TestCase
         );
     }
 
-    public function getChildren($asset) {
-        $portfolio = PortfolioExt::where('source', $this->post['source'])->get()->first();
-        $query = $portfolio->positionHistory($asset->id);
+    public function getChildren($asset, $source) {
+//        print_r("asset: " . json_encode($asset) . "\n");
+        $portfolio = PortfolioExt::where('source', $source)->get()->first();
+        $query = $portfolio->assetHistory($asset->id);
+//        print_r(count($query));
+//        foreach ($query as $o) {
+//            print_r("o: " . json_encode($o) . "\n");
+//        }
         return $query;
-    }
-
-    public function testMissingOptionalFields()
-    {
-//        $this->_testUnsetSymbol('type', 200);
     }
 
     public function testCash()
     {
         $arr = $this->createSampleReq();
-        $arr['symbols'][] = $this->makeSymbol('CASH');
         $this->postAPI($arr);
 
         $arr = $this->createSampleReq();
         $arr['symbols'][] = $this->makeSymbol(null, 'CSH');
         $this->postAPI($arr);
     }
+
+    public function testCornerCases()
+    {
+//        $table->decimal('position', 21, 8);
+        $this->_testSetSymbol($this->field, "99999999999999999999.9", 422);
+        $this->_testSetSymbol($this->field, "9999999999999.99999999", 422);
+        $this->_testSetSymbol($this->field, "9999999999999.9991", 422); // max digits till validates
+
+        $err = 0.00000001;
+        $this->_testSetSymbol($this->field, "1234567890123.45678901", 200, $err);
+        $this->_testSetSymbol($this->field, "1234567890123.456", 200, $err);
+        $this->_testSetSymbol($this->field, "999999999999.9999999995", 200, $err);
+        $this->_testSetSymbol($this->field, "9999999999999.999", 200, $err); // max digits till
+        $this->_testSetSymbol($this->field, "9.99999999999999999999", 200, $err);
+        $this->_testSetSymbol($this->field, "0.00000001", 200);
+        $this->_testSetSymbol($this->field, $err, 200);
+        $this->_testSetSymbol($this->field, 0.000000001, 200, $err);
+        $this->_testSetSymbol($this->field, "0.0000000001", 200, $err);
+        $this->_testSetSymbol($this->field, 1.2, 200);
+    }
+
 }

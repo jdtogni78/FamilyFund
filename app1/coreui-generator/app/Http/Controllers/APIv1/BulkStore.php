@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\APIv1;
 
+use App\Models\Asset;
 use App\Models\AssetExt;
 use App\Models\AssetPrice;
 use App\Models\PortfolioAsset;
@@ -11,6 +12,13 @@ trait BulkStore
 {
     protected abstract function getQuery($source, $asset, $timestamp);
     protected abstract function createChild($data, $source);
+    private $verbose = false;
+    private $warnings;
+
+    private function warn(string $string)
+    {
+        $this->warnings[] = $string;
+    }
 
     public function genericBulkStore($request, $field)
     {
@@ -22,7 +30,13 @@ trait BulkStore
         foreach ($symbols as $symbol) {
             $symbol['source'] = $source;
             $input = array_intersect_key($symbol, array_flip((new AssetExt())->fillable));
-            $asset = AssetExt::firstOrCreate($input);
+            if ($this->verbose) print_r("input: " . json_encode($input) . "\n");
+            if (AssetExt::isCashInput($input)) {
+                unset($input['source']);
+                $asset = Asset::orWhere($input)->firstOrFail();
+            } else {
+                $asset = AssetExt::firstOrCreate($input);
+            }
             $this->insertHistorical($source, $asset->id, $timestamp, $symbol[$field], $field);
         }
         return $this->sendResponse([], 'Bulk ' . $field . ' update successful!');
@@ -42,10 +56,11 @@ trait BulkStore
         if (!$query->isEmpty()) {
             $create = false;
             foreach ($query as $obj) {
+                if ($this->verbose) print_r("past obj: " . json_encode($obj) . "\n");
                 // value changed, lets end & create new
                 if ($obj->$field != $newValue) {
                     $newEnd = $obj->end_dt; // in case thats not the last record
-                    print_r("newend: " . json_encode($obj) . "\n");
+                    if ($this->verbose) print_r("newend: " . json_encode($obj) . "\n");
                     $obj->end_dt = $timestamp;
                     $obj->save();
                     $create = true;
@@ -55,8 +70,28 @@ trait BulkStore
             }
         }
         if ($create) {
-            $data = $this->getChildData($asset, $newValue, $timestamp, $newEnd, $field);
-            $ret = $this->createChild($data, $source);
+            // wanna create, but there may be an asset in the future
+            $query = $this->getQuery($source, $asset, '9999-12-30');
+            if (!$query->isEmpty()) {
+                $create = false;
+                foreach ($query as $obj) {
+                    if ($this->verbose) print_r("future obj: " . json_encode($obj) . "\n");
+                    if ($obj->$field != $newValue) {
+                        $newEnd = $obj->start_dt; // in case we are not the last record
+                        if ($this->verbose) print_r("newEnd: " . json_encode($obj) . "\n");
+                        $create = true;
+                    } else {
+                        $ret = $obj;
+                        $obj->start_dt = $timestamp;
+                        $obj->save();
+                    }
+                }
+            }
+            if ($create) {
+                $data = $this->getChildData($asset, $newValue, $timestamp, $newEnd, $field);
+                if ($this->verbose) print_r("create child: " . json_encode($data) . "\n");
+                $ret = $this->createChild($data, $source);
+            }
         }
         return $ret;
     }

@@ -8,8 +8,8 @@ trait TimestampTest
 {
     protected $date;
 
-    public function setupTimestampTest() {
-        $this->date = new DateTime("2022-01-01");
+    public function setupTimestampTest($date = '2022-01-01') {
+        $this->date = new DateTime($date);
     }
 
     protected function updateTimestamp()
@@ -26,12 +26,14 @@ trait TimestampTest
     {
         $this->date->modify('+'.$days.' day');
         $this->updateTimestamp();
+        return $this->timestamp();
     }
 
     public function prevDay()
     {
         $this->date->modify('-1 day');
         $this->updateTimestamp();
+        return $this->timestamp();
     }
 
 
@@ -40,9 +42,14 @@ trait TimestampTest
         return substr($timestamp, 0, 10) == substr($timestamp1, 0, 10);
     }
 
-    protected function isInfinity(mixed $end_dt)
+    protected function isInfinity(mixed $timestamp)
     {
-        return $this->compareTimestamp($end_dt, "9999-12-31");
+        return $this->compareTimestamp($timestamp, "9999-12-31");
+    }
+
+    protected function assertInfinity(mixed $timestamp)
+    {
+        return $this->assertTrue($this->isInfinity($timestamp));
     }
 
     protected function assertDate(mixed $expected, mixed $actual)

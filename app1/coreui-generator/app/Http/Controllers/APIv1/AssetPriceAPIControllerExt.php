@@ -53,6 +53,9 @@ class AssetPriceAPIControllerExt extends AssetPriceAPIController
     protected function createChild($data, $source)
     {
         $ap = AssetPrice::create($data);
+        if ($data['price'] != $ap->price) {
+            $this->warn("Price was adjusted from ".$data['price']." to ".$ap->price);
+        }
         return $ap;
     }
 

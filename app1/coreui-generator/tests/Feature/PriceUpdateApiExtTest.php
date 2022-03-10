@@ -27,24 +27,39 @@ class PriceUpdateApiExtTest extends TestCase
         );
     }
 
-    public function getChildren($asset) {
+    public function getChildren($asset, $source) {
         return $asset->assetPrices()->get();
-    }
-
-    public function testMissingOptionalFields()
-    {
-//        $this->_testUnsetSymbol('type', 200);
     }
 
     public function testCashErrors()
     {
-        $assetsArr = $this->createSampleReq();
-        $assetsArr['symbols'][] = $this->makeSymbol('CASH');
-        $this->postError($assetsArr);
+        $this->createSampleReq();
+        $this->post['symbols'][] = $this->makeSymbol('CASH');
+        $this->postError();
 
-        $assetsArr = $this->createSampleReq();
-        $assetsArr['symbols'][] = $this->makeSymbol(null, 'CSH');
-        $this->postError($assetsArr);
+        $this->createSampleReq();
+        $this->post['symbols'][] = $this->makeSymbol(null, 'CSH');
+        $this->postError();
+    }
+
+    public function testCornerCases()
+    {
+//        $table->decimal('price', 13, 2);
+        $this->_testSetSymbol($this->field, "99999999999999999999.9", 422);
+        $this->_testSetSymbol($this->field, "9999999999999.99999999", 422);
+
+        $err = 0.01;
+        $this->_testSetSymbol($this->field, "12345678901.45678901", 200, $err);
+        $this->_testSetSymbol($this->field, "12345678901.456", 200, $err);
+        $this->_testSetSymbol($this->field, "99999999999.98", 200);
+        $this->_testSetSymbol($this->field, "99999999999.984", 200, $err);
+        $this->_testSetSymbol($this->field, "99999999999.999", 422);
+        $this->_testSetSymbol($this->field, "9.99999999999999999999", 200, $err);
+        $this->_testSetSymbol($this->field, "0.01", 200);
+        $this->_testSetSymbol($this->field, 0.01, 200);
+        $this->_testSetSymbol($this->field, 0.001, 200, $err);
+        $this->_testSetSymbol($this->field, "0.001", 200, $err);
+        $this->_testSetSymbol($this->field, 1.2, 200);
     }
 
 }

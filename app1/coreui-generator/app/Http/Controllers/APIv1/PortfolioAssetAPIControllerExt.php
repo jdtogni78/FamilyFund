@@ -33,6 +33,12 @@ class PortfolioAssetAPIControllerExt extends PortfolioAssetAPIController
      */
     public function bulkStore(CreatePositionUpdateAPIRequest $request)
     {
+        $input = $request->all();
+        $source = $input['source'];
+        $timestamp = $input['timestamp'];
+        $symbols = $request->collect('symbols')->toArray();
+
+        $this->endDateRemovedAssets($source, $timestamp, $symbols);
         return $this->genericBulkStore($request, 'position');
     }
 
@@ -55,8 +61,11 @@ class PortfolioAssetAPIControllerExt extends PortfolioAssetAPIController
     {
         $portfolio = PortfolioExt::where('source', $source)->get()->first();
         $data['portfolio_id'] = $portfolio->id;
-        print_r("create: " . json_encode($data) . "\n");
+//        print_r("create: " . json_encode($data) . "\n");
         $ap = PortfolioAsset::create($data);
+        if ($data['position'] != $ap->position) {
+            $this->warn("Position was adjusted from ".$data['position']." to ".$ap->position);
+        }
         return $ap;
     }
 
@@ -65,5 +74,23 @@ class PortfolioAssetAPIControllerExt extends PortfolioAssetAPIController
         $portfolio = PortfolioExt::where('source', $source)->get()->first();
         $query = $portfolio->assetsAsOf($timestamp, $asset->id);
         return $query;
+    }
+
+    protected function endDateRemovedAssets(mixed $source, mixed $timestamp, array $symbols): void
+    {
+        $portfolio = PortfolioExt::where('source', $source)->get()->first();
+        $pas = $portfolio->assetsAsOf($timestamp);
+        foreach ($pas as $pa) {
+            $pa2 = array_filter(array_map(function ($n) use ($pa) {
+                    $asset = $pa->asset()->first();
+                    if ($n['name'] == $asset->name && $n['type'] == $asset->type)
+                        return $pa;
+                }, $symbols)
+            );
+            if ($pa2 == null) {
+                $pa->end_dt = $timestamp;
+                $pa->save();
+            }
+        }
     }
 }

@@ -67,7 +67,7 @@ class AccountApiTest extends TestCase
             '/api/accounts/'.$account->id,
             $editedAccount
         );
-        
+
         $editedAccount['id'] = $account->id;
         $this->assertApiResponse($editedAccount);
     }

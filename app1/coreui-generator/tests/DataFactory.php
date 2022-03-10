@@ -1,5 +1,6 @@
 <?php namespace Tests;
 
+use App\Models\AssetExt;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Fund;
@@ -21,8 +22,9 @@ class DataFactory
     public $fundTransaction;
     public $fundBalance;
     public $cashPosition;
+    public $cash;
 
-    public function createFund($shares=1000, $value=1000)
+    public function createFund($shares=1000, $value=1000, $timestamp='2022-01-01')
     {
         $this->fund = Fund::factory()
             ->has(Portfolio::factory()->count(1), 'portfolios')
@@ -44,13 +46,14 @@ class DataFactory
                 'shares' => $shares
             ]);
 
-        $cash = Asset::where('name', '=', 'CASH')->first();
+        $this->cash = AssetExt::getCashAsset()->first();
 
         $this->cashPosition = PortfolioAsset::factory()
             ->for($this->portfolio, 'portfolio')
-            ->for($cash)
+            ->for($this->cash, 'asset')
             ->create([
-                'position' => $value
+                'position' => $value,
+                'start_dt' => $timestamp,
             ]);
         return $this->fund;
     }
@@ -106,5 +109,12 @@ class DataFactory
                 'value' => $value
             ]);
         return $this->transaction;
+    }
+
+    public function createAsset($source)
+    {
+        return Asset::factory()->create([
+            'source' => $source,
+        ]);
     }
 }
