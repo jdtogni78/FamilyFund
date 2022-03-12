@@ -80,7 +80,7 @@ class DataFactory
         return $this->user;
     }
 
-    public function createMatching($limit=100, $match=100) {
+    public function createMatchingRule($limit=100, $match=100) {
         $this->matchingRule = MatchingRule::factory()->create([
             'dollar_range_start' => 0,
             'dollar_range_end' => $limit,
@@ -134,7 +134,7 @@ class DataFactory
         $factory = $this;
         $factory->createFund();
         $factory->createUser();
-        $factory->createMatching(150, 100);
+        $factory->createMatchingRule(150, 100);
         $factory->createAccountMatching();
 
         $transaction = $factory->createTransaction();
@@ -145,7 +145,7 @@ class DataFactory
         ;
     }
 
-    protected function createTransactionMatching($matching, $matchTran, $transaction)
+    public function createTransactionMatching($matching, $matchTran, $transaction)
     {
         $this->transactionMatchings[] = $tm = TransactionMatching::factory()
             ->for($matching->matchingRule()->first())

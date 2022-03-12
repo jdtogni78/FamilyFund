@@ -99,7 +99,7 @@ class TransactionExtApiTest extends TestCase
         $fund = $factory->createFund($data['fund']['shares'], $data['fund']['value']);
         $user = $factory->createUser();
         if ($data['match']) {
-            $matching = $factory->createMatching($data['match']['limit'], $data['match']['match']);
+            $matching = $factory->createMatchingRule($data['match']['limit'], $data['match']['match']);
             $factory->createAccountMatching();
         }
         print_r(json_encode($fund->toArray())."\n");

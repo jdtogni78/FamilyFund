@@ -242,10 +242,10 @@ class AccountAPIControllerExt extends AccountAPIController
         $account = $this->accountRepository->with(['accountMatchingRules.matchingRule.transactionMatchings.transaction'])->find($id);
 //        print_r("data: " . json_encode($account) . "\n");
 //        print_r($account);
-        $sum = 0;
         $mrs = [];
         foreach ($account->accountMatchingRules()->get() as $amr) {
             foreach ($amr->matchingRule()->get() as $mr) {
+                $sum = 0;
                 foreach ($mr->transactionMatchings()->get() as $tm) {
                     foreach ($tm->transaction()->get() as $transaction) {
                         $sum += $transaction->value;
