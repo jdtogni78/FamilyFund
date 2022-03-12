@@ -76,3 +76,15 @@
         <span>Transaction Matchings</span>
     </a>
 </li>
+<li class="nav-item {{ Request::is('fundReports*') ? 'active' : '' }}">
+    <a class="nav-link" href="{{ route('fundReports.index') }}">
+        <i class="nav-icon icon-cursor"></i>
+        <span>Fund Reports</span>
+    </a>
+</li>
+<li class="nav-item {{ Request::is('accountReports*') ? 'active' : '' }}">
+    <a class="nav-link" href="{{ route('accountReports.index') }}">
+        <i class="nav-icon icon-cursor"></i>
+        <span>Account Reports</span>
+    </a>
+</li>

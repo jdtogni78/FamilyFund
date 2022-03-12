@@ -15,7 +15,7 @@ use Spatie\TemporaryDirectory\TemporaryDirectory;
 
 class AccountControllerExt extends AccountController
 {
-    use ChartBaseControllerTrait;
+    use ChartBaseTrait;
 
     public function __construct(AccountRepository $accountRepo)
     {
