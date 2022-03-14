@@ -134,7 +134,7 @@
   </component>
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/app1/coreui-generator/vendor/phpunit/phpunit/phpunit" phpunit_phar_path="" />
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/app1/family-fund-app/vendor/autoload.php" phpunit_phar_path="" />
     </phpunit_settings>
   </component>
 </project>
