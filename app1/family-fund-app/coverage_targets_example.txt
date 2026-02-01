@@ -1,0 +1,15 @@
+# Coverage Improvement Target Files
+# One file per line, no extensions
+# Lines starting with # are ignored
+# Edit this file and run: ./improve_coverage_batch.sh @coverage_targets_example.txt
+
+# Controllers to improve (example)
+# UserController
+# AccountController
+# TransactionController
+
+# PDF/Service classes (example)
+# ReportPDF
+# EmailService
+
+# Add your files below:
