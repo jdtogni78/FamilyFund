@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WebV1;
 
 use App\Http\Controllers\Traits\TransactionTrait;
+use App\Http\Controllers\Traits\AccountSelectorTrait;
 use App\Http\Controllers\TransactionController;
 use App\Http\Requests\CreateTransactionRequest;
 use App\Http\Requests\PreviewTransactionRequest;
@@ -24,10 +25,52 @@ use Carbon\Carbon;
 class TransactionControllerExt extends TransactionController
 {
     use TransactionTrait;
+    use AccountSelectorTrait;
 
     public function __construct(TransactionRepository $transactionRepo)
     {
         $this->transactionRepository = $transactionRepo;
+    }
+
+    /**
+     * Display a listing of Transactions with filtering.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $this->authorize('viewAny', TransactionExt::class);
+
+        $query = $this->transactionRepository->withAuthorization()->allQuery()
+            ->with(['account.fund']);
+
+        // Apply filters
+        $filters = [];
+
+        if ($request->filled('fund_id')) {
+            $filters['fund_id'] = $request->fund_id;
+            $query->whereHas('account', function($q) use ($request) {
+                $q->where('fund_id', $request->fund_id);
+            });
+        }
+
+        if ($request->filled('account_id')) {
+            $filters['account_id'] = $request->account_id;
+            $query->where('account_id', $request->account_id);
+        }
+
+        $transactions = $query->orderByDesc('id')->get();
+
+        $api = array_merge(
+            $this->getAccountSelectorData(),
+            ['filters' => $filters]
+        );
+
+        return view('transactions.index')
+            ->with('transactions', $transactions)
+            ->with('api', $api)
+            ->with('filters', $filters);
     }
 
     /**
@@ -37,6 +80,8 @@ class TransactionControllerExt extends TransactionController
      */
     public function create()
     {
+        $this->authorize('create', TransactionExt::class);
+
         $api = $this->getApi();
         return view('transactions.create')
             ->with('api', $api);
@@ -72,6 +117,8 @@ class TransactionControllerExt extends TransactionController
 
     public function preview(PreviewTransactionRequest $request)
     {
+        $this->authorize('create', TransactionExt::class);
+
         $input = $request->all();
         $tran_status = $input['status'];
 
@@ -104,6 +151,8 @@ class TransactionControllerExt extends TransactionController
      */
     public function store(CreateTransactionRequest $request)
     {
+        $this->authorize('create', TransactionExt::class);
+
         $input = $request->all();
         Log::info('TransactionControllerExt::store: input: ' . json_encode($input));
 
@@ -122,12 +171,14 @@ class TransactionControllerExt extends TransactionController
     public function previewPending($id)
     {
         /** @var TransactionExt $transaction */
-        $transaction = $this->transactionRepository->find($id);
+        $transaction = $this->transactionRepository->withAuthorization()->find($id);
 
         if (empty($transaction)) {
             Flash::error('Transaction not found');
             return redirect(route('transactions.index'));
         }
+
+        $this->authorize('process', $transaction);
 
         DB::beginTransaction();
         $transaction_data = $transaction->processPending();
@@ -141,12 +192,14 @@ class TransactionControllerExt extends TransactionController
 
     public function processPending($id)
     {
-        $transaction = TransactionExt::find($id);
+        $transaction = $this->transactionRepository->withAuthorization()->find($id);
 
         if (empty($transaction)) {
             Flash::error('Transaction not found');
             return redirect(route('transactions.index'));
         }
+
+        $this->authorize('process', $transaction);
 
         DB::beginTransaction();
         $transaction_data = $this->processTransaction($transaction, false);
@@ -163,6 +216,8 @@ class TransactionControllerExt extends TransactionController
      */
     public function processAllPending()
     {
+        $this->authorize('create', TransactionExt::class);
+
         $transactions = TransactionExt::where('status', TransactionExt::STATUS_PENDING)
             ->orderBy('timestamp')
             ->orderBy('id')
@@ -215,13 +270,16 @@ class TransactionControllerExt extends TransactionController
      */
     public function edit($id)
     {
-        $transaction = $this->transactionRepository->find($id);
+        $transaction = $this->transactionRepository->withAuthorization()->find($id);
 
         if (empty($transaction)) {
             Flash::error('Transaction not found');
 
             return redirect(route('transactions.index'));
         }
+
+        $this->authorize('update', $transaction);
+
         $api = [
             'typeMap' => TransactionExt::$typeMap,
             'statusMap' => TransactionExt::$statusMap,
@@ -242,12 +300,14 @@ class TransactionControllerExt extends TransactionController
      */
     public function clone($id)
     {
-        $transaction = $this->transactionRepository->find($id);
+        $transaction = $this->transactionRepository->withAuthorization()->find($id);
 
         if (empty($transaction)) {
             Flash::error('Transaction not found');
             return redirect(route('transactions.index'));
         }
+
+        $this->authorize('view', $transaction);
 
         // Create a clone with today's date
         $clonedTransaction = new TransactionExt();
@@ -275,12 +335,14 @@ class TransactionControllerExt extends TransactionController
     public function resendEmail($id)
     {
         /** @var TransactionExt $transaction */
-        $transaction = $this->transactionRepository->find($id);
+        $transaction = $this->transactionRepository->withAuthorization()->find($id);
 
         if (empty($transaction)) {
             Flash::error('Transaction not found');
             return redirect(route('transactions.index'));
         }
+
+        $this->authorize('view', $transaction);
 
         // Check if account has email configured
         if (empty($transaction->account->email_cc)) {
@@ -312,6 +374,8 @@ class TransactionControllerExt extends TransactionController
      */
     public function bulkCreate()
     {
+        $this->authorize('create', TransactionExt::class);
+
         $api = $this->getApi();
 
         // Group accounts by fund for easier selection
@@ -364,6 +428,8 @@ class TransactionControllerExt extends TransactionController
             'value' => 'required|numeric',
             'timestamp' => 'required|date',
         ]);
+
+        $this->authorize('create', TransactionExt::class);
 
         $input = $request->all();
         $accountIds = $input['account_ids'];
@@ -455,6 +521,8 @@ class TransactionControllerExt extends TransactionController
             'value' => 'required|numeric',
             'timestamp' => 'required|date',
         ]);
+
+        $this->authorize('create', TransactionExt::class);
 
         $input = $request->all();
         $accountIds = $input['account_ids'];

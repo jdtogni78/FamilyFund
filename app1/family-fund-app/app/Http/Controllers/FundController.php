@@ -3,21 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateFundRequest;
+use App\Http\Requests\CreateFundWithSetupRequest;
 use App\Http\Requests\UpdateFundRequest;
+use App\Models\FundExt;
 use App\Repositories\FundRepository;
+use App\Repositories\TransactionRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Http\Controllers\Traits\FundSetupTrait;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
 
 class FundController extends AppBaseController
 {
+    use FundSetupTrait;
+
     /** @var  FundRepository */
     protected $fundRepository;
 
-    public function __construct(FundRepository $fundRepo)
+    /** @var  TransactionRepository */
+    protected $transactionRepository;
+
+    public function __construct(FundRepository $fundRepo, TransactionRepository $transactionRepo)
     {
         $this->fundRepository = $fundRepo;
+        $this->transactionRepository = $transactionRepo;
     }
 
     /**
@@ -29,6 +39,8 @@ class FundController extends AppBaseController
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', FundExt::class);
+
         $funds = $this->fundRepository->all();
 
         return view('funds.index')
@@ -42,6 +54,8 @@ class FundController extends AppBaseController
      */
     public function create()
     {
+        $this->authorize('create', FundExt::class);
+
         return view('funds.create');
     }
 
@@ -54,6 +68,8 @@ class FundController extends AppBaseController
      */
     public function store(CreateFundRequest $request)
     {
+        $this->authorize('create', FundExt::class);
+
         $input = $request->all();
 
         $fund = $this->fundRepository->create($input);
@@ -80,6 +96,8 @@ class FundController extends AppBaseController
             return redirect(route('funds.index'));
         }
 
+        $this->authorize('view', $fund);
+
         return view('funds.show')->with('fund', $fund);
     }
 
@@ -99,6 +117,8 @@ class FundController extends AppBaseController
 
             return redirect(route('funds.index'));
         }
+
+        $this->authorize('update', $fund);
 
         return view('funds.edit')->with('fund', $fund);
     }
@@ -120,6 +140,8 @@ class FundController extends AppBaseController
 
             return redirect(route('funds.index'));
         }
+
+        $this->authorize('update', $fund);
 
         $fund = $this->fundRepository->update($request->all(), $id);
 
@@ -147,10 +169,58 @@ class FundController extends AppBaseController
             return redirect(route('funds.index'));
         }
 
+        $this->authorize('delete', $fund);
+
         $this->fundRepository->delete($id);
 
         Flash::success('Fund deleted successfully.');
 
         return redirect(route('funds.index'));
+    }
+
+    /**
+     * Show the form for creating a new Fund with complete setup
+     * (fund + account + portfolio + initial transaction).
+     *
+     * @return Response
+     */
+    public function createWithSetup()
+    {
+        $this->authorize('create', FundExt::class);
+
+        return view('funds.create_with_setup');
+    }
+
+    /**
+     * Store a newly created Fund with complete setup in storage.
+     * Supports preview mode to show what will be created before committing.
+     *
+     * @param CreateFundWithSetupRequest $request
+     *
+     * @return Response
+     */
+    public function storeWithSetup(CreateFundWithSetupRequest $request)
+    {
+        $this->authorize('create', FundExt::class);
+
+        $input = $request->all();
+        $isPreview = $request->input('preview', false);
+
+        try {
+            $setupData = $this->setupFund($input, $isPreview);
+
+            if ($isPreview) {
+                return view('funds.preview_setup', [
+                    'preview' => $setupData,
+                    'input' => $input,
+                ]);
+            } else {
+                Flash::success('Fund created successfully with account, portfolio, and initial transaction!');
+                return redirect(route('funds.show', $setupData['fund']->id));
+            }
+        } catch (\Exception $e) {
+            Flash::error('Fund creation failed: ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 }
